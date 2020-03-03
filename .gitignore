@@ -1,0 +1,15 @@
+# Python cache
+__pycache__/
+
+# Environments
+.env
+venv/
+
+# PyCharm files
+.idea
+
+# SRC dir
+src/
+
+# Local databases
+.sqlite
