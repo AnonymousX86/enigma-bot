@@ -2,7 +2,7 @@
 from builtins import BaseException
 from logging import basicConfig, INFO
 
-from discord import Status, Game, Member
+from discord import Status, Game, Member, Intents
 from discord.ext.commands import Bot, Context
 
 from enigma.settings import general_settings, debug_settings
@@ -15,6 +15,12 @@ bot = Bot(
     case_insensitive=False,
     owner_id=general_settings['owner_id'],
     description='General purpose bot',
+    intents=Intents(
+        guilds=True,
+        members=True,
+        bans=True,
+        guild_messages=True
+    )
 )
 
 
