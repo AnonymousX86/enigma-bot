@@ -5,7 +5,11 @@ from ..settings import database_settings, cache_settings
 
 
 def postgre_connect() -> psycopg2.connect:
-    """Connect to PostgreSQL database"""
+    """
+    Connects to PostgreSQL database.
+
+    :return: Connection object.
+    """
     conn = psycopg2.connect(
         # user=database_settings['user'],
         # password=database_settings['password'],
@@ -19,7 +23,11 @@ def postgre_connect() -> psycopg2.connect:
 
 
 def cache_client() -> bmemcached.Client:
-    """Return connection to cache server object"""
+    """
+    Connects to cache server.
+
+    :return: Connection object.
+    """
     servers = cache_settings['servers']
     user = cache_settings['user']
     password = cache_settings['password']
@@ -29,7 +37,11 @@ def cache_client() -> bmemcached.Client:
 
 
 def query_all_users() -> list:
-    """Return all columns from 'users' table"""
+    """
+    Gets all users' data from database.
+
+    :return: All users' data.
+    """
     db = postgre_connect()
     c = db.cursor()
     c.execute('SELECT * FROM users;')
@@ -40,7 +52,12 @@ def query_all_users() -> list:
 
 
 def query_single_user(user_id: int) -> list:
-    """Find if there's user in database"""
+    """
+    Gets single user's data from database.
+
+    :param user_id: User ID.
+    :return: Single user's data.
+    """
     db = postgre_connect()
     c = db.cursor()
     c.execute(

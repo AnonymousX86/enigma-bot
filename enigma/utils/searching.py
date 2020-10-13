@@ -1,11 +1,15 @@
-def find_user(id_or_mention):
-    """Check if argument is ID or mention and return ID or None"""
-    # No arg provided
-    if id_or_mention is None:
-        return None
+from typing import Union
 
+
+def find_user(id_or_mention) -> Union[int, None]:
+    """
+    Checks if argument is ID or mention.
+
+    :param id_or_mention: User ID or mention.
+    :return: User ID or None if neither.
+    """
     # User ID
-    elif len(id_or_mention) == 18:
+    if len(id_or_mention) == 18:
         try:
             id_or_mention = int(id_or_mention)
             return id_or_mention

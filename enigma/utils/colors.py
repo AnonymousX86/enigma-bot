@@ -2,6 +2,9 @@ from random import choice
 
 
 def colors() -> tuple:
+    """
+    :return: Color codes from Discord's docs.
+    """
     return (
         0x1abc9c,
         0x11806a,
@@ -29,7 +32,7 @@ def colors() -> tuple:
 
 
 def random_color() -> int:
-    """Return random color in '0x000000' format
-    Based on Discord.py documentation
+    """
+    :return: Random color from Discord's docs.
     """
     return choice(colors())
