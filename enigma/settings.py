@@ -16,7 +16,7 @@ general_settings = {
 }
 
 database_settings = {
-    'full_url': str(get('DB_URL')),
+    'url': str(get('DATABASE_URL')),
     'user': str(get('DB_USER')),
     'password': str(get('DB_PASSWORD')),
     'host': str(get('DB_HOST')),

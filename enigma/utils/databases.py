@@ -7,11 +7,12 @@ from ..settings import database_settings, cache_settings
 def postgre_connect() -> psycopg2.connect:
     """Connect to PostgreSQL database"""
     conn = psycopg2.connect(
-        user=database_settings['user'],
-        password=database_settings['password'],
-        host=database_settings['host'],
-        port=database_settings['port'],
-        database=database_settings['database'],
+        # user=database_settings['user'],
+        # password=database_settings['password'],
+        # host=database_settings['host'],
+        # port=database_settings['port'],
+        # database=database_settings['database'],
+        database_settings['url'],
         sslmode='require'
     )
     return conn
