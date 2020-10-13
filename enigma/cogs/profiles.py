@@ -32,24 +32,18 @@ class Profiles(Cog):
         start_time = d.timestamp(utc_to_local(ctx.message.created_at))
 
         # Get self avatar
-        if user is None:
+        if not user:
             user_id = ctx.message.author.id
             user_found = True
 
         # Provided argument
         else:
             user_id = find_user(user)
+            user_found = user_id is not None
 
-            # Bad argument or user is not found
-            if user_id is None:
-                user_found = False
-
-            # User is found
-            else:
-                user_found = True
-
-        if user_found is True:
-            avatar = get(ctx.guild.members, id=user_id).avatar_url
+        if user_found:
+            user = get(ctx.guild.members, id=int(user_id))
+            avatar = user.avatar_url
             status = f'As you wish, {ctx.message.author.display_name}\n\n' \
                      f':arrow_right: [See in full resolution]({avatar})'
 
