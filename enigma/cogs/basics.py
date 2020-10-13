@@ -222,7 +222,8 @@ class Basics(Cog):
             # When connected to cache server, trying to get data from it
             if client:
                 try:
-                    result, cas = client.get('query_get')
+                    # noinspection PyTypeChecker
+                    result = client.get('query_get')
                     get_method = 'cache'
                 except BaseException as e:
                     await self.bot.debug_log(ctx=ctx, e=e)
