@@ -1,10 +1,8 @@
 from random import choice
 
 
-def random_color():
-    # Standard colors based on Discord API documentation
-    # https://discordpy.readthedocs.io/en/latest/api.html#colour
-    return choice((
+def colors() -> tuple:
+    return (
         0x1abc9c,
         0x11806a,
         0x2ecc71,
@@ -27,4 +25,11 @@ def random_color():
         0x546e7a,
         0x7289da,
         0x99aab5
-    ))
+    )
+
+
+def random_color() -> int:
+    """Return random color in '0x000000' format
+    Based on Discord.py documentation
+    """
+    return choice(colors())

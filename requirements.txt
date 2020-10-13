@@ -1,2 +1,4 @@
 python-dotenv
-discord
+discord.py
+psycopg2-binary
+python-binary-memcached

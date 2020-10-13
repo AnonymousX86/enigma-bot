@@ -11,5 +11,5 @@ venv/
 # SRC dir
 src/
 
-# Local databases
-.sqlite
+# Website
+enigma-website/
