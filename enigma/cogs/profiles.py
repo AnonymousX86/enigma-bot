@@ -2,6 +2,7 @@
 from datetime import datetime as d
 
 from discord import Embed
+from discord.abc import User
 from discord.ext.commands import Cog, command
 from discord.utils import get
 
@@ -11,13 +12,6 @@ from enigma.utils.searching import find_user
 
 
 class Profiles(Cog):
-    """
-    Users' profiles related commands
-
-    Commands:
-        avatar: returns specified member avatar or, by default, member who invoked command avatar
-    """
-
     def __init__(self, bot):
         self.bot = bot
 
@@ -28,7 +22,14 @@ class Profiles(Cog):
         usage='[user]',
         aliases=['avk']
     )
-    async def avatar(self, ctx, user=None):
+    async def avatar(self, ctx, user: User = None):
+        """
+        Send user's avatar.
+
+        :param ctx: Context object.
+        :param user: User mention or ID.
+        :return: True if user is found and False if not.
+        """
         start_time = d.timestamp(utc_to_local(ctx.message.created_at))
 
         # Get self avatar
@@ -60,6 +61,7 @@ class Profiles(Cog):
         ).set_footer(
             text=f'It took me {execute_time(start_time)}'
         ))
+        return user_found
 
 
 def setup(bot):

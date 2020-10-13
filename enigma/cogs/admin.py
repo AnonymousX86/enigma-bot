@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import asyncio
 from builtins import BaseException
+from typing import Union
 
 from discord import Embed
+from discord.abc import User
 from discord.errors import Forbidden  # If bot has no permissions for deleting message
 from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, MissingPermissions, \
     BotMissingPermissions
@@ -16,17 +18,6 @@ from enigma.utils.searching import find_user
 
 
 class Admin(Cog):
-    """
-    Admin commands and moderation tools
-
-    Commands:
-        ban: bans member
-        kick: kicks member
-
-    Listeners:
-        event on_message: looking for bad words
-    """
-
     def __init__(self, bot):
         self.bot = bot
 
@@ -39,6 +30,13 @@ class Admin(Cog):
     @has_permissions(ban_members=True)
     @bot_has_permissions(ban_members=True)
     async def ban(self, ctx, user_id=None):
+        """
+        Bans user from guild.
+
+        :param ctx: Context object.
+        :param user_id: User mention or ID.
+        :return: True if banned and False if not.
+        """
         # No user provided
         if user_id is None:
             await ctx.send(embed=Embed(
@@ -46,7 +44,7 @@ class Admin(Cog):
                 description='You\'ve not provided a victim',
                 color=random_color()
             ))
-            return
+            return False
 
         else:
             user_id = find_user(user_id)
@@ -58,7 +56,7 @@ class Admin(Cog):
                     description='Try asking local mafia for help',
                     color=random_color()
                 ))
-                return
+                return False
 
             # Now target user is found, checking if...
             else:
@@ -69,7 +67,7 @@ class Admin(Cog):
                         description='Ask someone to help you commit sepuku or something...',
                         color=random_color()
                     ))
-                    return
+                    return False
 
                 # User is trying to ban guild owner
                 elif user_id == ctx.guild.owner.id:
@@ -78,7 +76,7 @@ class Admin(Cog):
                         description='He\'s the almighty one, sorry',
                         color=random_color()
                     ))
-                    return
+                    return False
 
                 # User is trying to ban the bot
                 elif user_id == self.bot.user.id:
@@ -87,7 +85,7 @@ class Admin(Cog):
                         description='Even if I would I can\'t, sorry',
                         color=random_color()
                     ))
-                    return
+                    return False
 
                 # No errors
                 else:
@@ -96,7 +94,7 @@ class Admin(Cog):
                         description='(Just kidding, I\'m still in development)',
                         color=random_color()
                     ))
-                    return
+                    return True
                     # TODO - enable banning
 
     @ban.error
@@ -128,6 +126,13 @@ class Admin(Cog):
     @has_permissions(kick_members=True)
     @bot_has_permissions(kick_members=True)
     async def kick(self, ctx, user_id=None):
+        """
+        Kicks user from guild.
+
+        :param ctx: Context object.
+        :param user_id: User mention or ID.
+        :return: True if kicked and False if not.
+        """
         # No user provided
         if user_id is None:
             await ctx.send(embed=Embed(
@@ -135,6 +140,7 @@ class Admin(Cog):
                 description='You\'ve not provided a victim',
                 color=random_color()
             ))
+            return False
 
         else:
             user_id = find_user(user_id)
@@ -146,6 +152,7 @@ class Admin(Cog):
                     description='After 1337ms of work I can\'t find that guy',
                     color=random_color()
                 ))
+                return False
 
             # Now target user is found, checking if...
             else:
@@ -156,6 +163,7 @@ class Admin(Cog):
                         description='If you want to leave, do this, but don\'t try to kick yourself, that\'s stupid',
                         color=random_color()
                     ))
+                    return False
 
                 # User is trying to ban guild owner
                 elif user_id == ctx.guild.owner.id:
@@ -164,6 +172,7 @@ class Admin(Cog):
                         description='You can\'t kick the police officer',
                         color=random_color()
                     ))
+                    return False
 
                 # User is trying to ban the bot
                 elif user_id == self.bot.user.id:
@@ -172,6 +181,7 @@ class Admin(Cog):
                         description='I won\'t leave this guild even if you want to',
                         color=random_color()
                     ))
+                    return False
 
                 # No errors
                 else:
@@ -180,6 +190,7 @@ class Admin(Cog):
                         description='(Just kidding, I\'m still in development)',
                         color=random_color()
                     ))
+                    return True
                     # TODO - enable kicking
 
     @kick.error
@@ -203,12 +214,19 @@ class Admin(Cog):
     @command(
         name='mute',
         brief='Mutes user',
-        description='You can provide user ID or mention someone',
-        usage='<user>'
+        description='You can provide user ID or mention someone or provide "config" option',
+        usage='<user|"config">'
     )
-    async def mute(self, ctx, user_id=None):
+    async def mute(self, ctx, user_id: Union[User, str] = None):
+        """
+        Mutes a member or configures mute role.
+
+        :param ctx: Context object.
+        :param user_id: User mention or ID or "config".
+        :return: True if muted or configured mute role and False if not.
+        """
         # Config mode
-        if user_id is not None and user_id.lower() == 'config':
+        if user_id and user_id.lower() == 'config':
             msg = await ctx.send(embed=Embed(
                 title=':gear: Please send here role ID...',
                 color=random_color()
@@ -229,6 +247,7 @@ class Admin(Cog):
                     description='Try typing faster next time',
                     color=random_color()
                 ))
+                return False
 
             # User sent some data (not sure what it is)
             else:
@@ -250,7 +269,7 @@ class Admin(Cog):
                             title=':no_entry: Bad ID format',
                             color=random_color()
                         ))
-                        return
+                        return False
 
                     finally:
                         await response.delete()
@@ -265,6 +284,7 @@ class Admin(Cog):
                             description=f'I can\'t find role with ID: `{new_mute_role_id}`',
                             color=random_color()
                         ))
+                        return False
 
                     # Role exists
                     else:
@@ -310,6 +330,7 @@ class Admin(Cog):
                                 description=f'Now it\'s `@{new_mute_role}`',
                                 color=random_color()
                             ))
+                            return True
 
                         # Something bad happened while trying to save role ID to database
                         except BaseException as e:
@@ -318,19 +339,21 @@ class Admin(Cog):
                                 title=':no_entry: Can\'t set mute role',
                                 color=random_color()
                             ))
+                            return False
 
                 # User provided something else than standard Discord ID (18 position integer)
                 else:
                     await msg.edit(embed=Embed(
                         title=':no_entry: Bad ID format'
                     ))
+                    return False
 
         # Muting mode
         else:
             # Find mute role ID
             client = cache_client()
             result = client.get(f'{ctx.guild.id}_mute_role_id')
-            if result is None:
+            if not result:
                 db = postgre_connect()
                 c = db.cursor()
                 c.execute(
@@ -343,13 +366,13 @@ class Admin(Cog):
                 db.close()
 
             # Can't find mute role
-            if result is None:
+            if not result:
                 await ctx.send(embed=Embed(
                     title=':gear: No mute role has been specified',
                     description='Please run `mute config` to add one',
                     color=random_color()
                 ))
-                return
+                return False
 
             # Mute role ID is found
             else:
@@ -361,7 +384,7 @@ class Admin(Cog):
                         description='You\'ve not provided a victim',
                         color=random_color()
                     ))
-                    return
+                    return False
 
                 else:
                     user_id = find_user(user_id)
@@ -373,7 +396,7 @@ class Admin(Cog):
                             description='I don\'t know about who are you talking about',
                             color=random_color()
                         ))
-                        return
+                        return False
 
                     # Now target user is found, checking if...
                     else:
@@ -384,7 +407,7 @@ class Admin(Cog):
                                 description='Just be quiet',
                                 color=random_color()
                             ))
-                            return
+                            return False
 
                         # User is trying to ban guild owner
                         elif user_id == ctx.guild.owner.id:
@@ -393,7 +416,7 @@ class Admin(Cog):
                                 description='You can\'t do that to the ***O W N E R***',
                                 color=random_color()
                             ))
-                            return
+                            return False
 
                         # User is trying to ban the bot
                         elif user_id == self.bot.user.id:
@@ -402,7 +425,7 @@ class Admin(Cog):
                                 description='I love talking, okay?',
                                 color=random_color()
                             ))
-                            return
+                            return False
 
                         # No errors
                         else:
@@ -411,7 +434,7 @@ class Admin(Cog):
                                 description='(Just kidding, I\'m still in development)',
                                 color=random_color()
                             ))
-                            return
+                            return True
 
     # TODO - unmute command
 

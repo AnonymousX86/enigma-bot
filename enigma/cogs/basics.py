@@ -3,7 +3,7 @@ from builtins import BaseException
 from datetime import datetime as d
 
 from discord import Embed
-from discord.ext.commands import command, Cog, has_permissions, MissingPermissions
+from discord.ext.commands import command, Cog, Context, has_permissions, MissingPermissions
 from discord.utils import get as discord_find
 
 from enigma.utils.colors import random_color
@@ -14,16 +14,6 @@ from enigma.utils.strings import chars
 
 
 class Basics(Cog):
-    """
-    Basic commands
-
-    Commands:
-        error: raises "NoError" - testing purpose
-        ping: checks bot latency based on difference between "await ctx.send()" and command "created_at" timestamp
-        query: gets all data from "users" database - testing purpose
-        flushall: clears cache
-    """
-
     def __init__(self, bot):
         self.bot = bot
 
@@ -45,8 +35,15 @@ class Basics(Cog):
 
     @Cog.listener()
     async def on_member_update(self, before, after):
+        """
+        Updates `last seen` attribute in database.
+
+        :param before: Member's before state.
+        :param after: Member's after state.
+        :return: True if successful and False if not.
+        """
         if str(after.status) == 'offline':
-            if before.bot is False:
+            if not before.bot:
                 db = postgre_connect()
                 c = db.cursor()
                 try:
@@ -61,9 +58,11 @@ class Basics(Cog):
 
                     client = cache_client()
                     client.flush_all()
+                    return True
 
                 except BaseException as e:
                     await self.bot.debug_log(e=e, member=before)
+                    return False
 
                 finally:
                     c.close()
@@ -78,12 +77,19 @@ class Basics(Cog):
     )
     @has_permissions(administrator=True)
     async def error_cmd(self, ctx):
+        """
+        Raises a bot's internal error.
+
+        :param ctx: Context object.
+        :return: True if successful.
+        """
         await self.bot.debug_log(ctx=ctx, e=NoError())
         await ctx.send(embed=Embed(
             title=':exclamation: Raised `NoError`',
             description='Bot\'s owner should be notified',
             color=random_color()
         ))
+        return True
 
     @error_cmd.error
     async def error_error(self, ctx, error):
@@ -102,13 +108,19 @@ class Basics(Cog):
         description='Counts time difference between command execution time and bot\'s response'
     )
     async def ping(self, ctx):
+        """
+        Checks bot's latency.
+
+        :param ctx: Context object.
+        :return: True if successful.
+        """
         start_time = d.timestamp(utc_to_local(ctx.message.created_at))
         await ctx.send(embed=Embed(
             title=':ping_pong: Pong!',
             description=f'It took me: {execute_time(start_time)}',
             color=random_color()
         ))
-        return
+        return True
 
     @command(
         name='query',
@@ -118,7 +130,14 @@ class Basics(Cog):
         usage='[mode]'
     )
     async def query(self, ctx, mode: str = 'get'):
-        """Connect to PostgreSQL database and posts or gets users' data"""
+        """
+        Connect to PostgreSQL database and posts or gets users' data.
+
+        :param ctx: Context object.
+        :param mode: Tells what to do. Get data from database or update it.
+
+        :return: True if data was proceeded successfully and False if not.
+        """
         start_time = d.timestamp(utc_to_local(ctx.message.created_at))
         author_id = int(ctx.message.author.id)
 
@@ -176,6 +195,7 @@ class Basics(Cog):
                 ))
                 db.commit()
                 db.close()
+                return True
 
             except BaseException as e:
                 await msg.edit(embed=Embed(
@@ -183,6 +203,7 @@ class Basics(Cog):
                     color=default_color
                 ))
                 await self.bot.debug_log(ctx=ctx, e=e)
+                return False
 
             finally:
                 for i in (c, db):
@@ -298,6 +319,12 @@ class Basics(Cog):
     )
     @has_permissions(administrator=True)
     async def flushall(self, ctx):
+        """
+        Removes all data from cache.
+
+        :param ctx: Context object
+        :return: True if cache was cleared successfully and False if not.
+        """
         try:
             client = cache_client()
             client.flush_all()
@@ -305,12 +332,14 @@ class Basics(Cog):
                 title=':broom: Flushed cache successfully',
                 color=random_color()
             ))
+            return True
         except BaseException as e:
             await self.bot.debug_log(ctx=ctx, e=e)
             await ctx.send(embed=Embed(
                 title=':no_entry: Can\'t flush cache',
                 color=random_color()
             ))
+            return False
 
     @flushall.error
     async def flushall_error(self, ctx, error):

@@ -28,13 +28,20 @@ class Stats(Cog):
     @has_permissions(manage_channels=True)
     @bot_has_permissions(manage_channels=True)
     async def stats(self, ctx, arg=None):
+        """
+        Manages guild stats.
+
+        :param ctx: Context object.
+        :param arg: "config" or "delete".
+        :return: True if configured or deleted and False if not.
+        """
         if not self.enabled:
             await ctx.send(embed=Embed(
                 title=':gear: This is under construction',
                 description='Please be patient',
                 color=random_color()
             ))
-            return
+            return False
 
         if not arg:
             await ctx.send(embed=Embed(
@@ -42,6 +49,7 @@ class Stats(Cog):
                 description='See available options by executing `help stats`',
                 color=random_color()
             ))
+            return False
 
         else:
             arg = arg.lower()
@@ -174,6 +182,7 @@ class Stats(Cog):
                         description=f'It\'s `{new_category.name}`',
                         color=random_color()
                     ))
+                    return True
 
                 # Channel ID is set in database
                 else:
@@ -182,6 +191,7 @@ class Stats(Cog):
                         description=f'Category ID: {result}',
                         color=random_color()
                     ))
+                    return False
 
             # Removing stats
             elif arg == 'delete':
@@ -215,6 +225,7 @@ class Stats(Cog):
                         description='Please run `stats config`',
                         color=random_color()
                     ))
+                    return False
 
                 else:
                     del_category_id = ctx.guild.get_channel(result).id
@@ -247,6 +258,7 @@ class Stats(Cog):
                         title=':ballot_box_with_check: Done!',
                         color=random_color()
                     ))
+                    return True
 
             # Unknown option
             else:
@@ -255,6 +267,7 @@ class Stats(Cog):
                     description='You don\'t specified what should I do properly',
                     color=random_color()
                 ))
+                return False
 
     # @stats.error
     # async def stats_error(self, ctx, error):
