@@ -8,8 +8,8 @@ venv/
 # PyCharm files
 .idea
 
-# SRC dir
-src/
+# Unused dirs
+img/
 
 # Website
 enigma-website/
