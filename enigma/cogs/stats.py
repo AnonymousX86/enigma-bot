@@ -13,6 +13,8 @@ class Stats(Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    enabled = False
+
     @command(
         name='stats',
         brief='Main stats command',
@@ -26,8 +28,7 @@ class Stats(Cog):
     @has_permissions(manage_channels=True)
     @bot_has_permissions(manage_channels=True)
     async def stats(self, ctx, arg=None):
-        enabled = False
-        if not enabled:
+        if not self.enabled:
             await ctx.send(embed=Embed(
                 title=':gear: This is under construction',
                 description='Please be patient',
@@ -276,66 +277,67 @@ class Stats(Cog):
     @Cog.listener(name='on_member_join')
     async def update_member_join(self, member):
         # FIXME - stats are not updated
-        client = cache_client()
+        if self.enabled:
+            client = cache_client()
 
-        channel_id_total = client.get('channel_id_total')
-        channel_id_users = client.get('channel_id_users')
-        channel_id_bots = client.get('channel_id_bots')
+            channel_id_total = client.get('channel_id_total')
+            channel_id_users = client.get('channel_id_users')
+            channel_id_bots = client.get('channel_id_bots')
 
-        if channel_id_total is None or channel_id_users is None or channel_id_bots is None:
-            db = postgre_connect()
-            c = db.cursor()
-            c.execute(
-                '''
-                SELECT channel_id_total,
-                       channel_id_users,
-                       channel_id_bots
-                FROM settings_stats
-                NATURAL JOIN guilds
-                WHERE guild_id = %s::bigint
-                ''',
-                (
-                    int(member.guild.id),
-                )
-            )
-            result = c.fetchone()
-            channel_id_total = result[0]
-            channel_id_users = result[1]
-            channel_id_bots = result[2]
-            c.close()
-            db.close()
-
-        for channel_id in (channel_id_total, channel_id_users, channel_id_bots):
-            stat_channel = get(member.guild.chahhenls, id=channel_id, type='ChannelType.voice')
-            for index, char in enumerate(stat_channel):
-                # "Humans: 10"
-                if char == ':':
-                    if channel_id is channel_id_total:
-                        new_stat = str(len(member.guild.members))
-
-                    elif channel_id is channel_id_users:
-                        humans = 0
-                        for member in member.guild.members:
-                            if member.bot is False:
-                                humans += 1
-                        new_stat = str(humans)
-
-                    elif channel_id is channel_id_bots:
-                        bots = 0
-                        for member in member.guild.members:
-                            if member.bot is False:
-                                bots += 1
-                        new_stat = str(bots)
-
-                    else:
-                        new_stat = 'Error'
-
-                    await stat_channel.edit(
-                        name=stat_channel.name[0:index + 1] + new_stat
+            if channel_id_total is None or channel_id_users is None or channel_id_bots is None:
+                db = postgre_connect()
+                c = db.cursor()
+                c.execute(
+                    '''
+                    SELECT channel_id_total,
+                           channel_id_users,
+                           channel_id_bots
+                    FROM settings_stats
+                    NATURAL JOIN guilds
+                    WHERE guild_id = %s::bigint
+                    ''',
+                    (
+                        int(member.guild.id),
                     )
-                    continue
+                )
+                result = c.fetchone()
+                channel_id_total = result[0]
+                channel_id_users = result[1]
+                channel_id_bots = result[2]
+                c.close()
+                db.close()
 
-                await self.bot.debug_log(e=StatsError, member=member)
+            for channel_id in (channel_id_total, channel_id_users, channel_id_bots):
+                stat_channel = get(member.guild.chahhenls, id=channel_id, type='ChannelType.voice')
+                for index, char in enumerate(stat_channel):
+                    # "Humans: 10"
+                    if char == ':':
+                        if channel_id is channel_id_total:
+                            new_stat = str(len(member.guild.members))
+
+                        elif channel_id is channel_id_users:
+                            humans = 0
+                            for member in member.guild.members:
+                                if member.bot is False:
+                                    humans += 1
+                            new_stat = str(humans)
+
+                        elif channel_id is channel_id_bots:
+                            bots = 0
+                            for member in member.guild.members:
+                                if member.bot is False:
+                                    bots += 1
+                            new_stat = str(bots)
+
+                        else:
+                            new_stat = 'Error'
+
+                        await stat_channel.edit(
+                            name=stat_channel.name[0:index + 1] + new_stat
+                        )
+                        continue
+
+                    await self.bot.debug_log(e=StatsError, member=member)
 
 
 def setup(bot):
