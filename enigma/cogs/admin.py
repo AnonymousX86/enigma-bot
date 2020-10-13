@@ -431,7 +431,7 @@ class Admin(Cog):
                     except Forbidden:
                         await message.channel.send(embed=Embed(
                             title=':rolling_eyes: Whoops!',
-                            description='Someone has written __bad word__ but I don\' have **manage messages** '
+                            description='Someone has written *bad word* but I don\' have **manage messages** '
                                         'permissions!',
                             color=random_color()
                         ))
