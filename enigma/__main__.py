@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from builtins import BaseException
-from logging import basicConfig, INFO
+from logging import basicConfig, INFO, getLogger
 
 from discord import Status, Game, Member, Intents
 from discord.ext.commands import Bot, Context
@@ -9,6 +9,7 @@ from enigma.settings import general_settings, debug_settings
 from enigma.utils.debug import debug_message, debug_embed
 
 basicConfig(level=INFO)
+getLogger('sqlalchemy.engine').setLevel(INFO)
 
 bot = Bot(
     command_prefix='>',
