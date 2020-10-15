@@ -52,8 +52,7 @@ async def on_ready():
     cogs = (
         'enigma.cogs.admin',
         'enigma.cogs.basics',
-        'enigma.cogs.profiles',
-        'enigma.cogs.stats'
+        'enigma.cogs.profiles'
     )
     for cog in cogs:
         try:
