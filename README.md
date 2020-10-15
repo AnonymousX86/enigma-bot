@@ -13,8 +13,6 @@ All functionalities should get data from SQL databases.
 All modules can be disabled per guild. "Manage guild" permission will be required.
 
 ###### User profile
-- [ ] messages sent
-- [ ] last online
 - [x] avatar URL
 
 ###### Role playing
@@ -55,7 +53,6 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 
 ###### Commands settings
 - [ ] enabling/disabling commands per guild
-- [ ] enabling/disabling commands for specific users
 
 ###### Other utilities
 - [ ] reminder
@@ -69,6 +66,5 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 ###### Admin purpose
 - [x] ban
 - [x] kick
-- [ ] mute
 - [ ] censoring bad words (different languages with community help)
 
