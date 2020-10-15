@@ -50,11 +50,12 @@ async def on_ready():
     bot.debug_log = debug_log
 
     # Load cogs
-    cogs = (
-        'enigma.cogs.admin',
-        'enigma.cogs.basics',
-        'enigma.cogs.profiles'
-    )
+    cogs = (f'enigma.cogs.{name}' for name in [
+        'admin',
+        'basics',
+        'profiles',
+        'fun'
+    ])
     for cog in cogs:
         try:
             bot.load_extension(cog)
