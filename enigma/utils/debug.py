@@ -3,8 +3,8 @@ from datetime import datetime as d
 from discord import Embed, Member
 from discord.ext.commands import Context
 
-from ..settings import general_settings
-from ..utils.colors import random_color
+from enigma.settings import general_settings
+from enigma.utils.colors import random_color
 
 
 def debug_message():
