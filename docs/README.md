@@ -6,7 +6,7 @@ Because bot is in early development stage it's not public.
 
 ## Assumptions
 I've always wanted to code my own bot. I've never been sure what kind of bot exactly I want to code.
-In February 2020 I've started reading about Discord.py library and I've coded mu first Discord bot.
+In February 2020 I've started reading about Discord.py library and I've coded my first Discord bot.
 It was very simple bot, it was presenting some useful data for economic browser game.
 Then I wanted to make something bigger and started to code `3N1GM4` bot.
 
