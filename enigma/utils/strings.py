@@ -101,3 +101,7 @@ def sort_nested_list(nested_list: List[List], key_pos: int = 0) -> List[List]:
     """
     nested_list.sort(key=lambda x: safe_lower(x[key_pos]))
     return nested_list
+
+
+def number_suffix(num: int):
+    return "st" if str(num)[-1] == "1" else "nd" if str(num)[-1] == "2" else "rd" if str(num)[-1] == "3" else "th"
