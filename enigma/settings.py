@@ -24,12 +24,6 @@ database_settings = {
     'database': str(get('DB_DATABASE'))
 }
 
-cache_settings = {
-    'servers': literal_eval(f"['{get('CACHE_SERVERS')}']"),
-    'user': str(get('CACHE_USER')),
-    'password': str(get('CACHE_PASSWORD')),
-}
-
 debug_settings = {
     'channel': int(get('DEBUG_CHANNEL')),
 }
