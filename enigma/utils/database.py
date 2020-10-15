@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import date
-from typing import List
+from typing import List, Union
 
-from sqlalchemy import create_engine, Column, Integer, Date, BigInteger
+from sqlalchemy import create_engine, Column, Integer, Date, BigInteger, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -96,5 +96,54 @@ def update_profile(user_id: int, xp: int = None, cash: int = None) -> User:
         session.commit()
         managed_user = session.query(User).filter_by(user_id=user_id).one()
         return managed_user
+    finally:
+        session.close()
+
+
+class Giveaway(Base):
+    """Single giveaway, map object."""
+    __tablename__ = 'giveaways'
+    giveaway_id = Column(Integer, primary_key=True)
+    message_id = Column(BigInteger)
+    guild_id = Column(BigInteger)
+    data = Column(Text)
+
+
+def get_giveaway_from_message(message_id: int) -> Union[Giveaway, None]:
+    session = _Session()
+    try:
+        return session.query(Giveaway).filter_by(message_id=message_id).one_or_none()
+    finally:
+        session.close()
+
+
+def create_giveaway(message_id: int, guild_id: int, data: str) -> Giveaway:
+    """Creates giveaway in database.
+
+    :param message_id: Giveaway's message ID.
+    :param guild_id: Giveaway's guild ID.
+    :param data: String representation of data.
+    :return: New Giveaway object.
+    """
+    session = _Session()
+    try:
+        new_giveaway = Giveaway(
+            message_id=message_id,
+            guild_id=guild_id,
+            data=data
+        )
+        session.add(new_giveaway)
+        session.commit()
+        return new_giveaway
+    finally:
+        session.close()
+
+
+def delete_giveaway(message_id: int) -> bool:
+    session = _Session()
+    try:
+        result = bool(session.query(Giveaway).filter_by(message_id=message_id).delete())
+        session.commit()
+        return result
     finally:
         session.close()
