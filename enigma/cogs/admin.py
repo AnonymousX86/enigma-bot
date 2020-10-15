@@ -4,7 +4,6 @@ from discord.errors import Forbidden  # If bot has no permissions for deleting m
 from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, MissingPermissions, \
     BotMissingPermissions, UserNotFound
 from discord.utils import get
-from enigma.src.bad_words import bad_words
 
 from enigma.utils.colors import random_color
 
@@ -168,26 +167,6 @@ class Admin(Cog):
             description=status,
             color=random_color()
         ))
-
-    @Cog.listener()
-    async def on_message(self, message):
-        if not message.channel.is_nsfw():
-            words = message.content.split()
-            for word in words:
-                if word in bad_words:
-                    try:
-                        await message.delete()
-                        await message.channel.send(embed=Embed(
-                            title=f':zipper_mouth: {message.author.display_name}, watch your language!',
-                            color=random_color()
-                        ))
-                    except Forbidden:
-                        await message.channel.send(embed=Embed(
-                            title=':rolling_eyes: Whoops!',
-                            description='Someone has written *bad word* but I don\' have **manage messages** '
-                                        'permissions!',
-                            color=random_color()
-                        ))
 
 
 def setup(bot):
