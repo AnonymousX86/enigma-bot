@@ -1,7 +1,7 @@
 from random import choice
 
 
-def colors() -> tuple:
+def basic_colors() -> tuple:
     return (
         0x1abc9c,
         0x11806a,
@@ -29,4 +29,4 @@ def colors() -> tuple:
 
 
 def random_color() -> int:
-    return choice(colors())
+    return choice(basic_colors())
