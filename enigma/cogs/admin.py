@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from discord import Embed, User
-from discord.errors import Forbidden  # If bot has no permissions for deleting message
 from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, MissingPermissions, \
     BotMissingPermissions, UserNotFound
 from discord.utils import get
