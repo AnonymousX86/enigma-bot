@@ -4,7 +4,7 @@
 
 ## Released
 
-### [v0.1.0] - 16.10.2020
+### [v0.1] - 16.10.2020
 ### Added
 - Banning command.
 - Kicking command.
@@ -17,5 +17,5 @@
 
 
 [Unreleased]: https://github.com/AnonymousX86/Enigma-Bot/compare...HEAD
-[v0.1.0]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.1.0
+[v0.1]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.1
 
