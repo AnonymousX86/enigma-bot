@@ -1,6 +1,9 @@
 # 3N1GM4
 Multipurpose Discord bot, developed by: `Anonymous©#7296`.
 
+## Note
+Because bot is in early development stage it's not public.
+
 ## Assumptions
 I've always wanted to code my own bot. I've never been sure what kind of bot exactly I want to code.
 In February 2020 I've started reading about Discord.py library and I've coded mu first Discord bot.
