@@ -6,7 +6,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='3N1GM4',
-    version='0.2',
+    version='0.1.0',
     author='Jakub S.',
     # url='',
     description='Multipurpose Discord bot',
