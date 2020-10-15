@@ -16,7 +16,7 @@ Base = declarative_base()
 
 
 class User(Base):
-    """Single user map object."""
+    """Single user, map object."""
     __tablename__ = 'users'
     user_id = Column(BigInteger, primary_key=True)
     user_xp = Column(Integer)
@@ -83,6 +83,12 @@ def create_profile(user_id: int) -> User:
 
 
 def update_profile(user_id: int, xp: int = None, cash: int = None) -> User:
+    """Updates user profile in database - sets XP or cash.
+
+    :param user_id: User ID which profile should be updated.
+    :param xp: XP amount.
+    :param cash: Cash amount
+    """
     if xp and cash:
         stmt = {'user_xp': xp, 'user_cash': cash}
     elif xp:

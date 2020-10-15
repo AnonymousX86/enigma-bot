@@ -18,7 +18,7 @@ class Profiles(Cog):
         aliases=['prof']
     )
     async def profile(self, ctx, user: User = None):
-        """Send user's profile. (XP, cash, etc.)
+        """Sends user's profile. (XP, cash, etc.)
 
         :param ctx: Context object.
         :param user: User which profile should be showed. (optional)
@@ -123,7 +123,7 @@ class Profiles(Cog):
         aliases=['avk']
     )
     async def avatar(self, ctx, user: User = None):
-        """Send user's avatar.
+        """Sends user's avatar.
 
         :param ctx: Context object.
         :param user: User mention or ID.
