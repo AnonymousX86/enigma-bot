@@ -31,7 +31,7 @@ async def on_ready():
 
     # Change presence
     status = Status.online
-    game = Game(name='Cracking enigma codes. | ETA: 8y 23d 42m 18s')
+    game = Game(name='Cracking enigma codes')
     await bot.change_presence(status=status, activity=game)
 
     # Logging errors to specific channel
