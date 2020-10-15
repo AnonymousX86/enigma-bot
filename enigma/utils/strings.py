@@ -9,8 +9,7 @@ chars = {
 
 
 def strip_emoji(text: str) -> str:
-    """
-    Removes emoji from text.
+    """Removes emoji from text.
 
     :param text: Text from which emojis should be removed.
     :return: Text without emojis.
@@ -23,8 +22,7 @@ def strip_emoji(text: str) -> str:
 
 
 def fixed_width(text: str, width: int = 20, remove_emoji: bool = True):
-    """
-    Shortens or extend string to exact width. Optionally removes emojis.
+    """Shortens or extends string to exact width. Optionally removes emojis.
 
     :param text: Text to shrink or extend.
     :param width: Fixed text width.
@@ -49,8 +47,7 @@ def fixed_width(text: str, width: int = 20, remove_emoji: bool = True):
 
 
 def separate_value(value: int, separator: str = ' ') -> str:
-    """
-    Adds separator to big integers.
+    """Adds separator to big integers.
 
     :param value: Value to format.
     :param separator: Separator.
@@ -69,8 +66,7 @@ def separate_value(value: int, separator: str = ' ') -> str:
 
 
 def upper_name(name: str):
-    """
-    Makes first letters upper case.
+    """Makes first letters upper case. Not like CamelStyle but Every Single Word With Spaces.
 
     :param name: Text to capitalize.
     :return: Formatted text.
@@ -95,8 +91,7 @@ def upper_name(name: str):
 
 
 def safe_lower(value: Union[str, Any]) -> Union[str, Any]:
-    """
-    Saves value as lowercase only if it's string.
+    """Saves value as lowercase only if it's string.
 
     :param value: Text or Any to make lowercase.
     :return: Lowercase text.
@@ -109,8 +104,7 @@ def safe_lower(value: Union[str, Any]) -> Union[str, Any]:
 
 
 def sort_nested_list(nested_list: List[List], key_pos: int = 0) -> List[List]:
-    """
-    Sorts list by key in nested list.
+    """Sorts list by key in nested list.
 
     :param nested_list: Nested list.
     :param key_pos: Sorting key position.
