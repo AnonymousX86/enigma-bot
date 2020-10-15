@@ -1,8 +1,6 @@
 import re
 from typing import Any, Union, List
 
-from .exceptions import FewArgumentsError
-
 chars = {
     'bitcoin': '\u20bf'
 }
@@ -14,11 +12,8 @@ def strip_emoji(text: str) -> str:
     :param text: Text from which emojis should be removed.
     :return: Text without emojis.
     """
-    if len(text) != 0:
-        re_emoji = re.compile(u'([\U00002600-\U000027BF])|([\U0001f300-\U0001f64F])|([\U0001f680-\U0001f6FF])')
-        return re_emoji.sub(r'', text)
-    else:
-        raise FewArgumentsError
+    re_emoji = re.compile(u'([\U00002600-\U000027BF])|([\U0001f300-\U0001f64F])|([\U0001f680-\U0001f6FF])')
+    return re_emoji.sub(r'', text)
 
 
 def fixed_width(text: str, width: int = 20, remove_emoji: bool = True):
@@ -29,21 +24,18 @@ def fixed_width(text: str, width: int = 20, remove_emoji: bool = True):
     :param remove_emoji: Tells if emojis should be removed or not.
     :return: Formatted text with fixed width and optionally without emojis.
     """
-    if len(text) > 0:
-        if remove_emoji is True:
-            temp = text
-            text = strip_emoji(temp)
+    if remove_emoji is True:
+        temp = text
+        text = strip_emoji(temp)
 
-        if len(text) == width:
-            return text
-        elif len(text) > width:
-            return text[:width - 3] + '...'
-        else:
-            while len(text) < width:
-                text += ' '
-            return text
+    if len(text) == width:
+        return text
+    elif len(text) > width:
+        return text[:width - 3] + '...'
     else:
-        raise FewArgumentsError
+        while len(text) < width:
+            text += ' '
+        return text
 
 
 def separate_value(value: int, separator: str = ' ') -> str:
@@ -53,16 +45,13 @@ def separate_value(value: int, separator: str = ' ') -> str:
     :param separator: Separator.
     :return: Formatted value.
     """
-    if value > 0:
-        result = ''
-        n = str(value)
-        for c in range(1, len(n) + 1):
-            result += n[-c]
-            if c % 3 == 0:
-                result += separator
-        return result[::-1]
-    else:
-        raise FewArgumentsError
+    result = ''
+    n = str(value)
+    for c in range(1, len(n) + 1):
+        result += n[-c]
+        if c % 3 == 0:
+            result += separator
+    return result[::-1]
 
 
 def upper_name(name: str):
