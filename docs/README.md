@@ -21,12 +21,6 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 - [ ] virtual wallet
 - [ ] daily bonus
 
-###### Guild stats
-- [ ] users
-- [ ] bots
-- [ ] online
-- [ ] bans
-
 ###### Support
 - [ ] creating ticket with reaction
 - [ ] creating ticket by sending a message 
@@ -51,14 +45,8 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 - [ ] giving `rep`'s to someone (once a day)
 - [ ] best users in guild
 
-###### Commands settings
-- [ ] enabling/disabling commands per guild
-
 ###### Other utilities
-- [ ] reminder
 - [ ] notes
-- [ ] data caching
-- [ ] debug option to some commands
 - [ ] how to do something
 - [ ] curiosities
 - [ ] giveaways
@@ -66,5 +54,4 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 ###### Admin purpose
 - [x] ban
 - [x] kick
-- [ ] censoring bad words (different languages with community help)
 
