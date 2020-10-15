@@ -23,13 +23,6 @@ class User(Base):
     user_cash = Column(Integer)
     last_daily = Column(Date)
 
-    def __repr__(self):
-        return f"<User(" \
-               f"user_id='{self.user_id}', " \
-               f"user_xp='{self.user_xp}', " \
-               f"user_cash='{self.user_cash}', " \
-               f"last_daily='{self.last_daily}')>"
-
 
 def get_all_users() -> List[User]:
     """Queries all users from database.
