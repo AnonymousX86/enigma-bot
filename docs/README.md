@@ -42,7 +42,7 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 - [ ] random (or not) image from Imigur
 
 ###### Reputation
-- [ ] giving `rep`'s to someone (once a day)
+- [ ] giving reputation to someone (once a day)
 - [ ] best users in guild
 
 ###### Other utilities
