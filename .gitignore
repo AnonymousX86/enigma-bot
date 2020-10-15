@@ -1,15 +1,5 @@
-# Python cache
 __pycache__/
-
-# Environments
 .env
 venv/
-
-# PyCharm files
 .idea
-
-# Unused dirs
-img/
-
-# Website
-enigma-website/
+src/
