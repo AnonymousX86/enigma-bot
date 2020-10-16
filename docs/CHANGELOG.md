@@ -1,6 +1,11 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+### [v0.2] - 17.10.2020
+### Added
+- Meme command.
+- If `iq`'s command argument is Enigma bot itself it sends score 200.
+- If `iq`'s command argument is any other bot it sends score 0.
 
 ## Released
 
