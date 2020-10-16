@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+from ast import literal_eval
 from asyncio import TimeoutError as WaitTimeout
+from datetime import datetime as d
 from random import choice
-from typing import List, Union
+from typing import List, Union, Optional
 
-from discord import Embed, Forbidden, TextChannel, NotFound, User
+from discord import Embed, Forbidden, TextChannel, NotFound, User, Message
 from discord.ext.commands import Cog, command, Context, cooldown, BucketType, CommandOnCooldown
 from praw import Reddit
 
