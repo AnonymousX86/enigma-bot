@@ -481,7 +481,7 @@ class Fun(Cog):
     async def meme_error(self, ctx, error):
         if isinstance(error, CommandOnCooldown):
             await ctx.send(embed=Embed(
-                title=f':x: Please slow down, try in {str(error)[-5:]}',
+                title=f':x: Try again in {str(error)[-5:]}',
                 color=random_color()
             ))
         else:
