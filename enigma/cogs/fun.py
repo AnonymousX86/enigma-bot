@@ -21,13 +21,14 @@ class Fun(Cog):
     @command(
         name='giveaway',
         brief='Initiates a giveaway',
-        help='Available options:'
-             '- create, start; with argument <channel>'
-             '- delete, stop; with argument <message ID>',
+        help='Available options:\n'
+             '- create, start; with argument <channel>\n'
+             '- delete, stop; with argument <message ID> and optional [group by], could be "item" (default) or "user"\n'
+             '  Message ID could be found under giveaway message.',
         usage='<option> <arg>',
         aliases=['ga']
     )
-    async def giveaway(self, ctx: Context, option: str = '', arg: Union[TextChannel, int] = None):
+    async def giveaway(self, ctx: Context, option: str = '', arg1: Union[TextChannel, int] = None, arg2: str = 'item'):
         if not option:
             await ctx.send(embed=Embed(
                 title=':x: Please specify an option',
@@ -37,19 +38,19 @@ class Fun(Cog):
             def check(m):
                 return m.channel == ctx.channel and m.author == ctx.author
 
-            if option in ['create', 'start']:
-                if not arg:
+            if option in ['create', 'start', 'new']:
+                if not arg1:
                     await ctx.send(embed=Embed(
                         title=':x: Missing channel',
                         color=random_color()
                     ))
-                elif type(arg) is not TextChannel:
+                elif type(arg1) is not TextChannel:
                     await ctx.send(embed=Embed(
                         title=':x: Bad channel format',
                         color=random_color()
                     ))
                 else:
-                    perms = arg.permissions_for(ctx.guild.get_member(self.bot.user.id))
+                    perms = arg1.permissions_for(ctx.guild.get_member(self.bot.user.id))
                     if not perms.read_messages:
                         await ctx.send(embed=Embed(
                             title=':x: I can\'s see that channel'
@@ -61,7 +62,7 @@ class Fun(Cog):
                         ))
 
                     else:
-                        channel_msg = f'Final message will be sent to {arg.mention}.\n'
+                        channel_msg = f'Final message will be sent to {arg1.mention}.\n'
 
                         msg = await ctx.send(embed=Embed(
                             title='Create giveaway',
@@ -159,14 +160,14 @@ class Fun(Cog):
 
                         await info.delete()
                         await msg.edit(embed=Embed(
-                            title='Done!',
+                            title=':white_check_mark: Done!',
                             description=channel_msg+description,
                             color=random_color()
                         ).set_footer(
                             text=f'Created by {ctx.author.display_name}'
                         ))
                         try:
-                            new_g = await arg.send(embed=Embed(
+                            new_g = await arg1.send(embed=Embed(
                                 title=':gift: Giveaway!',
                                 color=random_color()
                             ).add_field(
@@ -180,27 +181,28 @@ class Fun(Cog):
                             ))
                         except Forbidden:
                             await ctx.send(embed=Embed(
-                                title=f':x: I have no permissions to send message in {arg.mention}',
+                                title=f':x: I have no permissions to send message in {arg1.mention}',
                                 color=random_color()
                             ))
                         else:
+                            await new_g.edit(embed=new_g.embeds[0].set_footer(text=f'{new_g.id}'))
                             try:
                                 await new_g.add_reaction(emoji='📝')
                             except Forbidden:
                                 await ctx.send(embed=Embed(
-                                    title=f':x: I can\'t add emoji to the message in {arg.mention}',
+                                    title=f':x: I can\'t add emoji to the message in {arg1.mention}',
                                     color=random_color()
                                 ))
                             else:
                                 create_giveaway(new_g.id, ctx.guild.id, data=str(things))
-            elif option in ['delete', 'stop']:
-                if len(str(arg)) != 18:
+            elif option in ['delete', 'stop', 'end']:
+                if len(str(arg1)) != 18:
                     await ctx.send(embed=Embed(
                         title=':x: Bad ID format',
                         color=random_color()
                     ))
                 else:
-                    giveaway = get_giveaway_from_message(arg)
+                    giveaway = get_giveaway_from_message(arg1)
                     if giveaway is None:
                         await ctx.send(embed=Embed(
                             title=':x: Giveaway do not exists',
@@ -216,10 +218,10 @@ class Fun(Cog):
                             title=':hourglass_flowing_sand: Please wait...',
                             color=random_color()
                         ))
-                        giveaway_message = None
+                        giveaway_message: Optional[Message] = None
                         for channel in ctx.guild.text_channels:
                             try:
-                                giveaway_message = await channel.fetch_message(arg)
+                                giveaway_message = await channel.fetch_message(arg1)
                             except NotFound:
                                 pass
                             else:
@@ -231,9 +233,9 @@ class Fun(Cog):
                                             ' so I\'m removing the giveaway.',
                                 color=random_color()
                             ))
-                            if not delete_giveaway(message_id=arg):
+                            if not delete_giveaway(message_id=arg1):
                                 await self.bot.debug_log(
-                                    ctx=ctx, e=DatabaseError(f'Unable to delete giveaway with message ID {arg}')
+                                    ctx=ctx, e=DatabaseError(f'Unable to delete giveaway with message ID {arg1}')
                                 )
                         else:
                             await info.edit(embed=Embed(
@@ -241,7 +243,101 @@ class Fun(Cog):
                                 description=f'Link: <{giveaway_message.jump_url}>',
                                 color=random_color()
                             ))
-                            # TODO - Choosing winners
+                            participants = []
+                            for reaction in giveaway_message.reactions:
+                                if reaction.emoji == '📝':
+                                    async for user in reaction.users():
+                                        user: User
+                                        if not user.bot:
+                                            participants.append(user)
+                                    break
+                                await ctx.send(embed=Embed(
+                                    title=':x: Giveaway reaction not found',
+                                    description='Deleting giveaway without winners.',
+                                    color=random_color()
+                                ))
+                                await giveaway_message.edit(
+                                    embed=giveaway_message.embeds[0].set_footer(text=f'Ended on {d.now()[:16]}')
+                                )
+                                if not delete_giveaway(message_id=arg1):
+                                    await self.bot.debug_log(
+                                        ctx=ctx, e=DatabaseError(f'Unable to delete giveaway with message ID {arg1}')
+                                    )
+                            if not participants:
+                                await ctx.send(embed=Embed(
+                                    title=':x: No participants found',
+                                    description='Deleting giveaway without winners.',
+                                    color=random_color()
+                                ))
+                                if not delete_giveaway(message_id=arg1):
+                                    await self.bot.debug_log(
+                                        ctx=ctx, e=DatabaseError(f'Unable to delete giveaway with message ID {arg1}')
+                                    )
+
+                            else:
+                                giveaway_data: List[List[str, str]] = literal_eval(giveaway.data)
+                                winners = {}
+                                for item in giveaway_data:
+                                    possibles = participants.copy()
+                                    item_winners = []
+                                    for quantity in range(int(item[1])):
+                                        if len(possibles) == 0:
+                                            possibles = participants.copy()
+                                        random_winner = choice(possibles)
+                                        item_winners.append(random_winner)
+                                        possibles.remove(random_winner)
+                                    winners[item[0]] = item_winners
+                                # noinspection SpellCheckingInspection
+                                win_em = Embed(
+                                    title=':tada: Winners',
+                                    color=random_color()
+                                )
+                                if arg2 == 'user':
+                                    all_users = set()
+                                    for item in winners:
+                                        for users in winners[item]:
+                                            all_users.add(users)
+                                    user_items = {}
+                                    for user in all_users:
+                                        prizes = []
+                                        checked = []
+                                        for prize in winners:
+                                            for winner_user in winners[prize]:
+                                                if winner_user.id == user.id:
+                                                    prizes.append(prize)
+                                        n_prizes = []
+                                        for prize in prizes:
+                                            if prize not in checked:
+                                                n_prizes.append(f'{prize} x{prizes.count(prize)}')
+                                                checked.append(prize)
+                                        user_items[user] = n_prizes
+                                    for user in user_items:
+                                        win_em.add_field(
+                                            name=user.display_name,
+                                            value='- ' + '\n- '.join(user_items[user])
+                                        )
+                                else:
+                                    for item in winners:
+                                        win_em.add_field(
+                                            name=item,
+                                            value='- ' + '\n- '.join(map(
+                                                lambda u: u.mention, sorted(winners[item], key=lambda u: u.display_name)
+                                            ))
+                                        )
+
+                                await ctx.send(embed=win_em)
+                                try:
+                                    await ctx.message.delete()
+                                except Forbidden:
+                                    pass
+                                await giveaway_message.edit(
+                                    embed=giveaway_message.embeds[0].set_footer(text=f'Ended on {str(d.now())[:16]}')
+                                )
+                                if not delete_giveaway(message_id=arg1):
+                                    await self.bot.debug_log(
+                                        ctx=ctx, e=DatabaseError(f'Unable to delete giveaway with message ID {arg1}')
+                                    )
+                                await info.delete()
             else:
                 await ctx.send(embed=Embed(
                     title=':x: Invalid option',
