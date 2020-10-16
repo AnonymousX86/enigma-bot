@@ -4,7 +4,7 @@ from random import choice
 from typing import List, Union
 
 from discord import Embed, Forbidden, TextChannel, NotFound, User
-from discord.ext.commands import Cog, command, Context
+from discord.ext.commands import Cog, command, Context, cooldown, BucketType, CommandOnCooldown
 import praw
 
 from enigma.settings import reddit_settings
@@ -298,6 +298,7 @@ class Fun(Cog):
             color=random_color()
         ))
 
+    @cooldown(1, 4, BucketType.guild)
     @command(
         name='meme',
         brief='Send a meme',
@@ -329,6 +330,16 @@ class Fun(Cog):
                 title=':x: Meme not found',
                 color=random_color()
             ))
+
+    @meme.error
+    async def meme_error(self, ctx, error):
+        if isinstance(error, CommandOnCooldown):
+            await ctx.send(embed=Embed(
+                title=f':x: Please slow down, try in {str(error)[-5:]}',
+                color=random_color()
+            ))
+        else:
+            await self.bot.debug_log(ctx=ctx, e=error)
 
 
 def setup(bot):
