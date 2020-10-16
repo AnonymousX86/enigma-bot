@@ -6,7 +6,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='3N1GM4',
-    version='0.1',
+    version='0.2',
     author='Jakub S.',
     url='https://github.com/AnonymousX86/Enigma-Bot',
     description='Multipurpose Discord bot',
