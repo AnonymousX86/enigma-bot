@@ -84,6 +84,7 @@ class Fun(Cog):
                             color=random_color()
                         ))
 
+                        # Getting items for giveaway
                         while True:
                             index += 1
                             await info.edit(embed=Embed(
@@ -91,6 +92,7 @@ class Fun(Cog):
                                 color=random_color()
                             ))
                             try:
+                                # Get item's name
                                 response_1 = await self.bot.wait_for('message', check=check, timeout=30)
                             except WaitTimeout:
                                 await info.edit(embed=Embed(
@@ -99,6 +101,7 @@ class Fun(Cog):
                                 ))
                                 return
                             else:
+                                # Ended before adding at least one item
                                 if response_1.content.lower() in ['stop', 'end', 'x']:
                                     await response_1.delete()
                                     if len(things) == 0:
@@ -113,6 +116,7 @@ class Fun(Cog):
                                     color=random_color()
                                 ))
                                 try:
+                                    # Get item's quantity
                                     response_2 = await self.bot.wait_for('message', check=check, timeout=10)
                                 except WaitTimeout:
                                     await info.edit(embed=Embed(
@@ -125,6 +129,7 @@ class Fun(Cog):
                                         pass
                                     return
                                 else:
+                                    # Checking if quantity is a number
                                     try:
                                         q = int(response_2.content)
                                         if q < 1:
@@ -141,7 +146,7 @@ class Fun(Cog):
                                             pass
                                         return
 
-                                    # Creating message body
+                                    # Creating preview message body
                                     things.append([response_1.content, response_2.content])
                                     description = ''
                                     for set_ in things:
@@ -168,6 +173,7 @@ class Fun(Cog):
                         ).set_footer(
                             text=f'Created by {ctx.author.display_name}'
                         ))
+                        # Sending final giveaway message
                         try:
                             new_g = await arg1.send(embed=Embed(
                                 title=':gift: Giveaway!',
@@ -187,6 +193,7 @@ class Fun(Cog):
                                 color=random_color()
                             ))
                         else:
+                            # Adding message ID to footer
                             await new_g.edit(embed=new_g.embeds[0].set_footer(text=f'{new_g.id}'))
                             try:
                                 await new_g.add_reaction(emoji='📝')
@@ -198,28 +205,37 @@ class Fun(Cog):
                             else:
                                 create_giveaway(new_g.id, ctx.guild.id, data=str(things))
             elif option in ['delete', 'stop', 'end']:
+                # Discord ID has 18 digits
                 if len(str(arg1)) != 18:
                     await ctx.send(embed=Embed(
                         title=':x: Bad ID format',
                         color=random_color()
                     ))
+
                 else:
                     giveaway = get_giveaway_from_message(arg1)
+
+                    # Giveaway message ID do not exists in database
                     if giveaway is None:
                         await ctx.send(embed=Embed(
                             title=':x: Giveaway do not exists',
                             color=random_color()
                         ))
+
+                    # Users shouldn't end giveaway from another guild
                     elif giveaway.guild_id != ctx.guild.id:
                         await ctx.send(embed=Embed(
                             title=':x: This giveaway do not belongs to this guild',
                             color=random_color()
                         ))
+
                     else:
                         info = await ctx.send(embed=Embed(
                             title=':hourglass_flowing_sand: Please wait...',
                             color=random_color()
                         ))
+
+                        # Finding giveaway's message
                         giveaway_message: Optional[Message] = None
                         for channel in ctx.guild.text_channels:
                             try:
@@ -228,6 +244,8 @@ class Fun(Cog):
                                 pass
                             else:
                                 break
+
+                        # Message do not exists but giveaway do
                         if giveaway_message is None:
                             await info.edit(embed=Embed(
                                 title=':x: Message not found',
@@ -240,6 +258,7 @@ class Fun(Cog):
                                     ctx=ctx, e=DatabaseError(f'Unable to delete giveaway with message ID {arg1}')
                                 )
                         else:
+                            # Claiming giveaway's reactions
                             participants = []
                             for reaction in giveaway_message.reactions:
                                 if reaction.emoji == '📝':
@@ -260,6 +279,8 @@ class Fun(Cog):
                                     await self.bot.debug_log(
                                         ctx=ctx, e=DatabaseError(f'Unable to delete giveaway with message ID {arg1}')
                                     )
+
+                            # No one added reaction to giveaway
                             if not participants:
                                 await ctx.send(embed=Embed(
                                     title=':x: No participants found',
@@ -272,6 +293,7 @@ class Fun(Cog):
                                     )
 
                             else:
+                                # Prepare giveaway's data
                                 giveaway_data: List[List[str, str]] = literal_eval(giveaway.data)
                                 winners = {}
                                 for item in giveaway_data:
@@ -289,6 +311,8 @@ class Fun(Cog):
                                     title=':tada: Winners',
                                     color=random_color()
                                 )
+
+                                # Group by users
                                 if arg2 == 'user':
                                     all_users = set()
                                     for item in winners:
@@ -313,6 +337,8 @@ class Fun(Cog):
                                             name=user.display_name,
                                             value='- ' + '\n- '.join(user_items[user])
                                         )
+
+                                # Group by items
                                 else:
                                     for item in winners:
                                         win_em.add_field(
