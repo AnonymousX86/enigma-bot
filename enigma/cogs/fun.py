@@ -5,7 +5,7 @@ from typing import List, Union
 
 from discord import Embed, Forbidden, TextChannel, NotFound, User
 from discord.ext.commands import Cog, command, Context, cooldown, BucketType, CommandOnCooldown
-import praw
+from praw import Reddit
 
 from enigma.settings import reddit_settings
 from enigma.utils.colors import random_color
@@ -305,7 +305,7 @@ class Fun(Cog):
         description='Obtaining a meme could be a little slow.'
     )
     async def meme(self, ctx: Context):
-        reddit = praw.Reddit(
+        reddit = Reddit(
             client_id=reddit_settings['client_id'],
             client_secret=reddit_settings['client_secret'],
             user_agent=reddit_settings['user_agent']
