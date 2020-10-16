@@ -26,3 +26,9 @@ database_settings = {
 debug_settings = {
     'channel': int(get('DEBUG_CHANNEL')),
 }
+
+reddit_settings = {
+    'client_id': get('REDDIT_CLIENT_ID'),
+    'client_secret': get('REDDIT_SECRET'),
+    'user_agent': get('REDDIT_USER_AGENT')
+}
