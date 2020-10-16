@@ -1,5 +1,4 @@
 import os
-from ast import literal_eval
 
 from dotenv import load_dotenv, find_dotenv
 
