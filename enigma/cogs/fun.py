@@ -20,6 +20,7 @@ class Fun(Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @cooldown(1, 30, BucketType.guild)
     @command(
         name='giveaway',
         brief='Initiates a giveaway',
@@ -367,6 +368,17 @@ class Fun(Cog):
                     color=random_color()
                 ))
 
+    @giveaway.error
+    async def giveaway_error(self, ctx, error):
+        if isinstance(error, CommandOnCooldown):
+            await ctx.send(embed=Embed(
+                title=f':x: Try again in {str(error)[-5:]}',
+                color=random_color()
+            ))
+        else:
+            await self.bot.debug_log(ctx=ctx, e=error)
+
+    @cooldown(2, 5, BucketType.guild)
     @command(
         name='iq',
         brief='Check your IQ',
@@ -421,6 +433,16 @@ class Fun(Cog):
             description=description,
             color=random_color()
         ))
+
+    @iq.error
+    async def iq_error(self, ctx, error):
+        if isinstance(error, CommandOnCooldown):
+            await ctx.send(embed=Embed(
+                title=f':x: Try again in {str(error)[-5:]}',
+                color=random_color()
+            ))
+        else:
+            await self.bot.debug_log(ctx=ctx, e=error)
 
     @cooldown(1, 4, BucketType.guild)
     @command(
