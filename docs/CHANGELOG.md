@@ -4,6 +4,15 @@
 
 ## Released
 
+### [v0.3]
+### Added
+- Choosing winners from giveaway.
+- Optional argument how to group winners from giveaway.
+- Cosmetics to giveaways' messages.
+- Cooldown for `giveaway` and `iq`.
+### Changed
+- Cooldown handler text is same everywhere.
+
 ### [v0.2] - 16.10.2020
 ### Added
 - Meme command.
@@ -23,6 +32,7 @@
 
 
 [Unreleased]: https://github.com/AnonymousX86/Enigma-Bot/compare/v1.0...HEAD
+[v0.3]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.3
 [v0.2]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.2
 [v0.1]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.1
 
