@@ -411,8 +411,13 @@ class Fun(Cog):
             description = 'Okay, your\'e smart and it\'s maximum value. Cheater...'
         elif iq == 200:
             description = 'Oh my... It\'s super duper smart!!1!'
+        safe_name = str(user.display_name).\
+            replace('*', '\\*').\
+            replace('_', '\\_').\
+            replace('~', '\\~').\
+            replace('>', '\\>')
         await ctx.send(embed=Embed(
-            title=f':abacus: {user.display_name}\'s IQ is {iq}',
+            title=f':abacus: {safe_name}\'s IQ is {iq}',
             description=description,
             color=random_color()
         ))
