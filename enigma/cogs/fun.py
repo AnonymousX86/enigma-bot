@@ -238,11 +238,6 @@ class Fun(Cog):
                                     ctx=ctx, e=DatabaseError(f'Unable to delete giveaway with message ID {arg1}')
                                 )
                         else:
-                            await info.edit(embed=Embed(
-                                title=':page_with_curl: Message found',
-                                description=f'Link: <{giveaway_message.jump_url}>',
-                                color=random_color()
-                            ))
                             participants = []
                             for reaction in giveaway_message.reactions:
                                 if reaction.emoji == '📝':
