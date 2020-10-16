@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from asyncio import TimeoutError as WaitTimeout
+from random import randint
 from typing import List, Union
 
 from discord import Embed, Forbidden, TextChannel, NotFound, User
 from discord.ext.commands import Cog, command, Context
+import praw
 
+from enigma.settings import reddit_settings
 from enigma.utils.colors import random_color
 from enigma.utils.database import create_giveaway, get_giveaway_from_message, delete_giveaway
 from enigma.utils.exceptions import DatabaseError
@@ -294,6 +297,39 @@ class Fun(Cog):
             description=description,
             color=random_color()
         ))
+
+    @command(
+        name='meme',
+        brief='Send a meme',
+        description='Obtaining a meme could be a little slow.'
+    )
+    async def meme(self, ctx: Context):
+        reddit = praw.Reddit(
+            client_id=reddit_settings['client_id'],
+            client_secret=reddit_settings['client_secret'],
+            user_agent=reddit_settings['user_agent']
+        )
+        post = None
+        # noinspection SpellCheckingInspection
+        for submission in reddit.subreddit('dankmemes').hot(limit=20):
+            if not submission.archived:
+                if submission.score > 50:
+                    if not submission.is_self:
+                        if not submission.over_18:
+                            post = submission
+                            break
+        if post is not None:
+            await ctx.send(embed=Embed(
+                title=':black_joker: Meme found',
+                color=random_color()
+            ).set_image(
+                url=post.url
+            ))
+        else:
+            await ctx.send(embed=Embed(
+                title=':x: Meme not found',
+                color=random_color()
+            ))
 
 
 def setup(bot):
