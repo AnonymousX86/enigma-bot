@@ -2,7 +2,7 @@
 from asyncio import TimeoutError as WaitTimeout
 from typing import List, Union
 
-from discord import Embed, Forbidden, TextChannel, NotFound
+from discord import Embed, Forbidden, TextChannel, NotFound, User
 from discord.ext.commands import Cog, command, Context
 
 from enigma.utils.colors import random_color
@@ -244,6 +244,56 @@ class Fun(Cog):
                     title=':x: Invalid option',
                     color=random_color()
                 ))
+
+    @command(
+        name='iq',
+        brief='Check your IQ',
+        usage='[user]'
+    )
+    async def iq(self, ctx: Context, user: User = None):
+        if not user:
+            user = ctx.author
+        if user.id == self.bot.user.id:
+            iq = 200
+        elif user.bot is True:
+            iq = 0
+        else:
+            iq = int(user.id) % int(user.discriminator) % 115 + 5
+        description = ''
+        if iq == 0:
+            # noinspection SpellCheckingInspection
+            description = 'Bots are stuuupiiid.'
+        elif iq < 10:
+            description = 'Oh my... I didn\'t think it\'s possible to be that stupid.' \
+                          ' *(You\'d be great friends with Paimon)*'
+        elif iq < 25:
+            description = 'It\'s sickness, you know?'
+        elif iq < 40:
+            description = 'Some potatoes are smarter than you.'
+        elif iq < 60:
+            description = 'Roomba is smarter than you LMFAO.'
+        elif iq == 69:
+            description = 'Nice.'
+        elif iq < 70:
+            description = 'In terms of law - you\'re retarded.\n' \
+                          '> Intellectual disability (ID), also known as general learning disability and mental' \
+                          ' retardation (MR), is a generalized neurodevelopmental disorder characterized by' \
+                          ' significantly impaired intellectual and adaptive functioning. It is defined by an IQ' \
+                          ' under 70, in addition to deficits in two or more adaptive behaviors that affect everyday,' \
+                          ' general living.'
+        elif iq < 90:
+            description = 'It\'s okay, ~~to be g...~~ but still not so smart.'
+        elif iq < 110:
+            description = 'You\'re normal, ***b o r i n g***.'
+        elif iq <= 120:
+            description = 'Okay, your\'e smart and it\'s maximum value. Cheater...'
+        elif iq == 200:
+            description = 'Oh my... It\'s super duper smart!!1!'
+        await ctx.send(embed=Embed(
+            title=f':abacus: {user.display_name}\'s IQ is {iq}',
+            description=description,
+            color=random_color()
+        ))
 
 
 def setup(bot):
