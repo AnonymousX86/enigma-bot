@@ -4,7 +4,7 @@
 
 ## Released
 
-### [v0.2] - 17.10.2020
+### [v0.2] - 16.10.2020
 ### Added
 - Meme command.
 - If `iq`'s command argument is Enigma bot itself it sends score 200.
