@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from asyncio import TimeoutError as WaitTimeout
+from random import choice
 from typing import List, Union
 
 from discord import Embed, Forbidden, TextChannel, NotFound, User
@@ -308,21 +309,20 @@ class Fun(Cog):
             client_secret=reddit_settings['client_secret'],
             user_agent=reddit_settings['user_agent']
         )
-        post = None
+        posts = []
         # noinspection SpellCheckingInspection
         for submission in reddit.subreddit('dankmemes').hot(limit=20):
             if not submission.archived:
                 if submission.score > 50:
                     if not submission.is_self:
                         if not submission.over_18:
-                            post = submission
-                            break
-        if post is not None:
+                            posts.append(submission)
+        if posts:
             await ctx.send(embed=Embed(
                 title=':black_joker: Meme found',
                 color=random_color()
             ).set_image(
-                url=post.url
+                url=choice(posts).url
             ))
         else:
             await ctx.send(embed=Embed(
