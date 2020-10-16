@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from asyncio import TimeoutError as WaitTimeout
-from random import randint
 from typing import List, Union
 
 from discord import Embed, Forbidden, TextChannel, NotFound, User
