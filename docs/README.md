@@ -11,9 +11,7 @@ It was very simple bot, it was presenting some useful data for economic browser 
 Then I wanted to make something bigger and started to code `3N1GM4` bot.
 
 ## Functions:
-All functionalities should get data from SQL databases.
-
-All modules can be disabled per guild. "Manage guild" permission will be required.
+- All functionalities should get data from SQL databases.
 
 ###### User profile
 - [x] avatar URL
