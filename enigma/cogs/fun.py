@@ -452,7 +452,7 @@ class Fun(Cog):
         else:
             await self.bot.debug_log(ctx=ctx, e=error)
 
-    @cooldown(1, 4, BucketType.guild)
+    @cooldown(1, 6, BucketType.guild)
     @command(
         name='meme',
         brief='Send a meme',
