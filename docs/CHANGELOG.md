@@ -5,7 +5,7 @@
 ## Released
 
 ### [v0.2] - 16.10.2020
-### Added
+#### Added
 - Meme command.
 - If `iq`'s command argument is Enigma bot itself it sends score 200.
 - If `iq`'s command argument is any other bot it sends score 0.
@@ -13,11 +13,11 @@
 - Optional argument how to group winners from giveaway.
 - Cosmetics to giveaways' messages.
 - Cooldown for `giveaway` and `iq`.
-### Changed
+#### Changed
 - Cooldown handler text is same everywhere.
 
 ### [v0.1] - 16.10.2020
-### Added
+#### Added
 - Banning command.
 - Kicking command.
 - Checking bot's latency command.
