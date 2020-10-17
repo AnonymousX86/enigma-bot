@@ -12,7 +12,7 @@
 
 ### [v0.2] - 16.10.2020
 #### Added
-- Meme command.
+- `meme` command.
 - Choosing winners from giveaway.
 - Optional argument how to group winners from giveaway.
 - Cosmetics to giveaways' messages.
