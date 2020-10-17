@@ -58,7 +58,8 @@ class Basics(Cog):
         ))
 
     @command(
-        name='invite'
+        name='invite',
+        brief='Sends bot\'s invite link'
     )
     async def invite(self, ctx: Context):
         link = 'https://discord.com/api/oauth2/authorize?client_id=678357487560425555&permissions=27718&scope=bot'
