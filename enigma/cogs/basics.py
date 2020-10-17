@@ -18,7 +18,7 @@ class Basics(Cog):
         hidden=True
     )
     @has_permissions(administrator=True)
-    async def error_cmd(self, ctx):
+    async def error_cmd(self, ctx: Context):
         """Raises a bot's internal error.
 
         :param ctx: Context object.
@@ -31,7 +31,7 @@ class Basics(Cog):
         ))
 
     @error_cmd.error
-    async def error_error(self, ctx, error):
+    async def error_error(self, ctx: Context, error):
         if isinstance(error, MissingPermissions):
             await ctx.send(embed=Embed(
                 title=':man_technologist: You\'re not an IT specialist',
