@@ -13,14 +13,14 @@
 ### [v0.2] - 16.10.2020
 #### Added
 - Meme command.
-- If `iq`'s command argument is Enigma bot itself it sends score 200.
-- If `iq`'s command argument is any other bot it sends score 0.
 - Choosing winners from giveaway.
 - Optional argument how to group winners from giveaway.
 - Cosmetics to giveaways' messages.
 - Cooldown for `giveaway` and `iq`.
 #### Changed
 - Cooldown handler text is same everywhere.
+- If `iq`'s command argument is Enigma bot itself it sends score 200.
+- If `iq`'s command argument is any other bot it sends score 0.
 
 ### [v0.1] - 16.10.2020
 #### Added
