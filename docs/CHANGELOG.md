@@ -1,6 +1,9 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+### v0.3
+#### Added
+- Using `giveaway` command requires "manage guild" permission.
 
 ## Released
 
