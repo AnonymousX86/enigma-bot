@@ -6,7 +6,8 @@ from random import choice
 from typing import List, Union, Optional
 
 from discord import Embed, Forbidden, TextChannel, NotFound, User, Message
-from discord.ext.commands import Cog, command, Context, cooldown, BucketType, CommandOnCooldown
+from discord.ext.commands import Cog, command, Context, cooldown, BucketType, CommandOnCooldown, has_permissions, \
+    MissingPermissions
 from praw import Reddit
 
 from enigma.settings import reddit_settings
@@ -20,6 +21,7 @@ class Fun(Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @has_permissions(manage_guild=True)
     @cooldown(1, 30, BucketType.guild)
     @command(
         name='giveaway',
@@ -373,6 +375,12 @@ class Fun(Cog):
         if isinstance(error, CommandOnCooldown):
             await ctx.send(embed=Embed(
                 title=f':x: Try again in {str(error)[-5:]}',
+                color=random_color()
+            ))
+        elif isinstance(error, MissingPermissions):
+            await ctx.send(embed=Embed(
+                title=':x: You\'re not allowed to do that',
+                description='You need **manage guild** permission.',
                 color=random_color()
             ))
         else:
