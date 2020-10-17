@@ -3,7 +3,7 @@
 ## [Unreleased]
 ### v0.3
 #### Added
-- `invite` command
+- `invite` command.
 #### Changed
 - Using `giveaway` command requires "manage guild" permission.
 - Increased `meme`'s cooldown from 4s to 6s.
