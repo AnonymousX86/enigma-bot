@@ -4,6 +4,7 @@
 ### v0.3
 #### Added
 - Using `giveaway` command requires "manage guild" permission.
+- `invite` command
 
 ## Released
 

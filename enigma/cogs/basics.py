@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from discord import Embed
-from discord.ext.commands import command, Cog, has_permissions, MissingPermissions
+from discord.ext.commands import command, Cog, has_permissions, MissingPermissions, Context
 
 from enigma.utils.colors import random_color
 from enigma.utils.exceptions import NoError
@@ -55,6 +55,20 @@ class Basics(Cog):
             title=':ping_pong: Pong!',
             description=f'Current latency is: {round(self.bot.latency * 1000)}ms',
             color=random_color()
+        ))
+
+    @command(
+        name='invite'
+    )
+    async def invite(self, ctx: Context):
+        link = 'https://discord.com/api/oauth2/authorize?client_id=678357487560425555&permissions=27718&scope=bot'
+        await ctx.send(embed=Embed(
+            title=':mailbox_with_mail: Here\'s an invite link',
+            description='**\u00bb [Click me!]({0} "{0}") \u00ab**'.format(link),
+            color=random_color()
+        ).add_field(
+            name='Important info',
+            value='Remember, that you need **manage users** permission to add me to the server.'
         ))
 
 
