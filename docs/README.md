@@ -38,7 +38,7 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 
 ###### Images
 [How to source](https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images)
-- [ ] random meme from Reddit
+- [x] random meme from Reddit
 - [ ] random (or not) image from Imigur
 
 ###### Reputation
@@ -49,7 +49,7 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 - [ ] notes
 - [ ] how to do something
 - [ ] curiosities
-- [ ] giveaways
+- [x] giveaways
 
 ###### Admin purpose
 - [x] ban
