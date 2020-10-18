@@ -1,5 +1,5 @@
 # 3N1GM4
-Multi purpose Discord bot, developed by: `Anonymous©#7296`.
+Multiple purpose Discord bot, developed by: `Anonymous©#7296`.
 
 ## Note
 Because bot is in early development stage it's not public.
