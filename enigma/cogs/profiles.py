@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime as d
+
 from discord import Embed, User
-from discord.ext.commands import Cog, command, UserNotFound
+from discord.ext.commands import Cog, command, UserNotFound, Context
 
 from enigma.utils.colors import random_color
 from enigma.utils.database import get_single_user, update_profile, user_get_cash
