@@ -27,10 +27,13 @@ class Fun(Cog):
         name='giveaway',
         brief='Initiates a giveaway',
         help='Available options:\n'
-             '- create, start; with argument <channel>\n'
-             '- delete, stop; with argument <message ID> and optional [group by], could be "item" (default) or "user"\n'
-             '  Message ID could be found under giveaway message.',
-        usage='<option> <arg>',
+             '- create, start, new;'
+             ' with argument <channel>\n'
+             '- delete, stop, end;'
+             ' with argument <message ID> and optional [group by], could be "item" (default) or "user"\n'
+             '  Message ID could be found under the giveaway message.\n'
+             'Maximum item\'s length is 30 characters and maximum amount is 25.',
+        usage='<option> <additional argument> [group result by]',
         aliases=['ga']
     )
     async def giveaway(self, ctx: Context, option: str = '', arg1: Union[TextChannel, int] = None, arg2: str = 'item'):
