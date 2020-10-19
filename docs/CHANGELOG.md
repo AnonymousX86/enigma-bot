@@ -13,6 +13,7 @@
 - `giveaway`'s quantity has to be 25 or less.
 - Giveaway's preview message and final message have now fields instead of big descriptions.
 - `user` parameter is now optional in `profile` command.
+- Profile's now are on field instead of big description.
 
 ## Released
 

@@ -40,11 +40,14 @@ class Profiles(Cog):
                 title=':card_box: User\'s data',
                 description='```py\n'
                             '{0.display_name}#{0.discriminator}\n'
-                            'XP:         {1.user_xp}\n'
-                            'Cash:       {1.user_cash} {2}\n'
-                            'Last daily: {1.last_daily}\n'
-                            '```'.format(ctx.guild.get_member(result_user.user_id), result_user, chars['bitcoin']),
+                            '```'.format(ctx.guild.get_member(result_user.user_id)),
                 color=random_color()
+            ).add_field(
+                name='XP',
+                value=str(result_user.user_xp)
+            ).add_field(
+                name='Cash',
+                value=f_btc(result_user.user_cash)
             ).set_footer(
                 text=f'Accessed by {ctx.author.display_name}'
             ))
