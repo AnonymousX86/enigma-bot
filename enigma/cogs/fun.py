@@ -437,7 +437,7 @@ class Fun(Cog):
         elif isinstance(error, MissingPermissions):
             await ctx.send(embed=Embed(
                 title=':x: You\'re not allowed to do that',
-                description='You need **manage guild** permission.',
+                description='You need **manage server** permission.',
                 color=random_color()
             ))
         elif isinstance(error, CommandInvokeError):
