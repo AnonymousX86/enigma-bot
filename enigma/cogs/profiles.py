@@ -59,7 +59,8 @@ class Profiles(Cog):
         help='Available options:\n'
              '- xp\n'
              '- cash',
-        usage='<user> <option> <value>'
+        usage='<user> <option> <value>',
+        hidden=True
     )
     async def manage(self, ctx: Context, user: User = None, option: str = None, value: int = None):
         if ctx.author.id != self.bot.owner_id:
