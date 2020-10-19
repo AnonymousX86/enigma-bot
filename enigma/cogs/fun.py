@@ -117,6 +117,17 @@ class Fun(Cog):
                                         ))
                                         return
                                     break
+                                elif len(response_1.content) > 30:
+                                    try:
+                                        await response_1.delete()
+                                    except Forbidden:
+                                        pass
+                                    await info.edit(embed=Embed(
+                                        title=':x: Name\'s too long',
+                                        description='Keep it under 30 characters.',
+                                        color=random_color()
+                                    ))
+                                    return
                                 await info.edit(embed=Embed(
                                     title=f':1234: {index}{number_suffix(index)} item quantity...',
                                     color=random_color()

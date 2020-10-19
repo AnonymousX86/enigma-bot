@@ -8,6 +8,7 @@
 - Using `giveaway` command requires "manage guild" permission.
 - Increased `meme`'s cooldown from 4s to 6s.
 - `giveaway`'s help is now more precise.
+- `giveaway`'s name has to be 30 characters or less.
 
 ## Released
 
