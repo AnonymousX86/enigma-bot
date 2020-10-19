@@ -30,13 +30,13 @@ class Fun(Cog):
              '- create, start, new;'
              ' with argument <channel>\n'
              '- delete, stop, end;'
-             ' with argument <message ID> and optional [group by], could be "item" (default) or "user"\n'
+             ' with argument <message ID>\n'
              '  Message ID could be found under the giveaway message.\n'
              'Maximum item\'s length is 30 characters and maximum amount is 25.',
         usage='<option> <additional argument> [group result by]',
         aliases=['ga']
     )
-    async def giveaway(self, ctx: Context, option: str = '', arg1: Union[TextChannel, int] = None, arg2: str = 'item'):
+    async def giveaway(self, ctx: Context, option: str = '', arg1: Union[TextChannel, int] = None):
         if not option:
             await ctx.send(embed=Embed(
                 title=':x: Please specify an option',
@@ -171,6 +171,10 @@ class Fun(Cog):
                                         ))
                                         return
 
+                                    await info.edit(embed=Embed(
+                                        title=':hourglass_flowing_sand: Please wait...',
+                                        color=random_color()
+                                    ))
                                     things.append([response_1.content, response_2.content])
                                     await msg.edit(embed=msg.embeds[0].add_field(
                                         name=things[-1][1],
@@ -191,7 +195,7 @@ class Fun(Cog):
                         )
                         for thing in things:
                             final_em.add_field(
-                                name=thing[1],
+                                name=f'x{thing[1]}',
                                 value=thing[0]
                             )
                         await msg.edit(embed=final_em)
@@ -331,8 +335,32 @@ class Fun(Cog):
                                     color=random_color()
                                 )
 
+                                await info.edit(embed=Embed(
+                                    title='How you\'d like to group result?',
+                                    description='Please type `item` or `user`.',
+                                    color=random_color()
+                                ))
+                                try:
+                                    response: Message = await self.bot.wait_for('message', check=check, timeout=10)
+                                except WaitTimeout:
+                                    await info.edit(embed=Embed(
+                                        title=':x: Timed out',
+                                        color=random_color()
+                                    ))
+                                    return
+
+                                r = response.content.lower()
+                                u = ['u', 'user', 'users']
+                                i = ['i', 'item', 'items']
+
+                                if r in u or r in i:
+                                    try:
+                                        await response.delete()
+                                    except Forbidden:
+                                        pass
+
                                 # Group by users
-                                if arg2 == 'user':
+                                if r in u:
                                     all_users = set()
                                     for item in winners:
                                         for users in winners[item]:
@@ -358,14 +386,27 @@ class Fun(Cog):
                                         )
 
                                 # Group by items
-                                else:
+                                elif r in i:
                                     for item in winners:
+                                        winners_f = {}
+                                        for w in [el for i, el in enumerate(winners[item], 1) if
+                                                  el not in winners[item][i:]]:
+                                            winners_f[w] = winners[item].count(w)
                                         win_em.add_field(
                                             name=item,
                                             value='- ' + '\n- '.join(map(
-                                                lambda u: u.mention, sorted(winners[item], key=lambda u: u.display_name)
+                                                lambda x: x.mention +
+                                                f'{((" *x" + str(winners_f[x])) + "*") if winners_f[x] > 1 else ""}',
+                                                set(sorted(winners[item], key=lambda x: x.display_name))
                                             ))
                                         )
+
+                                else:
+                                    await info.edit(embed=Embed(
+                                        title=f':x: Unknown option `{r}`',
+                                        color=random_color()
+                                    ))
+                                    return
 
                                 await ctx.send(embed=win_em)
                                 try:

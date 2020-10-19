@@ -15,6 +15,8 @@
 - Giveaway's preview message and final message have now fields instead of big descriptions.
 - `user` parameter is now optional in `profile` command.
 - Profile's now are on field instead of big description.
+- Optional 3rd argument in `giveaway` is now asked for.
+- Final `giveaway` massage is prettier.
 
 ## Released
 
