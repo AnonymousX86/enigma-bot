@@ -7,7 +7,7 @@ from typing import List, Union, Optional
 
 from discord import Embed, Forbidden, TextChannel, NotFound, User, Message
 from discord.ext.commands import Cog, command, Context, cooldown, BucketType, CommandOnCooldown, has_permissions, \
-    MissingPermissions
+    MissingPermissions, CommandInvokeError
 from praw import Reddit
 
 from enigma.settings import reddit_settings
@@ -399,6 +399,13 @@ class Fun(Cog):
                 description='You need **manage guild** permission.',
                 color=random_color()
             ))
+        elif isinstance(error, CommandInvokeError):
+            await ctx.send(embed=Embed(
+                title=':x: There was a problem with the giveaway',
+                description=f'Probably, there are too many items in the giveaway.'
+                            f' Ask <@!{self.bot.owner_id}> for help.',
+                color=random_color()
+            ))
         else:
             await self.bot.debug_log(ctx=ctx, e=error)
 
@@ -498,6 +505,7 @@ class Fun(Cog):
         else:
             await ctx.send(embed=Embed(
                 title=':x: Meme not found',
+                description='Just try again',
                 color=random_color()
             ))
 
