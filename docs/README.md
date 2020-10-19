@@ -27,7 +27,7 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 - [ ] joke
 - [ ] slap someone or random
 - [ ] psycho test (pseudorandom)
-- [ ] IQ test (pseudorandom)
+- [x] IQ test (pseudorandom)
 - [ ] random name generator
 - [ ] random pick
 - [ ] random color
