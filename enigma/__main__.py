@@ -64,6 +64,8 @@ async def on_ready():
             await debug_log(e=e)
             print(f'Can\'t load: {cog}')
 
+    print('Everything done!')
+
 
 # Start the bot
 bot.run(general_settings['bot_token'])
