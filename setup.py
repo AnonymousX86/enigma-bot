@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup
 
+from enigma.settings import version
+
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 setup(
     name='3N1GM4',
-    version='0.2',
+    version=version,
     author='Jakub S.',
     url='https://github.com/AnonymousX86/Enigma-Bot',
     description='Multiple purpose Discord bot',

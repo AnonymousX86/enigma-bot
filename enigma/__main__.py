@@ -5,7 +5,7 @@ from logging import basicConfig, INFO, getLogger
 from discord import Status, Game, Member, Intents
 from discord.ext.commands import Bot, Context
 
-from enigma.settings import general_settings, debug_settings
+from enigma.settings import general_settings, debug_settings, version
 from enigma.utils.debug import debug_message, debug_embed
 
 basicConfig(level=INFO)
@@ -48,6 +48,9 @@ async def on_ready():
             )
         )
     bot.debug_log = debug_log
+
+    # Custom values
+    bot.version = version
 
     # Load cogs
     cogs = (f'enigma.cogs.{name}' for name in [

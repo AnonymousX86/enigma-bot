@@ -9,6 +9,9 @@ def get(thing: str):
     return os.environ.get(thing)
 
 
+version = '0.2'
+
+
 general_settings = {
     'bot_token': str(get('BOT_TOKEN')),
     'owner_id': int(get('OWNER_ID')),
