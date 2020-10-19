@@ -105,3 +105,7 @@ def sort_nested_list(nested_list: List[List], key_pos: int = 0) -> List[List]:
 
 def number_suffix(num: int):
     return "st" if str(num)[-1] == "1" else "nd" if str(num)[-1] == "2" else "rd" if str(num)[-1] == "3" else "th"
+
+
+def f_btc(num: int) -> str:
+    return f'{round(num*0.0001, 4)} {chars["bitcoin"]}'
