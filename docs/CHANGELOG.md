@@ -46,7 +46,7 @@
 - Communication with the database using SQLAlchemy.
 
 
-[Unreleased]: https://github.com/AnonymousX86/Enigma-Bot/compare/v1.0...HEAD
+[Unreleased]: https://github.com/AnonymousX86/Enigma-Bot/compare/deploy...master
 [v0.2]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.2
 [v0.1]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.1
 
