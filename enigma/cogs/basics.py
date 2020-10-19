@@ -72,6 +72,35 @@ class Basics(Cog):
             value='Remember, that you need **manage users** permission to add me to the server.'
         ))
 
+    @command(
+        name='info',
+        brief='Sens link to bot\'s source code',
+        description='Sends info about bot itself and its author. This is NOT help command.',
+        aliases=['about', 'github', 'code']
+    )
+    async def info(self, ctx: Context):
+        await ctx.send(embed=Embed(
+            title=':desktop: Source code',
+            description='This bot is made on open source, GNU GPL v3.0 license.',
+            color=random_color()
+        ).add_field(
+            name='Links',
+            value='\u00b7 [GitHub homepage](https://github.com/AnonymousX86/Enigma-Bot)\n'
+                  '\u00b7 [Changelog](https://github.com/AnonymousX86/Enigma-Bot/'
+                  'blob/master/docs/CHANGELOG.md#enigma-bot-changelog)\n'
+        ).add_field(
+            name='Additional info',
+            value='If you\'d like to help to develop this bot just make a pull request on GitHub or'
+                  ' write to bot main dev.'
+        ).add_field(
+            name='More about bot',
+            value='Version: *v{0}*.\n'
+                  'Author: *{1.display_name}#{1.discriminator}*.'.format(
+                      self.bot.version,
+                      self.bot.get_user(self.bot.owner_id)
+                  )
+        ))
+
 
 def setup(bot):
     bot.add_cog(Basics(bot))

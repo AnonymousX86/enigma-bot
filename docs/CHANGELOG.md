@@ -7,6 +7,7 @@
 - Error when giveaway result is too big is handled.
 - `avatar`'s embed description simplified.
 - `daily` command.
+- `info` command.
 #### Changed
 - Using `giveaway` command requires "manage guild" permission.
 - Increased `meme`'s cooldown from 4s to 6s.
