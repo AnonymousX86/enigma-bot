@@ -63,26 +63,20 @@ class Fun(Cog):
                         await ctx.send(embed=Embed(
                             title=':x: I can\'s see that channel'
                         ))
-
                     elif not perms.send_messages:
                         await ctx.send(embed=Embed(
                             title=':x: I can\'s send messages to that channel'
                         ))
-
                     else:
-                        channel_msg = f'Final message will be sent to {arg1.mention}.\n'
-
                         msg = await ctx.send(embed=Embed(
-                            title='Create giveaway',
-                            description=f'{channel_msg}'
-                                        f'Here will be displayed items added to giveaway.',
+                            title=':shopping_bags: Create giveaway',
+                            description=f'Final message will be sent to {arg1.mention}.',
                             color=random_color()
                         ).set_footer(
                             text=f'Listening to {ctx.author.display_name}'
                         ))
 
                         things: List[List[str, str]] = []
-                        description = ''
                         index = 0
 
                         info = await ctx.send(embed=Embed(
@@ -109,7 +103,10 @@ class Fun(Cog):
                             else:
                                 # Ended before adding at least one item
                                 if response_1.content.lower() in ['stop', 'end', 'x']:
-                                    await response_1.delete()
+                                    try:
+                                        await response_1.delete()
+                                    except Forbidden:
+                                        pass
                                     if len(things) == 0:
                                         await info.edit(embed=Embed(
                                             title=':x: Too few things',
@@ -174,18 +171,10 @@ class Fun(Cog):
                                         ))
                                         return
 
-                                    # Creating preview message body
                                     things.append([response_1.content, response_2.content])
-                                    description = ''
-                                    for set_ in things:
-                                        description += '{0[0]} x{0[1]}\n'.format(set_)
-
-                                    await msg.edit(embed=Embed(
-                                        title='Create giveaway',
-                                        description=channel_msg+description,
-                                        color=random_color()
-                                    ).set_footer(
-                                        text=f'Listening to {ctx.author.display_name}'
+                                    await msg.edit(embed=msg.embeds[0].add_field(
+                                        name=things[-1][1],
+                                        value=things[-1][0]
                                     ))
                                     try:
                                         await response_1.delete()
@@ -194,27 +183,30 @@ class Fun(Cog):
                                         pass
 
                         await info.delete()
-                        await msg.edit(embed=Embed(
+                        final_em = Embed(
                             title=':white_check_mark: Done!',
-                            description=channel_msg+description,
                             color=random_color()
                         ).set_footer(
                             text=f'Created by {ctx.author.display_name}'
-                        ))
+                        )
+                        for thing in things:
+                            final_em.add_field(
+                                name=thing[1],
+                                value=thing[0]
+                            )
+                        await msg.edit(embed=final_em)
+
+                        # Preparing final giveaway message
+                        final_em.title = ':gift: Giveaway!'
+                        final_em.color = random_color()
+                        final_em.add_field(
+                            name='\u200b',
+                            value='React with `📝` to participate!',
+                            inline=False
+                        )
                         # Sending final giveaway message
                         try:
-                            new_g = await arg1.send(embed=Embed(
-                                title=':gift: Giveaway!',
-                                color=random_color()
-                            ).add_field(
-                                name='\u200b',
-                                value=description,
-                                inline=False
-                            ).add_field(
-                                name='\u200b',
-                                value='React with `📝` to participate!',
-                                inline=False
-                            ))
+                            new_g = await arg1.send(embed=final_em)
                         except Forbidden:
                             await ctx.send(embed=Embed(
                                 title=f':x: I have no permissions to send message in {arg1.mention}',
@@ -239,7 +231,6 @@ class Fun(Cog):
                         title=':x: Bad ID format',
                         color=random_color()
                     ))
-
                 else:
                     giveaway = get_giveaway_from_message(arg1)
 
@@ -399,7 +390,7 @@ class Fun(Cog):
     async def giveaway_error(self, ctx, error):
         if isinstance(error, CommandOnCooldown):
             await ctx.send(embed=Embed(
-                title=f':x: Try again in {str(error)[-5:]}',
+                title=f':x: Command\'s on cooldown',
                 color=random_color()
             ))
         elif isinstance(error, MissingPermissions):
