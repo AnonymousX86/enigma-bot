@@ -9,7 +9,7 @@ setup(
     version='0.2',
     author='Jakub S.',
     url='https://github.com/AnonymousX86/Enigma-Bot',
-    description='Multipurpose Discord bot',
+    description='Multiple purpose Discord bot',
     license='GPL-3.0',
     packages=['enigma', 'enigma.cogs', 'enigma.utils'],
     python_requires='>=3.7.6',
