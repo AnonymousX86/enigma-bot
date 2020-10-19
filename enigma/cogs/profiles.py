@@ -3,8 +3,8 @@ from discord import Embed, User
 from discord.ext.commands import Cog, command, UserNotFound
 
 from enigma.utils.colors import random_color
-from enigma.utils.database import get_single_user, update_profile
-from enigma.utils.strings import chars
+from enigma.utils.database import get_single_user, update_profile, user_get_cash
+from enigma.utils.strings import f_btc
 
 
 class Profiles(Cog):
@@ -50,6 +50,46 @@ class Profiles(Cog):
                 value=f_btc(result_user.user_cash)
             ).set_footer(
                 text=f'Accessed by {ctx.author.display_name}'
+            ))
+
+    @command(
+        name='daily',
+        brief='Collect daily cash bonus',
+        description='Cooldown resets on 00:00.'
+    )
+    async def daily(self, ctx: Context):
+        base_cash = 200
+        user = get_single_user(ctx.author.id)
+        now = d.now()
+        able = False
+        time_travel = False
+        if user.last_daily.year == now.year:
+            if user.last_daily.month == now.month:
+                if user.last_daily.day < now.day:
+                    able = True
+                else:
+                    time_travel = True
+            elif user.last_daily.month < now.month:
+                able = True
+            else:
+                time_travel = True
+        elif user.last_daily.year < now.year:
+            able = True
+        else:
+            time_travel = True
+        if time_travel:
+            await ctx.send(embed=Embed(
+                title=':x: Hello time traveler',
+                description='Anyway, there\'s no cash for you.',
+                color=random_color()
+            ))
+        elif able:
+            new_user = user_get_cash(ctx.author.id, base_cash)
+            await ctx.send(embed=Embed(
+                title=':moneybag: Daily bonus gained!',
+                description=f'You\'ve earned **{f_btc(base_cash)}**,'
+                            f' so now you have **{f_btc(new_user.user_cash)}**.',
+                color=random_color()
             ))
 
     @command(

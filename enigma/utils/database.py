@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import date
+from datetime import date, datetime as d
 from typing import List, Union
 
 from sqlalchemy import create_engine, Column, Integer, Date, BigInteger, Text
@@ -98,6 +98,19 @@ def update_profile(user_id: int, xp: int = None, cash: int = None) -> User:
         return managed_user
     finally:
         session.close()
+
+
+def user_get_cash(user_id: int, cash: int) -> User:
+    try:
+        return update_profile(user_id=user_id, cash=get_single_user(user_id).user_cash + cash)
+    finally:
+        session = _Session()
+        try:
+            now = d.now()
+            session.query(User).update({'last_daily': f'{now.year}-{now.month}-{now.day}'})
+            session.commit()
+        finally:
+            session.close()
 
 
 class Giveaway(Base):
