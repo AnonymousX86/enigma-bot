@@ -12,6 +12,7 @@
 - `giveaway`'s name has to be 30 characters or less.
 - `giveaway`'s quantity has to be 25 or less.
 - Giveaway's preview message and final message have now fields instead of big descriptions.
+- `user` parameter is now optional in `profile` command.
 
 ## Released
 

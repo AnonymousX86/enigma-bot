@@ -23,6 +23,8 @@ class Profiles(Cog):
         :param ctx: Context object.
         :param user: User which profile should be showed. (optional)
         """
+        if not user:
+            user = ctx.author
         if user.bot is True:
             await ctx.send(embed=Embed(
                 title=':x: Bots do not have profiles',
