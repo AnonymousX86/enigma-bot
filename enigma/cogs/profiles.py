@@ -109,7 +109,7 @@ class Profiles(Cog):
                     raise
                 text = '```py\n{0.display_name}#{0.discriminator}\n'
                 text += 'XP:         {1}\n' if option == 'xp' else \
-                        'Cash:       {1} {2}\n' if option == 'cash' else ''
+                    'Cash:       {1} {2}\n' if option == 'cash' else ''
                 text += '```'
                 await msg.edit(embed=Embed(
                     title=':incoming_envelope: Profile has been updated',
