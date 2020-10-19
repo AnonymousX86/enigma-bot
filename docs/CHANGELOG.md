@@ -9,6 +9,7 @@
 - Increased `meme`'s cooldown from 4s to 6s.
 - `giveaway`'s help is now more precise.
 - `giveaway`'s name has to be 30 characters or less.
+- `giveaway`'s quantity has to be 25 or less.
 
 ## Released
 

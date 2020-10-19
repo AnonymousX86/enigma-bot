@@ -162,6 +162,17 @@ class Fun(Cog):
                                         except Forbidden:
                                             pass
                                         return
+                                    if int(response_2.content) > 25:
+                                        try:
+                                            await response_1.delete()
+                                        except Forbidden:
+                                            pass
+                                        await info.edit(embed=Embed(
+                                            title=':x: Too much',
+                                            description='Keep quantity under 25.',
+                                            color=random_color()
+                                        ))
+                                        return
 
                                     # Creating preview message body
                                     things.append([response_1.content, response_2.content])
