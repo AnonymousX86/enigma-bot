@@ -140,8 +140,7 @@ class Profiles(Cog):
             user = ctx.author
         await ctx.send(embed=Embed(
             title=':bust_in_silhouette: User avatar',
-            description=f'As you wish, {ctx.message.author.display_name}\n\n'
-                        f':arrow_right: [See in full resolution]({user.avatar_url})',
+            description=f'As you wish, {ctx.author.mention}.',
             color=random_color()
         ).set_image(
             url=user.avatar_url
