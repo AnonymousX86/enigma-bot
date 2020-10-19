@@ -17,7 +17,7 @@ class Profiles(Cog):
         usage='[user]',
         aliases=['prof']
     )
-    async def profile(self, ctx, user: User = None):
+    async def profile(self, ctx: Context, user: User = None):
         """Sends user's profile. (XP, cash, etc.)
 
         :param ctx: Context object.
@@ -58,7 +58,7 @@ class Profiles(Cog):
              '- cash',
         usage='<user> <option> <value>'
     )
-    async def manage(self, ctx, user: User = None, option: str = None, value: int = None):
+    async def manage(self, ctx: Context, user: User = None, option: str = None, value: int = None):
         if ctx.author.id != self.bot.owner_id:
             await ctx.send(embed=Embed(
                 title=':x: You\'re not authorized',
@@ -124,7 +124,7 @@ class Profiles(Cog):
         usage='[user]',
         aliases=['avk']
     )
-    async def avatar(self, ctx, user: User = None):
+    async def avatar(self, ctx: Context, user: User = None):
         """Sends user's avatar.
 
         :param ctx: Context object.
@@ -144,7 +144,7 @@ class Profiles(Cog):
         ))
 
     @avatar.error
-    async def avatar_error(self, ctx, error):
+    async def avatar_error(self, ctx: Context, error):
         if isinstance(error, UserNotFound):
             await ctx.send(embed=Embed(
                 title=':mag: User not found!',
