@@ -107,13 +107,15 @@ class Profiles(Cog):
                     updated_user = update_profile(user.id, cash=value)
                 else:
                     raise
-                text = '```py\n{0.display_name}#{0.discriminator}\n'
-                text += 'XP:         {1}\n' if option == 'xp' else \
-                    'Cash:       {1} {2}\n' if option == 'cash' else ''
+                text = '```py\n{0.display_name}#{0.discriminator}\n'.format(ctx.guild.get_member(updated_user.user_id))
+                if option == 'xp':
+                    text += f'XP:         {value}\n'
+                elif option == 'cash':
+                    text += f'Cash:       {f_btc(value)}\n'
                 text += '```'
                 await msg.edit(embed=Embed(
                     title=':incoming_envelope: Profile has been updated',
-                    description=text.format(ctx.guild.get_member(updated_user.user_id), value, chars['bitcoin']),
+                    description=text,
                     color=random_color()
                 ))
 
