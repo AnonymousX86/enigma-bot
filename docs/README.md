@@ -1,8 +1,5 @@
 # 3N1GM4
-Multi purpose Discord bot, developed by: `Anonymous©#7296`.
-
-## Note
-Because bot is in early development stage it's not public.
+Multiple purpose Discord bot, developed by: `Anonymous©#7296`.
 
 ## Assumptions
 I've always wanted to code my own bot. I've never been sure what kind of bot exactly I want to code.
@@ -38,7 +35,7 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 
 ###### Images
 [How to source](https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images)
-- [ ] random meme from Reddit
+- [x] random meme from Reddit
 - [ ] random (or not) image from Imigur
 
 ###### Reputation
@@ -49,7 +46,7 @@ I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 - [ ] notes
 - [ ] how to do something
 - [ ] curiosities
-- [ ] giveaways
+- [x] giveaways
 
 ###### Admin purpose
 - [x] ban
