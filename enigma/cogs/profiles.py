@@ -138,15 +138,13 @@ class Profiles(Cog):
         """
         if not user:
             user = ctx.author
-        avatar = user.avatar_url
-        status = f'As you wish, {ctx.message.author.display_name}\n\n' \
-                 f':arrow_right: [See in full resolution]({avatar})'
         await ctx.send(embed=Embed(
             title=':bust_in_silhouette: User avatar',
-            description=status,
+            description=f'As you wish, {ctx.message.author.display_name}\n\n'
+                        f':arrow_right: [See in full resolution]({user.avatar_url})',
             color=random_color()
         ).set_image(
-            url=avatar
+            url=user.avatar_url
         ))
 
     @avatar.error
