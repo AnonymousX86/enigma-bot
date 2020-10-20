@@ -16,6 +16,7 @@ bot = Bot(
     case_insensitive=False,
     owner_id=general_settings['owner_id'],
     description='General purpose bot',
+    help_command=None,
     intents=Intents(
         guilds=True,
         members=True,

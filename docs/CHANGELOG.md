@@ -8,6 +8,7 @@
 - `avatar`'s embed description simplified.
 - `daily` command.
 - `info` command.
+- Custom `help` command.
 #### Changed
 - Using `giveaway` command requires "manage guild" permission.
 - Increased `meme`'s cooldown from 4s to 6s.
