@@ -10,7 +10,7 @@ from discord.ext.commands import Cog, command, Context, cooldown, BucketType, Co
     MissingPermissions, CommandInvokeError
 from praw import Reddit
 
-from enigma.settings import reddit_settings
+from enigma.settings import reddit_settings, in_production
 from enigma.utils.colors import random_color
 from enigma.utils.database import create_giveaway, get_giveaway_from_message, delete_giveaway
 from enigma.utils.exceptions import DatabaseError
@@ -34,7 +34,8 @@ class Fun(Cog):
              '  Message ID could be found under the giveaway message.\n'
              'Maximum item\'s length is 30 characters and maximum amount is 25.',
         usage='<option> <additional argument> [group result by]',
-        aliases=['ga']
+        aliases=['ga'],
+        enabled=in_production()
     )
     async def giveaway(self, ctx: Context, option: str = '', arg1: Union[TextChannel, int] = None):
         if not option:
@@ -454,7 +455,8 @@ class Fun(Cog):
     @command(
         name='iq',
         brief='Check your IQ',
-        usage='[user]'
+        usage='[user]',
+        enabled=in_production()
     )
     async def iq(self, ctx: Context, user: User = None):
         if not user:
@@ -520,7 +522,8 @@ class Fun(Cog):
     @command(
         name='meme',
         brief='Send a meme',
-        description='Obtaining a meme could be a little slow.'
+        description='Obtaining a meme could be a little slow.',
+        enabled=in_production()
     )
     async def meme(self, ctx: Context):
         reddit = Reddit(

@@ -20,6 +20,7 @@
 - Optional 3rd argument in `giveaway` is now asked for.
 - Final `giveaway` massage is prettier.
 - Cooldowns' messages no more include time, because it was incorrect.
+- All commands are now enabled only in development or production.
 #### Fixed
 - First `daily` is not creating profile **and** adds cash.
 - Value 0 is now possible in `manage` command.

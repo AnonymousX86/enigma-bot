@@ -3,6 +3,7 @@ from discord import Embed
 from discord.ext.commands import command, Cog, has_permissions, MissingPermissions, Context, cooldown, BucketType, \
     CommandOnCooldown
 
+from enigma.settings import in_production
 from enigma.utils.colors import random_color
 from enigma.utils.exceptions import NoError
 
@@ -16,6 +17,7 @@ class Basics(Cog):
         brief='Raises an example error',
         description='Only specific users have access to this command',
         aliases=['err'],
+        enabled=in_production(),
         hidden=True
     )
     @cooldown(1, 30, BucketType.user)
@@ -51,7 +53,8 @@ class Basics(Cog):
     @command(
         name='ping',
         brief='Checks bot latency',
-        description='Counts time difference between command execution time and bot\'s response'
+        description='Counts time difference between command execution time and bot\'s response',
+        enabled=in_production()
     )
     async def ping(self, ctx):
         """Checks bot's latency.
@@ -66,7 +69,8 @@ class Basics(Cog):
 
     @command(
         name='invite',
-        brief='Sends bot\'s invite link'
+        brief='Sends bot\'s invite link',
+        enabled=in_production()
     )
     async def invite(self, ctx: Context):
         link = 'https://discord.com/api/oauth2/authorize?client_id=678357487560425555&permissions=27718&scope=bot'
@@ -83,7 +87,8 @@ class Basics(Cog):
         name='info',
         brief='Sens link to bot\'s source code',
         description='Sends info about bot itself and its author. This is NOT help command.',
-        aliases=['about', 'github', 'code']
+        aliases=['about', 'github', 'code'],
+        enabled=in_production()
     )
     async def info(self, ctx: Context):
         await ctx.send(embed=Embed(

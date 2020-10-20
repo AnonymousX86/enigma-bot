@@ -4,6 +4,7 @@ from datetime import datetime as d
 from discord import Embed, User
 from discord.ext.commands import Cog, command, UserNotFound, Context
 
+from enigma.settings import in_production
 from enigma.utils.colors import random_color
 from enigma.utils.database import get_single_user, update_profile, user_get_cash
 from enigma.utils.strings import f_btc
@@ -17,7 +18,8 @@ class Profiles(Cog):
         name='profile',
         brief='Shows user\'s profile from bot\'s database',
         usage='[user]',
-        aliases=['prof']
+        aliases=['prof'],
+        enabled=in_production()
     )
     async def profile(self, ctx: Context, user: User = None):
         """Sends user's profile. (XP, cash, etc.)
@@ -57,7 +59,8 @@ class Profiles(Cog):
     @command(
         name='daily',
         brief='Collect daily cash bonus',
-        description='Cooldown resets on 00:00.'
+        description='Cooldown resets on 00:00.',
+        enabled=in_production()
     )
     async def daily(self, ctx: Context):
         base_cash = 200
@@ -102,6 +105,7 @@ class Profiles(Cog):
              '- xp\n'
              '- cash',
         usage='<user> <option> <value>',
+        enabled=in_production(),
         hidden=True
     )
     async def manage(self, ctx: Context, user: User = None, option: str = None, value: int = None):
@@ -170,7 +174,8 @@ class Profiles(Cog):
         brief='Shows user\'s avatar',
         description='No arg will return your\'s avatar and adding user ID or mention will show other user\'s avatar',
         usage='[user]',
-        aliases=['avk']
+        aliases=['avk'],
+        enabled=in_production()
     )
     async def avatar(self, ctx: Context, user: User = None):
         """Sends user's avatar.

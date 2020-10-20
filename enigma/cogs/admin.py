@@ -4,6 +4,7 @@ from discord.ext.commands import command, Cog, has_permissions, bot_has_permissi
     BotMissingPermissions, UserNotFound
 from discord.utils import get
 
+from enigma.settings import in_production
 from enigma.utils.colors import random_color
 
 
@@ -15,7 +16,8 @@ class Admin(Cog):
         name='ban',
         brief='Bans user',
         description='You can provide user ID or mention someone',
-        usage='<user>'
+        usage='<user>',
+        enabled=in_production()
     )
     @has_permissions(ban_members=True)
     @bot_has_permissions(ban_members=True)
@@ -94,7 +96,8 @@ class Admin(Cog):
         name='kick',
         brief='Kicks user',
         description='You can provide user ID or mention someone',
-        usage='<user>'
+        usage='<user>',
+        enabled=in_production()
     )
     @has_permissions(kick_members=True)
     @bot_has_permissions(kick_members=True)

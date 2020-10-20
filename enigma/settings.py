@@ -9,6 +9,14 @@ def get(thing: str):
     return environ.get(thing)
 
 
+def in_dev() -> bool:
+    return str(get('TARGET')) == 'development'
+
+
+def in_production() -> bool:
+    return not in_dev()
+
+
 version = '0.2'
 
 
