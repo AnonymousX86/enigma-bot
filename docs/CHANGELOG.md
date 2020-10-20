@@ -25,6 +25,7 @@
 #### Fixed
 - First `daily` is not creating profile **and** adds cash.
 - Value 0 is now possible in `manage` command.
+- Using `daily` 2 and more times now shows correct message.
 
 ## Released
 

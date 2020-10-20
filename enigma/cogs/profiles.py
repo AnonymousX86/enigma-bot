@@ -66,7 +66,9 @@ class Profiles(Cog):
         time_travel = False
         if user.last_daily.year == now.year:
             if user.last_daily.month == now.month:
-                if user.last_daily.day < now.day:
+                if user.last_daily.day == now.day:
+                    pass
+                elif user.last_daily.day < now.day:
                     able = True
                 else:
                     time_travel = True
@@ -90,6 +92,12 @@ class Profiles(Cog):
                 title=':moneybag: Daily bonus gained!',
                 description=f'You\'ve earned **{f_btc(base_cash)}**,'
                             f' so now you have **{f_btc(new_user.user_cash)}**.',
+                color=random_color()
+            ))
+        else:
+            await ctx.send(embed=Embed(
+                title=':x: You\'ve already collected your daily cash',
+                description='Please come back tomorrow.',
                 color=random_color()
             ))
 
