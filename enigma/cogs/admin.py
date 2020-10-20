@@ -22,11 +22,6 @@ class Admin(Cog):
     @has_permissions(ban_members=True)
     @bot_has_permissions(ban_members=True)
     async def ban(self, ctx, user: User = None):
-        """Bans user from guild.
-
-        :param ctx: Context object.
-        :param user: User mention or ID.
-        """
         # No user provided
         if not user:
             await ctx.send(embed=Embed(
@@ -102,11 +97,6 @@ class Admin(Cog):
     @has_permissions(kick_members=True)
     @bot_has_permissions(kick_members=True)
     async def kick(self, ctx, user: User = None):
-        """Kicks user from guild.
-
-        :param ctx: Context object.
-        :param user: User mention or ID.
-        """
         # No user provided
         if not user:
             await ctx.send(embed=Embed(

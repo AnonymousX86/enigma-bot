@@ -22,11 +22,6 @@ class Profiles(Cog):
         enabled=in_production()
     )
     async def profile(self, ctx: Context, user: User = None):
-        """Sends user's profile. (XP, cash, etc.)
-
-        :param ctx: Context object.
-        :param user: User which profile should be showed. (optional)
-        """
         if not user:
             user = ctx.author
         if user.bot is True:
@@ -178,11 +173,6 @@ class Profiles(Cog):
         enabled=in_production()
     )
     async def avatar(self, ctx: Context, user: User = None):
-        """Sends user's avatar.
-
-        :param ctx: Context object.
-        :param user: User mention or ID.
-        """
         if not user:
             user = ctx.author
         await ctx.send(embed=Embed(

@@ -23,10 +23,6 @@ class Basics(Cog):
     @cooldown(1, 30, BucketType.user)
     @has_permissions(administrator=True)
     async def error_cmd(self, ctx: Context):
-        """Raises a bot's internal error.
-
-        :param ctx: Context object.
-        """
         await self.bot.debug_log(ctx=ctx, e=NoError())
         await ctx.send(embed=Embed(
             title=':exclamation: Raised `NoError`',
@@ -57,10 +53,6 @@ class Basics(Cog):
         enabled=in_production()
     )
     async def ping(self, ctx):
-        """Checks bot's latency.
-
-        :param ctx: Context object.
-        """
         await ctx.send(embed=Embed(
             title=':ping_pong: Pong!',
             description=f'Current latency is: {round(self.bot.latency * 1000)}ms',
