@@ -12,7 +12,6 @@ class Basics(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # TODO - help command, before v0.3 due to multiple help embeds
     @command(
         name='help',
         brief='Shows this message',
