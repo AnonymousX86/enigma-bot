@@ -101,6 +101,13 @@ def update_profile(user_id: int, xp: int = None, cash: int = None) -> User:
 
 
 def user_get_cash(user_id: int, cash: int) -> User:
+    """Database handler when user uses `daily` command. Or just if you want to add cash instead of setting it.
+
+    :param user_id: User ID.
+    :param cash: Amount of cash to be added.
+    :return: Updated user object.
+    """
+    session = _Session()
     try:
         return update_profile(user_id=user_id, cash=get_single_user(user_id).user_cash + cash)
     finally:
