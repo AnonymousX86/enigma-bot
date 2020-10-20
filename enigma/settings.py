@@ -1,4 +1,4 @@
-import os
+from os import environ
 
 from dotenv import load_dotenv, find_dotenv
 
@@ -6,7 +6,7 @@ load_dotenv(find_dotenv())
 
 
 def get(thing: str):
-    return os.environ.get(thing)
+    return environ.get(thing)
 
 
 version = '0.2'
