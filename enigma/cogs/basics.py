@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from discord import Embed
-from discord.ext.commands import command, Cog, has_permissions, MissingPermissions, Context
+from discord.ext.commands import command, Cog, has_permissions, MissingPermissions, Context, cooldown, BucketType, \
+    CommandOnCooldown
 
 from enigma.utils.colors import random_color
 from enigma.utils.exceptions import NoError
@@ -17,6 +18,7 @@ class Basics(Cog):
         aliases=['err'],
         hidden=True
     )
+    @cooldown(1, 30, BucketType.user)
     @has_permissions(administrator=True)
     async def error_cmd(self, ctx: Context):
         """Raises a bot's internal error.
@@ -36,6 +38,11 @@ class Basics(Cog):
             await ctx.send(embed=Embed(
                 title=':man_technologist: You\'re not an IT specialist',
                 description='Only those can use this command',
+                color=random_color()
+            ))
+        elif isinstance(error, CommandOnCooldown):
+            await ctx.send(embed=Embed(
+                title=':x: Command\'s on cooldown',
                 color=random_color()
             ))
         else:
