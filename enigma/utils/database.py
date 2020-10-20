@@ -109,15 +109,14 @@ def user_get_cash(user_id: int, cash: int) -> User:
     """
     session = _Session()
     try:
-        return update_profile(user_id=user_id, cash=get_single_user(user_id).user_cash + cash)
+        user = get_single_user(user_id)
+        updated_user = update_profile(user_id=user_id, cash=user.user_cash + cash)
+        now = d.now()
+        session.query(User).update({'last_daily': f'{now.year}-{now.month}-{now.day}'})
+        session.commit()
+        return updated_user
     finally:
-        session = _Session()
-        try:
-            now = d.now()
-            session.query(User).update({'last_daily': f'{now.year}-{now.month}-{now.day}'})
-            session.commit()
-        finally:
-            session.close()
+        session.close()
 
 
 class Giveaway(Base):

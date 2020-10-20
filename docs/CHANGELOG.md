@@ -19,6 +19,8 @@
 - Profile's now are on field instead of big description.
 - Optional 3rd argument in `giveaway` is now asked for.
 - Final `giveaway` massage is prettier.
+#### Fixed
+- First `daily` is not creating profile **and** adds cash.
 
 ## Released
 
