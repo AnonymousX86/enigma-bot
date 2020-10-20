@@ -431,7 +431,7 @@ class Fun(Cog):
     async def giveaway_error(self, ctx, error):
         if isinstance(error, CommandOnCooldown):
             await ctx.send(embed=Embed(
-                title=f':x: Command\'s on cooldown',
+                title=':x: Command\'s on cooldown',
                 color=random_color()
             ))
         elif isinstance(error, MissingPermissions):
@@ -510,7 +510,7 @@ class Fun(Cog):
     async def iq_error(self, ctx, error):
         if isinstance(error, CommandOnCooldown):
             await ctx.send(embed=Embed(
-                title=f':x: Try again in {str(error)[-5:]}',
+                title=':x: Command\'s on cooldown',
                 color=random_color()
             ))
         else:
@@ -554,7 +554,7 @@ class Fun(Cog):
     async def meme_error(self, ctx, error):
         if isinstance(error, CommandOnCooldown):
             await ctx.send(embed=Embed(
-                title=f':x: Try again in {str(error)[-5:]}',
+                title=':x: Command\'s on cooldown',
                 color=random_color()
             ))
         else:
