@@ -85,7 +85,7 @@ class Basics(Cog):
 
     @command(
         name='info',
-        brief='Sens link to bot\'s source code',
+        brief='Sends short bot\'s info',
         description='Sends info about bot itself and its author. This is NOT help command.',
         aliases=['about', 'github', 'code'],
         enabled=in_production()
