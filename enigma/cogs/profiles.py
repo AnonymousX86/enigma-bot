@@ -130,7 +130,7 @@ class Profiles(Cog):
                 title=':x: Invalid option',
                 color=random_color()
             ))
-        elif not value:
+        elif value is None:
             await ctx.send(embed=Embed(
                 title=':x: No amount provided',
                 color=random_color()

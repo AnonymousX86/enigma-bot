@@ -21,6 +21,7 @@
 - Final `giveaway` massage is prettier.
 #### Fixed
 - First `daily` is not creating profile **and** adds cash.
+- Value 0 is now possible in `manage` command.
 
 ## Released
 
