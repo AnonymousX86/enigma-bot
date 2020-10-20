@@ -16,7 +16,8 @@ class Profiles(Cog):
 
     @command(
         name='profile',
-        brief='Shows user\'s profile from bot\'s database',
+        brief='Shows user\'s profile',
+        description='Show user\'s profile from database (XP, cash, etc.)',
         usage='[user]',
         aliases=['prof'],
         enabled=in_production()
@@ -54,7 +55,7 @@ class Profiles(Cog):
     @command(
         name='daily',
         brief='Collect daily cash bonus',
-        description='Cooldown resets on 00:00.',
+        help='Cooldown resets on 00:00.',
         enabled=in_production()
     )
     async def daily(self, ctx: Context):
