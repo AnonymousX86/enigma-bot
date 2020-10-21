@@ -17,7 +17,7 @@ Then I wanted to make something bigger and started to code `3N1GM4` bot.
 I think cyberpunk will be the best lore with cryptocurrency as virtual money.
 - [ ] quests
 - [ ] virtual wallet
-- [ ] daily bonus
+- [x] daily bonus
 
 ###### Support
 - [ ] creating ticket with reaction
