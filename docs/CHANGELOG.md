@@ -1,6 +1,9 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+
+## Released
+
 ### v0.3
 #### Added
 - `invite` command.
@@ -27,8 +30,6 @@
 - Value 0 is now possible in `manage` command.
 - Using `daily` 2 and more times now shows correct message.
 
-## Released
-
 ### [v0.2] - 16.10.2020
 #### Added
 - `meme` command.
@@ -54,6 +55,7 @@
 
 
 [Unreleased]: https://github.com/AnonymousX86/Enigma-Bot/compare/deploy...master
+[v0.3]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.3
 [v0.2]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.2
 [v0.1]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.1
 
