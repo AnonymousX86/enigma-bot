@@ -4,6 +4,10 @@
 
 ## Released
 
+### v0.3-hotfix
+#### Fixed
+- `help` command was disabled.
+
 ### [v0.3] - 21-10-2020
 #### Added
 - `invite` command.

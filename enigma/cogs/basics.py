@@ -16,7 +16,7 @@ class Basics(Cog):
         name='help',
         brief='Shows this message',
         usage='[category|command]',
-        enabled=not in_production()
+        enabled=in_production()
     )
     async def help(self, ctx: Context, arg: str = None):
         help_em = Embed(
