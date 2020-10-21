@@ -4,7 +4,7 @@
 
 ## Released
 
-### v0.3
+### [v0.3] - 21-10-2020
 #### Added
 - `invite` command.
 - Error when giveaway result is too big is handled.
