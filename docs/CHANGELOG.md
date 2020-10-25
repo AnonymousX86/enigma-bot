@@ -13,7 +13,7 @@
 #### Fixed
 - `help` command was disabled.
 
-### [v0.3] - 21-10-2020
+### [v0.3] - 21.10.2020
 #### Added
 - `invite` command.
 - Error when giveaway result is too big is handled.
