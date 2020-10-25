@@ -603,6 +603,25 @@ class Fun(Cog):
                 )
             await ctx.send(embed=em)
 
+    @command(
+        name='choice',
+        brief='Helps with choosing',
+        usage='<thing1> <thing2> [thingN]',
+        enabled=not in_production()
+    )
+    async def choice(self, ctx: Context, *things):
+        breakpoint()
+        if not things:
+            title = ':x: No items specified'
+        elif len(things) < 2:
+            title = ':x: Too few thing specified'
+        else:
+            title = f':abcd: I\'ve chosen {choice(things)}'
+        await ctx.send(embed=Embed(
+            title=title,
+            color=random_color()
+        ))
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))

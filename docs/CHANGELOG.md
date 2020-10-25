@@ -5,6 +5,7 @@
 ### v0.4
 #### Added
 - `randomnumber` command.
+- `choice` command.
 
 ## Released
 
