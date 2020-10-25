@@ -7,6 +7,8 @@
 - `randomnumber` command.
 - `choice` command.
 - `coin` command.
+#### Fixed
+- Communication with database is now more safe.
 
 ## Released
 
