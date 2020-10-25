@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### v0.4
+#### Added
+- `randomnumber` command.
+
 ## Released
 
 ### v0.3-hotfix

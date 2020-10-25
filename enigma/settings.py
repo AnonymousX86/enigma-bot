@@ -43,3 +43,7 @@ reddit_settings = {
     'client_secret': get('REDDIT_SECRET'),
     'user_agent': get('REDDIT_USER_AGENT')
 }
+
+rapidapi_settings = {
+    'key': get('RAPIDAPI_KEY')
+}

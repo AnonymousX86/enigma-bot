@@ -2,6 +2,7 @@
 from ast import literal_eval
 from asyncio import TimeoutError as WaitTimeout
 from datetime import datetime as d
+from json import loads as json_loads
 from random import choice
 from typing import List, Union, Optional
 
@@ -9,8 +10,9 @@ from discord import Embed, Forbidden, TextChannel, NotFound, User, Message
 from discord.ext.commands import Cog, command, Context, cooldown, BucketType, CommandOnCooldown, has_permissions, \
     MissingPermissions, CommandInvokeError
 from praw import Reddit
+from requests import request
 
-from enigma.settings import reddit_settings, in_production
+from enigma.settings import reddit_settings, in_production, rapidapi_settings
 from enigma.utils.colors import random_color
 from enigma.utils.database import create_giveaway, get_giveaway_from_message, delete_giveaway
 from enigma.utils.exceptions import DatabaseError
@@ -562,6 +564,44 @@ class Fun(Cog):
             ))
         else:
             await self.bot.debug_log(ctx=ctx, e=error)
+
+    # noinspection SpellCheckingInspection
+    @command(
+        name='randomnumber',
+        brief='Sends random number',
+        description='You can provide maximun and minimum number to choose.',
+        usage='[max] [min]',
+        aliases=['randomnum', 'randnumber', 'randnum'],
+        enabled=not in_production()
+    )
+    async def randomnumber(self, ctx: Context, max_: int = 10, min_: int = 1):
+        nums = list(range(min_, max_ + 1))
+        if len(nums) == 0:
+            await ctx.send(embed=Embed(
+                title=':x: Invalid argument(s)',
+                description='Please remember, that first argument is `max` and the second is `min`.',
+                color=random_color()
+            ))
+        else:
+            num = choice(nums)
+            url = f'https://numbersapi.p.rapidapi.com/{num}/math'
+            headers = {
+                'x-rapidapi-host': 'numbersapi.p.rapidapi.com',
+                'x-rapidapi-key': rapidapi_settings['key']
+            }
+            querystring = {"fragment": "false", "json": "false"}
+            response = request("GET", url, headers=headers, params=querystring)
+            result: Optional[dict] = json_loads(response.text) if response.status_code == 200 else None
+            em = Embed(
+                title=f':1234: I\'ve chosen {num}',
+                color=random_color()
+            )
+            if result and result['found']:
+                em.add_field(
+                    name='Funfact',
+                    value=f'{result["text"].capitalize()}.'
+                )
+            await ctx.send(embed=em)
 
 
 def setup(bot):
