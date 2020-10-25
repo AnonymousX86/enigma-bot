@@ -3,7 +3,7 @@ from ast import literal_eval
 from asyncio import TimeoutError as WaitTimeout
 from datetime import datetime as d
 from json import loads as json_loads
-from random import choice
+from random import choice, randint
 from typing import List, Union, Optional
 
 from discord import Embed, Forbidden, TextChannel, NotFound, User, Message
@@ -619,6 +619,19 @@ class Fun(Cog):
             title = f':abcd: I\'ve chosen {choice(things)}'
         await ctx.send(embed=Embed(
             title=title,
+            color=random_color()
+        ))
+
+    @command(
+        name='coin',
+        brief='Tosses a coin',
+        descriptiom='O Valley of Plenty...',
+        aliases=['toss'],
+        enabled=in_production()
+    )
+    async def coin(self, ctx: Context):
+        await ctx.send(embed=Embed(
+            title=':small_red_triangle_down: Tails' if randint(1, 2) == 1 else ':small_red_triangle: Heads',
             color=random_color()
         ))
 

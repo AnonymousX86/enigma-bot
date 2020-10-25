@@ -33,6 +33,7 @@ How to send images from imigur [source](https://stackoverflow.com/questions/5704
 - random meme from Reddit
 - random number
 - random choice
+- toss a coin
 ### To do
 - joke
 - slapping

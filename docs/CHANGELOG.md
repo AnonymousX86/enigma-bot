@@ -6,6 +6,7 @@
 #### Added
 - `randomnumber` command.
 - `choice` command.
+- `coin` command.
 
 ## Released
 
