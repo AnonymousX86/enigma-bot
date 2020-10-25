@@ -7,48 +7,52 @@ In February 2020 I've started reading about Discord.py library and I've coded my
 It was very simple bot, it was presenting some useful data for economic browser game.
 Then I wanted to make something bigger and started to code `3N1GM4` bot.
 
-## Functions:
-- All functionalities should get data from SQL databases.
+All functionalities should get data from SQL databases.
 
-###### User profile
-- [x] avatar URL
+## [Admin](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/admin.py)
+### Done
+- ban
+- kick
 
-###### Role playing
-I think cyberpunk will be the best lore with cryptocurrency as virtual money.
-- [ ] quests
-- [ ] virtual wallet
-- [x] daily bonus
+## [Basics](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/basics.py)
+### Done
+- help
+- fake error
+- ping
+- invite
+- info
+### To do
+- creating ticket with reaction
+- creating ticket by sending a message 
 
-###### Support
-- [ ] creating ticket with reaction
-- [ ] creating ticket by sending a message 
+## [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)
+How to send images from imigur [source](https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images).
+### Done
+- giveaway
+- IQ test (pseudorandom)
+- random meme from Reddit
+- random number
+- random choice
+### To do
+- joke
+- slapping
+- psycho test (pseudorandom)
+- random name generator
+- random color
+- 8ball
+- random (or not) image from Imigur
+- notes
+- how to do something
+- curiosities
 
-###### Funny
-- [ ] joke
-- [ ] slap someone or random
-- [ ] psycho test (pseudorandom)
-- [x] IQ test (pseudorandom)
-- [ ] random name generator
-- [ ] random pick
-- [ ] random color
-- [ ] 8ball
-
-###### Images
-[How to source](https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images)
-- [x] random meme from Reddit
-- [ ] random (or not) image from Imigur
-
-###### Reputation
-- [ ] giving reputation to someone (once a day)
-- [ ] best users in guild
-
-###### Other utilities
-- [ ] notes
-- [ ] how to do something
-- [ ] curiosities
-- [x] giveaways
-
-###### Admin purpose
-- [x] ban
-- [x] kick
+## [Profiles](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/profiles.py)
+### Done
+- profile (XP, cash, etc.)
+- daily bonus
+- managing users (owner only)
+- avatar
+### To do
+- quests
+- giving reputation to someone (once a day)
+- best users in guild (by reputation)
 
