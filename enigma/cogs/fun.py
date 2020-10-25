@@ -607,7 +607,7 @@ class Fun(Cog):
         name='choice',
         brief='Helps with choosing',
         usage='<thing1> <thing2> [thingN]',
-        enabled=not in_production()
+        enabled=in_production()
     )
     async def choice(self, ctx: Context, *things):
         breakpoint()
