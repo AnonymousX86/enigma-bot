@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from datetime import date, datetime as d
-from typing import List, Union
+from typing import List, Optional
 
 from sqlalchemy import create_engine, Column, Integer, Date, BigInteger, Text
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -54,23 +55,26 @@ def get_single_user(user_id: int) -> User:
         session.close()
 
 
-def create_profile(user_id: int) -> User:
+def create_profile(user_id: int) -> Optional[User]:
     """Creates user profile in database.
 
     :param user_id: User ID to put in.
     :return: New user object.
     """
     session = _Session()
+    new_user = User(
+        user_id=user_id,
+        user_xp=0,
+        user_cash=0,
+        last_daily=date(day=1, month=1, year=1970)
+    )
     try:
-        new_user = User(
-            user_id=user_id,
-            user_xp=0,
-            user_cash=0,
-            last_daily=date(day=1, month=1, year=1970)
-        )
         session.add(new_user)
         session.commit()
         return new_user
+    except IntegrityError:
+        session.rollback()
+        return None
     finally:
         session.close()
 
@@ -128,7 +132,7 @@ class Giveaway(Base):
     data = Column(Text)
 
 
-def get_giveaway_from_message(message_id: int) -> Union[Giveaway, None]:
+def get_giveaway_from_message(message_id: int) -> Optional[Giveaway]:
     session = _Session()
     try:
         return session.query(Giveaway).filter_by(message_id=message_id).one_or_none()
@@ -136,7 +140,7 @@ def get_giveaway_from_message(message_id: int) -> Union[Giveaway, None]:
         session.close()
 
 
-def create_giveaway(message_id: int, guild_id: int, data: str) -> Giveaway:
+def create_giveaway(message_id: int, guild_id: int, data: str) -> Optional[Giveaway]:
     """Creates giveaway in database.
 
     :param message_id: Giveaway's message ID.
@@ -144,16 +148,20 @@ def create_giveaway(message_id: int, guild_id: int, data: str) -> Giveaway:
     :param data: String representation of data.
     :return: New Giveaway object.
     """
+    create_guild(guild_id)
     session = _Session()
+    new_giveaway = Giveaway(
+        message_id=message_id,
+        guild_id=guild_id,
+        data=data
+    )
     try:
-        new_giveaway = Giveaway(
-            message_id=message_id,
-            guild_id=guild_id,
-            data=data
-        )
         session.add(new_giveaway)
         session.commit()
         return new_giveaway
+    except IntegrityError:
+        session.rollback()
+        return None
     finally:
         session.close()
 
@@ -164,5 +172,26 @@ def delete_giveaway(message_id: int) -> bool:
         result = bool(session.query(Giveaway).filter_by(message_id=message_id).delete())
         session.commit()
         return result
+    finally:
+        session.close()
+
+
+class Guild(Base):
+    __tablename__ = 'guilds'
+    guild_id = Column(BigInteger, primary_key=True)
+
+
+def create_guild(guild_id: int) -> Optional[Guild]:
+    session = _Session()
+    new_guild = Guild(
+        guild_id=guild_id
+    )
+    try:
+        session.add(new_guild)
+        session.commit()
+        return new_guild
+    except IntegrityError:
+        session.rollback()
+        return None
     finally:
         session.close()
