@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## Released
+
 ### v0.4
 #### Added
 - `randomnumber` command.
@@ -9,8 +11,6 @@
 - `coin` command.
 #### Fixed
 - Communication with database is now more safe.
-
-## Released
 
 ### v0.3-hotfix
 #### Fixed
