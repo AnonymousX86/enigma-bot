@@ -9,10 +9,13 @@ Then I wanted to make something bigger and started to code `3N1GM4` bot.
 
 All functionalities should get data from SQL databases.
 
+# TODO - Add links to commands, leading to code
+
 ## [Admin](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/admin.py)
 ### Done
 - ban
 - kick
+### Logging
 
 ## [Basics](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/basics.py)
 ### Done
@@ -23,7 +26,8 @@ All functionalities should get data from SQL databases.
 - info
 ### To do
 - creating ticket with reaction
-- creating ticket by sending a message 
+- creating ticket by sending a message
+- changes proposing
 
 ## [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)
 How to send images from imigur [source](https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images).
@@ -56,4 +60,11 @@ How to send images from imigur [source](https://stackoverflow.com/questions/5704
 - quests
 - giving reputation to someone (once a day)
 - best users in guild (by reputation)
+- checking user ()
+
+## [GameSeeker](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/game_seeker.py)
+### To do
+- game hosting
+  - sending message to every set channel
+  - interactive menu
 

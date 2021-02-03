@@ -57,8 +57,9 @@ async def on_ready():
     cogs = (f'enigma.cogs.{name}' for name in [
         'admin',
         'basics',
+        'fun',
+        'game_seeker',
         'profiles',
-        'fun'
     ])
     for cog in cogs:
         try:
