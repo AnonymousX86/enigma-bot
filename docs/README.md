@@ -7,13 +7,15 @@ In February 2020 I've started reading about Discord.py library and I've coded my
 It was very simple bot, it was presenting some useful data for economic browser game.
 Then I wanted to make something bigger and started to code `3N1GM4` bot.
 
-## [Admin](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/admin.py)
+## Commands list
+
+### [Admin](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/admin.py)
 
 - `ban`
 - `kick`
 
 
-## [Basics](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/basics.py)
+### [Basics](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/basics.py)
 
 - `help`
 - `error`
@@ -22,7 +24,7 @@ Then I wanted to make something bigger and started to code `3N1GM4` bot.
 - `info`
 
 
-## [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)
+### [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)
 How to send images from imigur [source](https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images).
 
 - `giveaway`
@@ -33,12 +35,12 @@ How to send images from imigur [source](https://stackoverflow.com/questions/5704
 - `coin`
 
 
-## [GameSeeker](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/game_seeker.py)
+### [GameSeeker](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/game_seeker.py)
+
+_Work in progress..._
 
 
-
-
-## [Profiles](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/profiles.py)
+### [Profiles](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/profiles.py)
 
 - `profile`
 - `daily`
