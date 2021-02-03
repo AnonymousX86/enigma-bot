@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 from logging import basicConfig, INFO, getLogger
 
-from discord import Status, Game, Member, Intents
+from discord import Status, Game, Member, Intents, Guild
 from discord.ext.commands import Bot, Context
 from rich.logging import RichHandler
 
 from enigma.settings import general_settings, debug_settings, version
 from enigma.utils.debug import debug_message, debug_embed
 
+
+from enigma.utils.emebds.core import SuccessEmbed
+
 # noinspection PyArgumentList
+from enigma.utils.emebds.misc import JoinGuildEmbed
+
 basicConfig(
     level='INFO',
     format='%(message)s',
@@ -33,15 +38,21 @@ bot = Bot(
 )
 
 
+async def update_presence(bot_: Bot):
+    status = Status.online
+    game = Game(name=f'Cracking enigma codes in {len(bot_.guilds)} servers')
+    await bot_.change_presence(status=status, activity=game)
+
+
 @bot.event
 async def on_ready():
     # Output login
     log.info('Logged on as: {0} ({0.id})'.format(bot.user))
+    guilds = len(bot.guilds)
+    log.info('Guilds count: ', guilds)
 
     # Change presence
-    status = Status.online
-    game = Game(name='Cracking enigma codes')
-    await bot.change_presence(status=status, activity=game)
+    await update_presence(bot)
 
     # Logging errors to specific channel
     # noinspection PyShadowingNames
@@ -78,6 +89,22 @@ async def on_ready():
             log.warning(f'Can\'t load: {cog}')
 
     log.info('On ready - done!')
+
+
+@bot.event
+async def on_guild_join(guild: Guild):
+    log.info(f'Joined guild: {str(guild)}')
+    await update_presence(bot)
+    await bot.get_channel(debug_settings['channel']).send(embed=JoinGuildEmbed(
+        author=bot.get_user(bot.owner_id),
+        guild=guild
+    ))
+
+
+@bot.event
+async def on_guild_remove(guild: Guild):
+    log.info(f'Removed from guild: {str(guild)}')
+    await update_presence(bot)
 
 
 # Start the bot
