@@ -137,7 +137,7 @@ class Basics(Cog):
         enabled=in_production()
     )
     async def ping(self, ctx: Context):
-        await ctx.send(embed=ErrorEmbed(
+        await ctx.send(embed=SuccessEmbed(
             author=ctx.author,
             title=':ping_pong: Pong!',
             description=f'Current latency is: {round(self.bot.latency * 1000)}ms'
