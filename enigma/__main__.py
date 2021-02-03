@@ -7,13 +7,9 @@ from rich.logging import RichHandler
 
 from enigma.settings import general_settings, debug_settings, version
 from enigma.utils.debug import debug_message, debug_embed
-
-
-from enigma.utils.emebds.core import SuccessEmbed
-
-# noinspection PyArgumentList
 from enigma.utils.emebds.misc import JoinGuildEmbed
 
+# noinspection PyArgumentList
 basicConfig(
     level='INFO',
     format='%(message)s',
