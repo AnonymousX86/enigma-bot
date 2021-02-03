@@ -6,7 +6,7 @@ from discord.ext.commands import Bot, Context
 from rich.logging import RichHandler
 
 from enigma.settings import general_settings, debug_settings, version
-from enigma.utils.debug import debug_message, debug_embed
+from enigma.utils.emebds.errors import DebugEmbed
 from enigma.utils.emebds.misc import JoinGuildEmbed
 
 # noinspection PyArgumentList
@@ -55,8 +55,8 @@ async def on_ready():
     async def debug_log(ctx: Context = None, e: Exception = None, member: Member = None):
         debug_channel = bot.get_channel(debug_settings['channel'])
         await debug_channel.send(
-            debug_message(),
-            embed=debug_embed(
+            embed=DebugEmbed(
+                author=bot.get_user(bot.owner_id),
                 ctx=ctx,
                 e=e,
                 member=member
