@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from asyncio import sleep
 
-from discord import Embed, Member, NotFound, HTTPException
+from discord import Embed, Member, NotFound, HTTPException, User
 from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, MissingPermissions, \
     BotMissingPermissions, UserNotFound, Context, cooldown, BucketType, CommandOnCooldown
 from discord.utils import get
