@@ -77,8 +77,8 @@ class Admin(Cog):
             status = 'User not found!'
 
         else:
-            status = 'Unknown error has occurred!'
             await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
+            raise error
 
         await ctx.send(embed=ErrorEmbed(
             author=ctx.author,
@@ -155,8 +155,8 @@ class Admin(Cog):
             status = 'User not found!'
 
         else:
-            status = 'Unknown error has occurred!'
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.message.author)
+            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
+            raise error
 
         await ctx.send(embed=Embed(
             title=':rolling_eyes: Whoops!',
