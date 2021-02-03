@@ -25,7 +25,7 @@ class Admin(Cog):
     )
     @has_permissions(ban_members=True)
     @bot_has_permissions(ban_members=True)
-    async def ban(self, ctx: Context, member: Member = None, reason: str = None):
+    async def ban(self, ctx: Context, member: Member = None, *, reason: str = None):
         # No user provided
         if not member:
             await ctx.send(embed=ErrorEmbed(
@@ -100,7 +100,7 @@ class Admin(Cog):
     )
     @has_permissions(kick_members=True)
     @bot_has_permissions(kick_members=True)
-    async def kick(self, ctx: Context, member: Member = None, reason: str = None):
+    async def kick(self, ctx: Context, member: Member = None, *, reason: str = None):
         em = ErrorEmbed
 
         # No user provided
