@@ -7,6 +7,7 @@
 - GitHub pages.
 - Discord support server. ([Invite link](https://discord.gg/SRdmrPpf2z))
 - `suggest` command.
+- `prune` command.
 #### Changed
 - Embeds have now fixed colors, based on message type.
 - `error` cooldown increased from 30 seconds to 60.

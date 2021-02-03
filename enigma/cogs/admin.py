@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
-from discord import Embed, Member
+from asyncio import sleep
+
+from discord import Embed, Member, NotFound, HTTPException
 from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, MissingPermissions, \
-    BotMissingPermissions, UserNotFound, Context
+    BotMissingPermissions, UserNotFound, Context, cooldown, BucketType, CommandOnCooldown
 from discord.utils import get
 
 from enigma.settings import in_production
 from enigma.utils.colors import random_color
 from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed
+from enigma.utils.emebds.errors import CooldownEmbed
+from enigma.utils.emebds.misc import PleaseWaitEmbed
 
 
 class Admin(Cog):
@@ -162,6 +166,71 @@ class Admin(Cog):
             title=':rolling_eyes: Whoops!',
             description=status,
             color=random_color()
+        ))
+
+    @has_permissions(manage_messages=True)
+    @bot_has_permissions(manage_messages=True, read_message_history=True)
+    @cooldown(1, 30, BucketType.guild)
+    @command(
+        name='prune',
+        biref='Clears messages',
+        descriptions='Clears last X messages in current channel',
+        help='You can delete 20 messages at once.',
+        usage='[amount]',
+        enabled=not in_production()
+    )
+    async def prune(self, ctx: Context, amount: int = 0):
+        if amount < 1:
+            return await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: Arguments error',
+                description='Please provide amount of messages to prune.'
+            ))
+        elif amount > 20:
+            return await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: Too many messages',
+                description='Please provide amount less than 20.'
+            ))
+        deleted = 0
+        msg = await ctx.send(embed=PleaseWaitEmbed(author=ctx.author))
+        await ctx.message.delete()
+        async for m in ctx.channel.history(limit=amount + 1):
+            if m.id == msg.id:
+                continue
+            try:
+                await m.delete()
+            except NotFound or HTTPException:
+                pass
+            else:
+                deleted += 1
+        if deleted < 1:
+            await msg.edit(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: Deleting failed'
+            ))
+        await msg.edit(embed=SuccessEmbed(
+            author=ctx.author,
+            title=f':wastebasket: Successfully deleted {deleted} message{"s" if deleted > 1 else ""}.'
+        ))
+        await sleep(3)
+        await msg.delete()
+
+    @prune.error
+    async def prune_error(self, ctx: Context, error: Exception):
+        if isinstance(error, MissingPermissions):
+            st = 'You don\'t have **manage messages** permissions!'
+        elif isinstance(error, BotMissingPermissions):
+            st = 'I don\'t have **manage messages** or **read message history** permissions!'
+        elif isinstance(error, CommandOnCooldown):
+            return await ctx.send(embed=CooldownEmbed(author=ctx.author))
+        else:
+            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
+            raise error
+        await ctx.send(embed=ErrorEmbed(
+            author=ctx.author,
+            title=':x: Whoops!',
+            description=st
         ))
 
     # TODO - Logging system
