@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from builtins import BaseException
 from logging import basicConfig, INFO, getLogger
 
 from discord import Status, Game, Member, Intents
@@ -46,7 +45,7 @@ async def on_ready():
 
     # Logging errors to specific channel
     # noinspection PyShadowingNames
-    async def debug_log(ctx: Context = None, e: BaseException = None, member: Member = None):
+    async def debug_log(ctx: Context = None, e: Exception = None, member: Member = None):
         debug_channel = bot.get_channel(debug_settings['channel'])
         await debug_channel.send(
             debug_message(),
@@ -56,6 +55,7 @@ async def on_ready():
                 member=member
             )
         )
+
     bot.debug_log = debug_log
 
     # Custom values
@@ -73,7 +73,7 @@ async def on_ready():
         try:
             bot.load_extension(cog)
             log.debug(f'Loaded: {cog}')
-        except BaseException as e:
+        except Exception as e:
             await debug_log(e=e)
             log.warning(f'Can\'t load: {cog}')
 
