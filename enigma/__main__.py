@@ -4,12 +4,20 @@ from logging import basicConfig, INFO, getLogger
 
 from discord import Status, Game, Member, Intents
 from discord.ext.commands import Bot, Context
+from rich.logging import RichHandler
 
 from enigma.settings import general_settings, debug_settings, version
 from enigma.utils.debug import debug_message, debug_embed
 
-basicConfig(level=INFO)
+# noinspection PyArgumentList
+basicConfig(
+    level='INFO',
+    format='%(message)s',
+    datefmt='[%x]',
+    handlers=[RichHandler()]
+)
 getLogger('sqlalchemy.engine').setLevel(INFO)
+log = getLogger('rich')
 
 bot = Bot(
     command_prefix='>',
@@ -29,7 +37,7 @@ bot = Bot(
 @bot.event
 async def on_ready():
     # Output login
-    print('Logged on as: {0} ({0.id})'.format(bot.user))
+    log.info('Logged on as: {0} ({0.id})'.format(bot.user))
 
     # Change presence
     status = Status.online
@@ -54,22 +62,22 @@ async def on_ready():
     bot.version = version
 
     # Load cogs
-    cogs = (f'enigma.cogs.{name}' for name in [
+    cogs = (f'enigma.cogs.{name}' for name in (
         'admin',
         'basics',
         'fun',
         'game_seeker',
         'profiles',
-    ])
+    ))
     for cog in cogs:
         try:
             bot.load_extension(cog)
-            print(f'Loaded: {cog}')
+            log.debug(f'Loaded: {cog}')
         except BaseException as e:
             await debug_log(e=e)
-            print(f'Can\'t load: {cog}')
+            log.warning(f'Can\'t load: {cog}')
 
-    print('Everything done!')
+    log.info('On ready - done!')
 
 
 # Start the bot
