@@ -185,9 +185,9 @@ class Basics(Cog):
             name='More about bot',
             value='Version: *v{0}*.\n'
                   'Author: *{1.display_name}#{1.discriminator}*.'.format(
-                self.bot.version,
-                self.bot.get_user(self.bot.owner_id)
-            ),
+                        self.bot.version,
+                        self.bot.get_user(self.bot.owner_id)
+                    ),
             inline=False
         ))
 
