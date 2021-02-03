@@ -3,9 +3,6 @@
 ## [Unreleased]
 
 #### Added
-- Dependabot.
-- GitHub pages.
-- Discord support server. ([Invite link](https://discord.gg/SRdmrPpf2z))
 - `suggest` command.
 - `prune` command.
 #### Changed
