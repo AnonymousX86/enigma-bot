@@ -20,8 +20,7 @@ class Admin(Cog):
     @command(
         name='ban',
         brief='Bans user',
-        description='You can provide user ID or mention someone',
-        usage='<user>',
+        usage='<user> [reason]',
         enabled=in_production()
     )
     @has_permissions(ban_members=True)
@@ -96,7 +95,7 @@ class Admin(Cog):
         name='kick',
         brief='Kicks user',
         description='You can provide user ID or mention someone',
-        usage='<user>',
+        usage='<user> [reason]',
         enabled=in_production()
     )
     @has_permissions(kick_members=True)
