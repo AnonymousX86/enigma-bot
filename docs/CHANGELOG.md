@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+#### Added
+- Dependabot.
+- GitHub pages.
+#### Changed
+- Embeds have now fixed colors, based on message type.
+
 ## Released
 
 ### v0.4
