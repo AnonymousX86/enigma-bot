@@ -45,3 +45,10 @@ class RemoveGuildEmbed(MiscEmbed):
             name='NAME',
             value=guild.name
         )
+
+
+class SuggestionEmbed(MiscEmbed):
+    def __init__(self, author: User, message: str, **kwargs):
+        super().__init__(author, **kwargs)
+        self.title = ':raised_hand: New suggestion'
+        self.description = f'```\n{message}\n```'

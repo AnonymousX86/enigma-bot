@@ -23,6 +23,7 @@ version = '0.4'
 general_settings = {
     'bot_token': str(get('BOT_TOKEN')),
     'owner_id': int(get('OWNER_ID')),
+    'suggestions_channel': int(get('SUGGESTION_CHANNEL'))
 }
 
 database_settings = {

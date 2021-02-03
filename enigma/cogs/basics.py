@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+from discord import TextChannel
 from discord.ext.commands import command, Cog, has_permissions, MissingPermissions, Context, cooldown, BucketType, \
     CommandOnCooldown, CommandError, Command
 
-from enigma.settings import in_production
+from enigma.settings import in_production, general_settings
 from enigma.utils.emebds.core import InfoEmbed, ErrorEmbed, SuccessEmbed
+from enigma.utils.emebds.errors import CooldownEmbed
+from enigma.utils.emebds.misc import SuggestionEmbed
 from enigma.utils.exceptions import NoError
 
 
@@ -192,9 +195,59 @@ class Basics(Cog):
             inline=False
         ))
 
-    # TODO - Ticket system
+    @cooldown(1, 120, BucketType.user)
+    @command(
+        name='suggest',
+        brief='Suggest a change',
+        description='Ask dev(s) for a functionality.',
+        help='Keep your message between 25 and 120 characters.',
+        usage='<message>',
+        aliases=['change'],
+        enabled=not in_production()
+    )
+    async def change(self, ctx: Context, *, message: str = None):
+        if not message:
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: Whoops!',
+                description='You forget to add a message.'
+            ))
+        elif len(message) < 25:
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: Whoops!',
+                description='Suggestion is too short. Write more, please.'
+            ))
+        elif len(message) > 120:
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: Whoops!',
+                description='Suggestion is too long. Write less, please.'
+            ))
+        else:
+            channel: TextChannel = self.bot.get_channel(general_settings['suggestions_channel'])
+            msg = await channel.send(embed=SuggestionEmbed(
+                author=ctx.author,
+                message=message
+            ))
+            await ctx.send(embed=SuccessEmbed(
+                author=ctx.author,
+                title=':thumbsup: Thanks for suggestion!',
+                description=f'Check your suggestion here: {channel.mention} or click'
+                            f' [here]({msg.jump_url} "Direct message link").'
+            ))
+            await msg.add_reaction(emoji='👍')
+            await msg.add_reaction(emoji='👎')
 
-    # TODO - Changes proposing
+    @change.error
+    async def change_error(self, ctx: Context, error: Exception):
+        if isinstance(error, CommandOnCooldown):
+            await ctx.send(embed=CooldownEmbed(author=ctx.author))
+        else:
+            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.message.author)
+            raise error
+
+    # TODO - Ticket system
 
 
 def setup(bot):
