@@ -126,12 +126,10 @@ class Basics(Cog):
                 description='Only those can use this command'
             ))
         elif isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=ErrorEmbed(
-                author=ctx.author,
-                title=':x: Command\'s on cooldown'
-            ))
+            await ctx.send(embed=CooldownEmbed(author=ctx.author))
         else:
             await self.bot.debug_log(ctx=ctx, e=error, member=ctx.message.author)
+            raise error
 
     @command(
         name='ping',
