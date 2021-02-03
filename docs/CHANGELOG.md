@@ -5,6 +5,7 @@
 #### Added
 - Dependabot.
 - GitHub pages.
+- Discord support server. ([Invite link](https://discord.gg/SRdmrPpf2z))
 #### Changed
 - Embeds have now fixed colors, based on message type.
 
