@@ -59,8 +59,10 @@ class Admin(Cog):
             else:
                 await ctx.send(embed=SuccessEmbed(
                     author=ctx.author,
-                    title=f':hammer: Banning {get(ctx.guild.members, id=member.id)}',
-                    description=f'Reason:```\n{str(reason)}\n```'
+                    title=f':hammer: Banning {get(ctx.guild.members, id=member.id)}'
+                ).add_field(
+                    name='REASON',
+                    value=str(reason)
                 ))
                 await member.ban(reason=reason)
 
@@ -146,7 +148,6 @@ class Admin(Cog):
     @has_permissions(kick_members=True)
     @bot_has_permissions(kick_members=True)
     async def kick(self, ctx: Context, member: Member = None, *, reason: str = None):
-        em = ErrorEmbed
         # No user provided
         if not member:
             st = (
@@ -173,13 +174,16 @@ class Admin(Cog):
             )
         # No errors
         else:
-            em = SuccessEmbed
-            st = (
-                f':boot: I\'m kicking {get(ctx.guild.members, id=member.id)} out',
-                f'Reason:\n```{str(reason)}\n```'
-            )
+            await ctx.send(embed=SuccessEmbed(
+                author=ctx.author,
+                title=f':boot: I\'m kicking {get(ctx.guild.members, id=member.id)} out'
+            ).add_field(
+                name='REASON',
+                value=str(reason)
+            ))
             await member.kick(reason=reason)
-        await ctx.send(embed=em(
+            return
+        await ctx.send(embed=ErrorEmbed(
             author=ctx.author,
             title=st[0],
             description=st[1]
