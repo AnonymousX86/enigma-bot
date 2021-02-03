@@ -25,7 +25,6 @@ Then I wanted to make something bigger and started to code `3N1GM4` bot.
 
 
 ### [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)
-How to send images from imigur [source](https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images).
 
 - `giveaway`
 - `iq`

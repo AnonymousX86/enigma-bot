@@ -26,6 +26,9 @@ class Fun(Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    # How to send images from imigur
+    # https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images
+
     @has_permissions(manage_guild=True)
     @cooldown(1, 30, BucketType.guild)
     @command(
