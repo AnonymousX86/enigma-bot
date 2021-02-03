@@ -7,8 +7,6 @@ In February 2020 I've started reading about Discord.py library and I've coded my
 It was very simple bot, it was presenting some useful data for economic browser game.
 Then I wanted to make something bigger and started to code `3N1GM4` bot.
 
-All functionalities should get data from SQL databases.
-
 [comment]: <> (TODO - Add links to commands, leading to code) 
 
 ## [Admin](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/admin.py)
