@@ -1,6 +1,8 @@
 # 3N1GM4
 Multiple purpose Discord bot, developed by: **Anonymous_x86#7296**.
 
+**Check official support server [here](https://discord.gg/SRdmrPpf2z "3N1GMA Support Server").**
+
 ## About
 I've always wanted to code my own bot. I've never been sure what kind of bot exactly I want to code.
 In February 2020 I've started reading about Discord.py library and I've coded my first Discord bot.
