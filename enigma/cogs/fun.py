@@ -387,8 +387,9 @@ class Fun(Cog):
                                         win_em.add_field(
                                             name=item,
                                             value='- ' + '\n- '.join(map(
-                                                lambda x: x.mention +
-                                                str(((" *x" + str(winners_f[x])) + "*") if winners_f[x] > 1 else ""),
+                                                lambda x: x.mention + str(
+                                                    ((" *x" + str(winners_f[x])) + "*") if winners_f[x] > 1 else ""
+                                                ),
                                                 set(sorted(winners[item], key=lambda x: x.display_name))
                                             ))
                                         )
