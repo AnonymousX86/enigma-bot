@@ -1,4 +1,4 @@
-# -*- coding: ut-8 -*-
+# -*- coding: utf-8 -*-
 from discord import User
 
 from enigma.utils.emebds.core import ErrorEmbed
