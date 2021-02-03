@@ -12,10 +12,14 @@ All functionalities should get data from SQL databases.
 [comment]: <> (TODO - Add links to commands, leading to code) 
 
 ## [Admin](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/admin.py)
+
 ### Done
 - ban
 - kick
-### Logging
+
+### To do
+- logging
+
 
 ## [Basics](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/basics.py)
 
@@ -30,6 +34,7 @@ All functionalities should get data from SQL databases.
 - creating ticket with reaction
 - creating ticket by sending a message
 - changes proposing
+
 
 ## [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)
 How to send images from imigur [source](https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images).
@@ -54,6 +59,7 @@ How to send images from imigur [source](https://stackoverflow.com/questions/5704
 - how to do something
 - curiosities
 
+
 ## [Profiles](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/profiles.py)
 
 ### Done
@@ -67,6 +73,7 @@ How to send images from imigur [source](https://stackoverflow.com/questions/5704
 - giving reputation to someone (once a day)
 - best users in guild (by reputation)
 - checking user ()
+
 
 ## [GameSeeker](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/game_seeker.py)
 
