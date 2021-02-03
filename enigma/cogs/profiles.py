@@ -107,6 +107,7 @@ class Profiles(Cog):
         enabled=not in_production()
     )
     async def reputation(self, ctx: Context):
+        # TODO - Reputation
         await ctx.send(embed=DevelopmentEmbed(author=ctx.author))
 
     @command(
@@ -195,6 +196,14 @@ class Profiles(Cog):
             ))
         else:
             await self.bot.debug_log(ctx=ctx, e=error)
+
+    # TODO - Notes
+
+    # TODO - Quests
+
+    # TODO - Top reputations
+
+    # TODO - Who is
 
 
 def setup(bot):

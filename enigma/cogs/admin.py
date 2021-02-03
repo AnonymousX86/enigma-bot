@@ -164,6 +164,8 @@ class Admin(Cog):
             color=random_color()
         ))
 
+    # TODO - Logging system
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))

@@ -191,6 +191,10 @@ class Basics(Cog):
             inline=False
         ))
 
+    # TODO - Ticket system
+
+    # TODO - Changes proposing
+
 
 def setup(bot):
     bot.add_cog(Basics(bot))

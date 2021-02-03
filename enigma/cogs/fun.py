@@ -620,6 +620,22 @@ class Fun(Cog):
             title=':small_red_triangle_down: Tails' if randint(1, 2) == 1 else ':small_red_triangle: Heads'
         ))
 
+    # TODO - Joke
+
+    # TODO - Slapping
+
+    # TODO - Psycho test
+
+    # TODO - Random name generator
+
+    # TODO - Random color
+
+    # TODO - 8ball
+
+    # TODO - How to
+
+    # TODO - Curiosities/funfacts
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
