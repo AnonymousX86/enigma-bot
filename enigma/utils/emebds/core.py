@@ -23,7 +23,7 @@ class ErrorEmbed(CustomEmbed):
 class SuccessEmbed(CustomEmbed):
     def __init__(self, author: User, **kwargs):
         super().__init__(author, **kwargs)
-        self.colour = Color.red()
+        self.colour = Color.green()
 
 
 class InfoEmbed(CustomEmbed):
