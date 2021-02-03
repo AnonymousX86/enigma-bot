@@ -187,11 +187,8 @@ class Basics(Cog):
             inline=False
         ).add_field(
             name='More about bot',
-            value='Version: `{0}`.\n'
-                  'Author: `{1.display_name}#{1.discriminator}`.'.format(
-                        self.bot.version,
-                        self.bot.get_user(self.bot.owner_id)
-                    ),
+            value=f'Version: `{self.bot.version}`.\n'
+                  f'Author: `{str(self.bot.get_user(self.bot.owner_id))}`.',
             inline=False
         ))
 
