@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from discord import Embed
 from discord.ext.commands import command, Cog, has_permissions, MissingPermissions, Context, cooldown, BucketType, \
     CommandOnCooldown, CommandError, Command
 
 from enigma.settings import in_production
-from enigma.utils.colors import random_color
-from enigma.utils.emebds.core import InfoEmbed, ErrorEmbed
+from enigma.utils.emebds.core import InfoEmbed, ErrorEmbed, SuccessEmbed
 from enigma.utils.exceptions import NoError
 
 
@@ -176,18 +174,21 @@ class Basics(Cog):
             name='Links',
             value='\u00b7 [GitHub homepage](https://github.com/AnonymousX86/Enigma-Bot)\n'
                   '\u00b7 [Changelog](https://github.com/AnonymousX86/Enigma-Bot/'
-                  'blob/master/docs/CHANGELOG.md#enigma-bot-changelog)\n'
+                  'blob/master/docs/CHANGELOG.md#enigma-bot-changelog)\n',
+            inline=False
         ).add_field(
-            name='Additional info',
-            value='If you\'d like to help to develop this bot just make a pull request on GitHub or'
-                  ' write to bot main dev.'
+            name='Support',
+            value='If you\'d like to help to develop this bot please check GitHub. (Link above)\n'
+                  'And if **you** need support',
+            inline=False
         ).add_field(
             name='More about bot',
             value='Version: *v{0}*.\n'
                   'Author: *{1.display_name}#{1.discriminator}*.'.format(
-                      self.bot.version,
-                      self.bot.get_user(self.bot.owner_id)
-                  )
+                self.bot.version,
+                self.bot.get_user(self.bot.owner_id)
+            ),
+            inline=False
         ))
 
 
