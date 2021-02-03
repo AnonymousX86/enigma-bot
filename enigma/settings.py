@@ -17,7 +17,7 @@ def in_production() -> bool:
     return not in_dev()
 
 
-version = '0.4'
+version = '0.5'
 
 
 general_settings = {

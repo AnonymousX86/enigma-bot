@@ -2,14 +2,15 @@
 
 ## [Unreleased]
 
+
+## Released
+### [v0.5] - 03.02.2021
 #### Added
 - `suggest` command.
 - `prune` command.
 #### Changed
 - Embeds have now fixed colors, based on message type.
 - `error` cooldown increased from 30 seconds to 60.
-
-## Released
 
 ### [v0.4] - 25.10.2020
 #### Added

@@ -15,6 +15,7 @@ Then I wanted to make something bigger and started to code **3N1GM4** bot.
 
 - `ban`
 - `kick`
+- `prune`
 
 
 ### [Basics](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/basics.py)
@@ -24,6 +25,7 @@ Then I wanted to make something bigger and started to code **3N1GM4** bot.
 - `ping`
 - `invite`
 - `info`
+- `suggest`
 
 
 ### [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)

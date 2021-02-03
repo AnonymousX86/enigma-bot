@@ -177,7 +177,7 @@ class Admin(Cog):
         descriptions='Clears last X messages in current channel',
         help='You can delete 20 messages at once.',
         usage='[amount]',
-        enabled=not in_production()
+        enabled=in_production()
     )
     async def prune(self, ctx: Context, amount: int = 0):
         if amount < 1:

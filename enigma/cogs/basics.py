@@ -198,7 +198,7 @@ class Basics(Cog):
         help='Keep your message between 25 and 120 characters.',
         usage='<message>',
         aliases=['change'],
-        enabled=not in_production()
+        enabled=in_production()
     )
     async def change(self, ctx: Context, *, message: str = None):
         if not message:
