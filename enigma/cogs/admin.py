@@ -33,7 +33,6 @@ class Admin(Cog):
                 title=':face_with_raised_eyebrow: Who do I need to ban?',
                 description='You\'ve not provided a victim',
             ))
-
         else:
             # User is trying to ban yourself
             if member.id == ctx.message.author.id:
@@ -42,7 +41,6 @@ class Admin(Cog):
                     title=':clown: You can\'t ban yourself',
                     description='Ask someone to help you commit sepuku or something...',
                 ))
-
             # User is trying to ban guild owner
             elif member.id == ctx.guild.owner.id:
                 await ctx.send(embed=ErrorEmbed(
@@ -50,7 +48,6 @@ class Admin(Cog):
                     title=':crown: You can\'t ban guild owner',
                     description='He\'s the almighty one, sorry'
                 ))
-
             # User is trying to ban the bot
             elif member.id == self.bot.user.id:
                 await ctx.send(embed=ErrorEmbed(
@@ -58,7 +55,6 @@ class Admin(Cog):
                     title=':zany_face: I can\'t ban myself',
                     description='Even if I would I can\'t, sorry'
                 ))
-
             # No errors
             else:
                 await ctx.send(embed=SuccessEmbed(
@@ -151,35 +147,30 @@ class Admin(Cog):
     @bot_has_permissions(kick_members=True)
     async def kick(self, ctx: Context, member: Member = None, *, reason: str = None):
         em = ErrorEmbed
-
         # No user provided
         if not member:
             st = (
                 ':cowboy: Who do I need to kick round the clock?',
                 'You\'ve not provided a victim'
             )
-
         # User is trying to ban yourself
         elif member.id == ctx.author.id:
             st = (
                 ':man_facepalming: No... That\'s not how mafia works',
                 'If you want to leave, do this, but don\'t try to kick yourself, that\'s stupid'
             )
-
         # User is trying to ban guild owner
         elif member.id == ctx.guild.owner.id:
             st = (
                 ':oncoming_police_car: Wait, that\'s illegal',
                 'You can\'t kick the police officer'
             )
-
         # User is trying to ban the bot
         elif member.id == self.bot.user.id:
             st = (
                 ':face_with_symbols_over_mouth: NO',
                 'I won\'t leave this guild even if you want to'
             )
-
         # No errors
         else:
             em = SuccessEmbed
@@ -188,7 +179,6 @@ class Admin(Cog):
                 f'Reason:\n```{str(reason)}\n```'
             )
             await member.kick(reason=reason)
-
         await ctx.send(embed=em(
             author=ctx.author,
             title=st[0],
@@ -199,17 +189,13 @@ class Admin(Cog):
     async def kick_error(self, ctx: Context, error: Exception):
         if isinstance(error, MissingPermissions):
             status = 'You don\'t have **kick** permissions!'
-
         elif isinstance(error, BotMissingPermissions):
             status = 'I don\' have **kick** permissions!'
-
         elif isinstance(error, UserNotFound):
             status = 'User not found!'
-
         else:
             await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
             raise error
-
         await ctx.send(embed=Embed(
             title=':rolling_eyes: Whoops!',
             description=status,
