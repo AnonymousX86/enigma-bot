@@ -114,7 +114,7 @@ class Basics(Cog):
         await ctx.send(embed=ErrorEmbed(
             author=ctx.author,
             title=':exclamation: Raised `NoError`',
-            description='Bot\'s owner should be notified'
+            description='Bot\'s owner should be notified.'
         ))
 
     @error_cmd.error
