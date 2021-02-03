@@ -1,6 +1,8 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+#### Added
+- `unban` command.
 
 
 ## Released

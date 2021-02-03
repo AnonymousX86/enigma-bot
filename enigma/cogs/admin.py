@@ -89,7 +89,56 @@ class Admin(Cog):
             description=status
         ))
 
-    # TODO - unban command
+    @has_permissions(ban_members=True)
+    @bot_has_permissions(ban_members=True)
+    @command(
+        name='unban',
+        brief='Unbans user',
+        help='Because user of course isn\'t in server, provide user\'s name or ID.',
+        uasge='<user> [reason]',
+        enabled=not in_production()
+    )
+    async def unban(self, ctx: Context, user: User = None, *, reason: str = None):
+        if not user:
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: User not found'
+            ))
+        else:
+            try:
+                await ctx.guild.unban(user, reason=reason)
+            except HTTPException as e:
+                await ctx.send(embed=ErrorEmbed(
+                    author=ctx.author,
+                    title=':x: Can\'t unban user'
+                ))
+                await self.bot.debug_log(ctx=ctx, e=e, user=user)
+            else:
+                await ctx.send(embed=SuccessEmbed(
+                    author=ctx.author,
+                    title=':white_check_mark: User unbanned',
+                    description=f'**{user.display_name}** now can join back to **{ctx.guild.name}**.'
+                ).add_field(
+                    name='REASON',
+                    value=str(reason)
+                ))
+
+    @unban.error
+    async def unban_error(self, ctx: Context, error: Exception):
+        if isinstance(error, MissingPermissions):
+            status = 'You don\'t have **ban** permissions!'
+        elif isinstance(error, BotMissingPermissions):
+            status = 'I don\'t have **ban** permissions!'
+        elif isinstance(error, UserNotFound):
+            status = 'User not found!'
+        else:
+            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
+            raise error
+        await ctx.send(embed=Embed(
+            title=':rolling_eyes: Whoops!',
+            description=status,
+            color=random_color()
+        ))
 
     @command(
         name='kick',
