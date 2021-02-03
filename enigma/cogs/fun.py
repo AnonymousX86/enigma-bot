@@ -6,7 +6,7 @@ from json import loads as json_loads
 from random import choice, randint
 from typing import List, Union, Optional
 
-from discord import Embed, Forbidden, TextChannel, NotFound, User, Message
+from discord import Forbidden, TextChannel, NotFound, User, Message
 from discord.ext.commands import Cog, command, Context, cooldown, BucketType, CommandOnCooldown, has_permissions, \
     MissingPermissions, CommandInvokeError
 from praw import Reddit
@@ -326,14 +326,14 @@ class Fun(Cog):
                                     winners[item[0]] = item_winners
                                 # noinspection SpellCheckingInspection
                                 win_em = SuccessEmbed(
-                                    title=':tada: Winners',
-                                    color=random_color()
+                                    author=ctx.author,
+                                    title=':tada: Winners'
                                 )
 
                                 await info.edit(embed=InfoEmbed(
+                                    author=ctx.author,
                                     title='How you\'d like to group result?',
-                                    description='Please type `item` or `user`.',
-                                    color=random_color()
+                                    description='Please type `item` or `user`.'
                                 ))
                                 try:
                                     response: Message = await self.bot.wait_for('message', check=check, timeout=10)
