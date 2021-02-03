@@ -9,7 +9,7 @@ Then I wanted to make something bigger and started to code `3N1GM4` bot.
 
 All functionalities should get data from SQL databases.
 
-# TODO - Add links to commands, leading to code
+[comment]: <> (TODO - Add links to commands, leading to code) 
 
 ## [Admin](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/admin.py)
 ### Done
@@ -18,12 +18,14 @@ All functionalities should get data from SQL databases.
 ### Logging
 
 ## [Basics](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/basics.py)
+
 ### Done
 - help
 - fake error
 - ping
 - invite
 - info
+
 ### To do
 - creating ticket with reaction
 - creating ticket by sending a message
@@ -31,6 +33,7 @@ All functionalities should get data from SQL databases.
 
 ## [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)
 How to send images from imigur [source](https://stackoverflow.com/questions/57043797/discord-py-getting-random-imgur-images).
+
 ### Done
 - giveaway
 - IQ test (pseudorandom)
@@ -38,6 +41,7 @@ How to send images from imigur [source](https://stackoverflow.com/questions/5704
 - random number
 - random choice
 - toss a coin
+
 ### To do
 - joke
 - slapping
@@ -51,11 +55,13 @@ How to send images from imigur [source](https://stackoverflow.com/questions/5704
 - curiosities
 
 ## [Profiles](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/profiles.py)
+
 ### Done
 - profile (XP, cash, etc.)
 - daily bonus
 - managing users (owner only)
 - avatar
+
 ### To do
 - quests
 - giving reputation to someone (once a day)
@@ -63,6 +69,7 @@ How to send images from imigur [source](https://stackoverflow.com/questions/5704
 - checking user ()
 
 ## [GameSeeker](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/game_seeker.py)
+
 ### To do
 - game hosting
   - sending message to every set channel
