@@ -15,6 +15,9 @@ from requests import request
 from enigma.settings import reddit_settings, in_production, rapidapi_settings
 from enigma.utils.colors import random_color
 from enigma.utils.database import create_giveaway, get_giveaway_from_message, delete_giveaway
+from enigma.utils.emebds.core import ErrorEmbed, InfoEmbed, SuccessEmbed
+from enigma.utils.emebds.errors import TimeoutEmbed, CooldownEmbed
+from enigma.utils.emebds.misc import PleaseWaitEmbed
 from enigma.utils.exceptions import DatabaseError
 from enigma.utils.strings import number_suffix
 
@@ -41,7 +44,8 @@ class Fun(Cog):
     )
     async def giveaway(self, ctx: Context, option: str = '', arg1: Union[TextChannel, int] = None):
         if not option:
-            await ctx.send(embed=Embed(
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
                 title=':x: Please specify an option',
                 color=random_color()
             ))
@@ -51,58 +55,54 @@ class Fun(Cog):
 
             if option in ['create', 'start', 'new']:
                 if not arg1:
-                    await ctx.send(embed=Embed(
-                        title=':x: Missing channel',
-                        color=random_color()
+                    await ctx.send(embed=ErrorEmbed(
+                        author=ctx.author,
+                        title=':x: Missing channel'
                     ))
                 elif type(arg1) is not TextChannel:
-                    await ctx.send(embed=Embed(
-                        title=':x: Bad channel format',
-                        color=random_color()
+                    await ctx.send(embed=ErrorEmbed(
+                        author=ctx.author,
+                        title=':x: Bad channel format'
                     ))
                 else:
                     perms = arg1.permissions_for(ctx.guild.get_member(self.bot.user.id))
                     if not perms.read_messages:
-                        await ctx.send(embed=Embed(
+                        await ctx.send(embed=ErrorEmbed(
+                            author=ctx.author,
                             title=':x: I can\'s see that channel'
                         ))
                     elif not perms.send_messages:
-                        await ctx.send(embed=Embed(
+                        await ctx.send(embed=ErrorEmbed(
+                            author=ctx.author,
                             title=':x: I can\'s send messages to that channel'
                         ))
                     else:
-                        msg = await ctx.send(embed=Embed(
+                        msg = await ctx.send(embed=InfoEmbed(
+                            author=ctx.author,
                             title=':shopping_bags: Create giveaway',
-                            description=f'Final message will be sent to {arg1.mention}.',
-                            color=random_color()
-                        ).set_footer(
-                            text=f'Listening to {ctx.author.display_name}'
+                            description=f'Final message will be sent to {arg1.mention}.'
                         ))
 
                         things: List[List[str, str]] = []
                         index = 0
 
-                        info = await ctx.send(embed=Embed(
-                            title='Preparing...',
-                            color=random_color()
+                        info = await ctx.send(embed=InfoEmbed(
+                            author=ctx.author,
+                            title='Preparing...'
                         ))
 
                         # Getting items for giveaway
                         while True:
                             index += 1
-                            await info.edit(embed=Embed(
+                            await info.edit(embed=InfoEmbed(
+                                author=ctx.author,
                                 title=f':name_badge: {index}{number_suffix(index)} item name...',
-                                color=random_color()
                             ))
                             try:
                                 # Get item's name
                                 response_1 = await self.bot.wait_for('message', check=check, timeout=30)
                             except WaitTimeout:
-                                await info.edit(embed=Embed(
-                                    title=':x: Timed out',
-                                    color=random_color()
-                                ))
-                                return
+                                return await info.edit(embed=TimeoutEmbed(author=ctx.author))
                             else:
                                 # Ended before adding at least one item
                                 if response_1.content.lower() in ['stop', 'end', 'x']:
@@ -111,35 +111,31 @@ class Fun(Cog):
                                     except Forbidden:
                                         pass
                                     if len(things) == 0:
-                                        await info.edit(embed=Embed(
-                                            title=':x: Too few things',
-                                            color=random_color()
+                                        return await info.edit(embed=ErrorEmbed(
+                                            author=ctx.author,
+                                            title=':x: Too few things'
                                         ))
-                                        return
                                     break
                                 elif len(response_1.content) > 30:
                                     try:
                                         await response_1.delete()
                                     except Forbidden:
                                         pass
-                                    await info.edit(embed=Embed(
+                                    await info.edit(embed=ErrorEmbed(
+                                        author=ctx.author,
                                         title=':x: Name\'s too long',
-                                        description='Keep it under 30 characters.',
-                                        color=random_color()
+                                        description='Keep it under 30 characters.'
                                     ))
                                     return
-                                await info.edit(embed=Embed(
-                                    title=f':1234: {index}{number_suffix(index)} item quantity...',
-                                    color=random_color()
+                                await info.edit(embed=InfoEmbed(
+                                    author=ctx.author,
+                                    title=f':1234: {index}{number_suffix(index)} item quantity...'
                                 ))
                                 try:
                                     # Get item's quantity
                                     response_2 = await self.bot.wait_for('message', check=check, timeout=10)
                                 except WaitTimeout:
-                                    await info.edit(embed=Embed(
-                                        title=':x: Timed out',
-                                        color=random_color()
-                                    ))
+                                    await info.edit(embed=TimeoutEmbed(author=ctx.author))
                                     try:
                                         await response_1.delete()
                                     except Forbidden:
@@ -152,9 +148,9 @@ class Fun(Cog):
                                         if q < 1:
                                             raise ValueError
                                     except ValueError:
-                                        await info.edit(embed=Embed(
-                                            title=':x: Bad format, quantity must be a number and higher than 0',
-                                            color=random_color()
+                                        await info.edit(embed=ErrorEmbed(
+                                            author=ctx.author,
+                                            title=':x: Bad format, quantity must be a number and higher than 0'
                                         ))
                                         try:
                                             await response_1.delete()
@@ -167,17 +163,14 @@ class Fun(Cog):
                                             await response_1.delete()
                                         except Forbidden:
                                             pass
-                                        await info.edit(embed=Embed(
+                                        await info.edit(embed=ErrorEmbed(
+                                            author=ctx.author,
                                             title=':x: Too much',
-                                            description='Keep quantity under 25.',
-                                            color=random_color()
+                                            description='Keep quantity under 25.'
                                         ))
                                         return
 
-                                    await info.edit(embed=Embed(
-                                        title=':hourglass_flowing_sand: Please wait...',
-                                        color=random_color()
-                                    ))
+                                    await info.edit(embed=PleaseWaitEmbed(author=ctx.author))
                                     things.append([response_1.content, response_2.content])
                                     await msg.edit(embed=msg.embeds[0].add_field(
                                         name=things[-1][1],
@@ -190,9 +183,9 @@ class Fun(Cog):
                                         pass
 
                         await info.delete()
-                        final_em = Embed(
-                            title=':white_check_mark: Done!',
-                            color=random_color()
+                        final_em = SuccessEmbed(
+                            author=ctx.author,
+                            title=':white_check_mark: Done!'
                         ).set_footer(
                             text=f'Created by {ctx.author.display_name}'
                         )
@@ -215,51 +208,48 @@ class Fun(Cog):
                         try:
                             new_g = await arg1.send(embed=final_em)
                         except Forbidden:
-                            await ctx.send(embed=Embed(
-                                title=f':x: I have no permissions to send message in {arg1.mention}',
-                                color=random_color()
+                            await ctx.send(embed=ErrorEmbed(
+                                author=ctx.author,
+                                title=f':x: I have no permissions to send message in {arg1.mention}'
                             ))
                         else:
                             # Adding message ID to footer
-                            await new_g.edit(embed=new_g.embeds[0].set_footer(text=f'{new_g.id}'))
+                            await new_g.edit(embed=new_g.embeds[0].add_field(name='\u200b', value=f'{new_g.id}'))
                             try:
                                 await new_g.add_reaction(emoji='📝')
                             except Forbidden:
-                                await ctx.send(embed=Embed(
-                                    title=f':x: I can\'t add emoji to the message in {arg1.mention}',
-                                    color=random_color()
+                                await ctx.send(embed=ErrorEmbed(
+                                    author=ctx.author,
+                                    title=f':x: I can\'t add emoji to the message in {arg1.mention}'
                                 ))
                             else:
                                 create_giveaway(new_g.id, ctx.guild.id, data=str(things))
             elif option in ['delete', 'stop', 'end']:
                 # Discord ID has 18 digits
                 if len(str(arg1)) != 18:
-                    await ctx.send(embed=Embed(
-                        title=':x: Bad ID format',
-                        color=random_color()
+                    await ctx.send(embed=ErrorEmbed(
+                        author=ctx.author,
+                        title=':x: Bad ID format'
                     ))
                 else:
                     giveaway = get_giveaway_from_message(arg1)
 
                     # Giveaway message ID do not exists in database
                     if giveaway is None:
-                        await ctx.send(embed=Embed(
-                            title=':x: Giveaway do not exists',
-                            color=random_color()
+                        await ctx.send(embed=ErrorEmbed(
+                            author=ctx.author,
+                            title=':x: Giveaway do not exists'
                         ))
 
                     # Users shouldn't end giveaway from another guild
                     elif giveaway.guild_id != ctx.guild.id:
-                        await ctx.send(embed=Embed(
-                            title=':x: This giveaway do not belongs to this guild',
-                            color=random_color()
+                        await ctx.send(embed=ErrorEmbed(
+                            author=ctx.author,
+                            title=':x: This giveaway do not belongs to this guild'
                         ))
 
                     else:
-                        info = await ctx.send(embed=Embed(
-                            title=':hourglass_flowing_sand: Please wait...',
-                            color=random_color()
-                        ))
+                        info = await ctx.send(embed=PleaseWaitEmbed(author=ctx.author))
 
                         # Finding giveaway's message
                         giveaway_message: Optional[Message] = None
@@ -273,11 +263,11 @@ class Fun(Cog):
 
                         # Message do not exists but giveaway do
                         if giveaway_message is None:
-                            await info.edit(embed=Embed(
+                            await info.edit(embed=ErrorEmbed(
+                                author=ctx.author,
                                 title=':x: Message not found',
                                 description='Giveaway exists but its message was probably removed,'
-                                            ' so I\'m removing the giveaway.',
-                                color=random_color()
+                                            ' so I\'m removing the giveaway.'
                             ))
                             if not delete_giveaway(message_id=arg1):
                                 await self.bot.debug_log(
@@ -289,17 +279,19 @@ class Fun(Cog):
                             for reaction in giveaway_message.reactions:
                                 if reaction.emoji == '📝':
                                     async for user in reaction.users():
-                                        user: User
                                         if not user.bot:
                                             participants.append(user)
                                     break
-                                await ctx.send(embed=Embed(
+                                await ctx.send(embed=ErrorEmbed(
+                                    author=ctx.author,
                                     title=':x: Giveaway reaction not found',
-                                    description='Deleting giveaway without winners.',
-                                    color=random_color()
+                                    description='Deleting giveaway without winners.'
                                 ))
                                 await giveaway_message.edit(
-                                    embed=giveaway_message.embeds[0].set_footer(text=f'Ended on {d.now()[:16]}')
+                                    embed=giveaway_message.embeds[0].add_field(
+                                        name='\u200b',
+                                        value=f'Ended on {d.now()[:16]}'
+                                    )
                                 )
                                 if not delete_giveaway(message_id=arg1):
                                     await self.bot.debug_log(
@@ -308,10 +300,10 @@ class Fun(Cog):
 
                             # No one added reaction to giveaway
                             if not participants:
-                                await ctx.send(embed=Embed(
+                                await ctx.send(embed=ErrorEmbed(
+                                    author=ctx.author,
                                     title=':x: No participants found',
-                                    description='Deleting giveaway without winners.',
-                                    color=random_color()
+                                    description='Deleting giveaway without winners.'
                                 ))
                                 if not delete_giveaway(message_id=arg1):
                                     await self.bot.debug_log(
@@ -333,12 +325,12 @@ class Fun(Cog):
                                         possibles.remove(random_winner)
                                     winners[item[0]] = item_winners
                                 # noinspection SpellCheckingInspection
-                                win_em = Embed(
+                                win_em = SuccessEmbed(
                                     title=':tada: Winners',
                                     color=random_color()
                                 )
 
-                                await info.edit(embed=Embed(
+                                await info.edit(embed=InfoEmbed(
                                     title='How you\'d like to group result?',
                                     description='Please type `item` or `user`.',
                                     color=random_color()
@@ -346,17 +338,14 @@ class Fun(Cog):
                                 try:
                                     response: Message = await self.bot.wait_for('message', check=check, timeout=10)
                                 except WaitTimeout:
-                                    await info.edit(embed=Embed(
-                                        title=':x: Timed out',
-                                        color=random_color()
-                                    ))
+                                    await info.edit(embed=TimeoutEmbed(author=ctx.author))
                                     return
 
                                 r = response.content.lower()
                                 u = ['u', 'user', 'users']
                                 i = ['i', 'item', 'items']
 
-                                if r in u or r in i:
+                                if r in [*u, *i]:
                                     try:
                                         await response.delete()
                                     except Forbidden:
@@ -405,9 +394,9 @@ class Fun(Cog):
                                         )
 
                                 else:
-                                    await info.edit(embed=Embed(
-                                        title=f':x: Unknown option `{r}`',
-                                        color=random_color()
+                                    await info.edit(embed=ErrorEmbed(
+                                        author=ctx.author,
+                                        title=f':x: Unknown option `{r}`'
                                     ))
                                     return
 
@@ -425,30 +414,29 @@ class Fun(Cog):
                                     )
                                 await info.delete()
             else:
-                await ctx.send(embed=Embed(
-                    title=':x: Invalid option',
-                    color=random_color()
+                await ctx.send(embed=ErrorEmbed(
+                    author=ctx.author,
+                    title=':x: Invalid option'
                 ))
 
     @giveaway.error
-    async def giveaway_error(self, ctx, error):
+    async def giveaway_error(self, ctx: Context, error: Exception):
         if isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=Embed(
-                title=':x: Command\'s on cooldown',
-                color=random_color()
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: Command\'s on cooldown'
             ))
         elif isinstance(error, MissingPermissions):
-            await ctx.send(embed=Embed(
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
                 title=':x: You\'re not allowed to do that',
-                description='You need **manage server** permission.',
-                color=random_color()
+                description='You need **manage server** permission.'
             ))
         elif isinstance(error, CommandInvokeError):
-            await ctx.send(embed=Embed(
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
                 title=':x: There was a problem with the giveaway',
-                description=f'Probably, there are too many items in the giveaway.'
-                            f' Ask <@!{self.bot.owner_id}> for help.',
-                color=random_color()
+                description='Probably, there are too many items in the giveaway.'
             ))
         else:
             await self.bot.debug_log(ctx=ctx, e=error)
@@ -492,7 +480,7 @@ class Fun(Cog):
                           ' under 70, in addition to deficits in two or more adaptive behaviors that affect everyday,' \
                           ' general living.'
         elif iq < 90:
-            description = 'It\'s okay, ~~to be g...~~ but still not so smart.'
+            description = 'It\'s okay, but still not so smart.'
         elif iq < 110:
             description = 'You\'re normal, ***b o r i n g***.'
         elif iq <= 120:
@@ -504,19 +492,16 @@ class Fun(Cog):
             replace('_', '\\_'). \
             replace('~', '\\~'). \
             replace('>', '\\>')
-        await ctx.send(embed=Embed(
+        await ctx.send(embed=SuccessEmbed(
+            author=ctx.author,
             title=f':abacus: {safe_name}\'s IQ is {iq}',
-            description=description,
-            color=random_color()
+            description=description
         ))
 
     @iq.error
     async def iq_error(self, ctx, error):
         if isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=Embed(
-                title=':x: Command\'s on cooldown',
-                color=random_color()
-            ))
+            await ctx.send(embed=CooldownEmbed(author=ctx.author))
         else:
             await self.bot.debug_log(ctx=ctx, e=error)
 
@@ -524,7 +509,7 @@ class Fun(Cog):
     @command(
         name='meme',
         brief='Send a meme',
-        description='Obtaining a meme could be a little slow.',
+        description='Sends meme from r/dankmemes.',
         enabled=in_production()
     )
     async def meme(self, ctx: Context):
@@ -542,26 +527,23 @@ class Fun(Cog):
                         if not submission.over_18:
                             posts.append(submission)
         if posts:
-            await ctx.send(embed=Embed(
-                title=':black_joker: Meme found',
-                color=random_color()
+            await ctx.send(embed=SuccessEmbed(
+                author=ctx.author,
+                title=':black_joker: Meme found'
             ).set_image(
                 url=choice(posts).url
             ))
         else:
-            await ctx.send(embed=Embed(
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
                 title=':x: Meme not found',
-                description='Just try again',
-                color=random_color()
+                description='Just try again'
             ))
 
     @meme.error
-    async def meme_error(self, ctx, error):
+    async def meme_error(self, ctx: Context, error: Exception):
         if isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=Embed(
-                title=':x: Command\'s on cooldown',
-                color=random_color()
-            ))
+            await ctx.send(embed=CooldownEmbed(author=ctx.author))
         else:
             await self.bot.debug_log(ctx=ctx, e=error)
 
@@ -577,10 +559,10 @@ class Fun(Cog):
     async def randomnumber(self, ctx: Context, max_: int = 10, min_: int = 1):
         nums = list(range(min_, max_ + 1))
         if len(nums) == 0:
-            await ctx.send(embed=Embed(
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
                 title=':x: Invalid argument(s)',
-                description='Please remember, that first argument is `max` and the second is `min`.',
-                color=random_color()
+                description='Please remember, that first argument is `max` and the second is `min`.'
             ))
         else:
             num = choice(nums)
@@ -592,9 +574,9 @@ class Fun(Cog):
             querystring = {"fragment": "false", "json": "false"}
             response = request("GET", url, headers=headers, params=querystring)
             result: Optional[dict] = json_loads(response.text) if response.status_code == 200 else None
-            em = Embed(
-                title=f':1234: I\'ve chosen {num}',
-                color=random_color()
+            em = SuccessEmbed(
+                author=ctx.author,
+                title=f':1234: I\'ve chosen {num}'
             )
             if result and result['found']:
                 em.add_field(
@@ -609,17 +591,19 @@ class Fun(Cog):
         usage='<thing1> <thing2> [thingN]',
         enabled=in_production()
     )
-    async def choice(self, ctx: Context, *things):
+    async def choice(self, ctx: Context, *, things: str):
         breakpoint()
+        em = ErrorEmbed
         if not things:
             title = ':x: No items specified'
         elif len(things) < 2:
             title = ':x: Too few thing specified'
         else:
             title = f':abcd: I\'ve chosen {choice(things)}'
-        await ctx.send(embed=Embed(
-            title=title,
-            color=random_color()
+            em = SuccessEmbed
+        await ctx.send(embed=em(
+            author=ctx.author,
+            title=title
         ))
 
     @command(
@@ -630,9 +614,9 @@ class Fun(Cog):
         enabled=in_production()
     )
     async def coin(self, ctx: Context):
-        await ctx.send(embed=Embed(
-            title=':small_red_triangle_down: Tails' if randint(1, 2) == 1 else ':small_red_triangle: Heads',
-            color=random_color()
+        await ctx.send(embed=SuccessEmbed(
+            author=ctx.author,
+            title=':small_red_triangle_down: Tails' if randint(1, 2) == 1 else ':small_red_triangle: Heads'
         ))
 
 

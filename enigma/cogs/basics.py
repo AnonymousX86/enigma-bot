@@ -5,6 +5,7 @@ from discord.ext.commands import command, Cog, has_permissions, MissingPermissio
 
 from enigma.settings import in_production
 from enigma.utils.colors import random_color
+from enigma.utils.emebds.core import InfoEmbed, ErrorEmbed
 from enigma.utils.exceptions import NoError
 
 
@@ -19,9 +20,9 @@ class Basics(Cog):
         enabled=in_production()
     )
     async def help(self, ctx: Context, arg: str = None):
-        help_em = Embed(
-            title=':grey_question: Help',
-            color=random_color()
+        help_em = InfoEmbed(
+            author=ctx.author,
+            title=':grey_question: Help'
         )
         help_category = 'You can also type `>help <category>` for more info on a category.'
         help_command = 'Type `>help <command>` for more info on a command.'
@@ -103,31 +104,30 @@ class Basics(Cog):
         brief='Raises an example error',
         description='Only specific users have access to this command',
         aliases=['err'],
-        enabled=in_production(),
         hidden=True
     )
     @cooldown(1, 30, BucketType.user)
     @has_permissions(administrator=True)
     async def error_cmd(self, ctx: Context):
         await self.bot.debug_log(ctx=ctx, e=NoError())
-        await ctx.send(embed=Embed(
+        await ctx.send(embed=ErrorEmbed(
+            author=ctx.author,
             title=':exclamation: Raised `NoError`',
-            description='Bot\'s owner should be notified',
-            color=random_color()
+            description='Bot\'s owner should be notified'
         ))
 
     @error_cmd.error
-    async def error_error(self, ctx: Context, error):
+    async def error_error(self, ctx: Context, error: Exception):
         if isinstance(error, MissingPermissions):
-            await ctx.send(embed=Embed(
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
                 title=':man_technologist: You\'re not an IT specialist',
-                description='Only those can use this command',
-                color=random_color()
+                description='Only those can use this command'
             ))
         elif isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=Embed(
-                title=':x: Command\'s on cooldown',
-                color=random_color()
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: Command\'s on cooldown'
             ))
         else:
             await self.bot.debug_log(ctx=ctx, e=error, member=ctx.message.author)
@@ -138,11 +138,11 @@ class Basics(Cog):
         description='Counts time difference between command execution time and bot\'s response',
         enabled=in_production()
     )
-    async def ping(self, ctx):
-        await ctx.send(embed=Embed(
+    async def ping(self, ctx: Context):
+        await ctx.send(embed=ErrorEmbed(
+            author=ctx.author,
             title=':ping_pong: Pong!',
-            description=f'Current latency is: {round(self.bot.latency * 1000)}ms',
-            color=random_color()
+            description=f'Current latency is: {round(self.bot.latency * 1000)}ms'
         ))
 
     @command(
@@ -151,11 +151,10 @@ class Basics(Cog):
         enabled=in_production()
     )
     async def invite(self, ctx: Context):
-        link = 'https://discord.com/api/oauth2/authorize?client_id=678357487560425555&permissions=27718&scope=bot'
-        await ctx.send(embed=Embed(
-            title=':mailbox_with_mail: Here\'s an invite link',
-            description='**\u00bb [Click me!]({0} "{0}") \u00ab**'.format(link),
-            color=random_color()
+        await ctx.send(embed=InfoEmbed(
+            author=ctx.author,
+            title=':mailbox_with_mail: Check at top.gg',
+            description='**\u00bb [Click me!](https://top.gg/bot/678357487560425555) \u00ab**'
         ).add_field(
             name='Important info',
             value='Remember, that you need **manage users** permission to add me to the server.'
@@ -169,10 +168,10 @@ class Basics(Cog):
         enabled=in_production()
     )
     async def info(self, ctx: Context):
-        await ctx.send(embed=Embed(
+        await ctx.send(embed=InfoEmbed(
+            author=ctx.author,
             title=':desktop: Source code',
-            description='This bot is made on open source, GNU GPL v3.0 license.',
-            color=random_color()
+            description='This bot is made on open source, GNU GPL v3.0 license.'
         ).add_field(
             name='Links',
             value='\u00b7 [GitHub homepage](https://github.com/AnonymousX86/Enigma-Bot)\n'

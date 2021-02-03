@@ -7,6 +7,8 @@ from discord.ext.commands import Cog, command, UserNotFound, Context
 from enigma.settings import in_production
 from enigma.utils.colors import random_color
 from enigma.utils.database import get_single_user, update_profile, user_get_cash
+from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed
+from enigma.utils.emebds.misc import PleaseWaitEmbed, DevelopmentEmbed
 from enigma.utils.strings import f_btc
 
 
@@ -26,30 +28,25 @@ class Profiles(Cog):
         if not user:
             user = ctx.author
         if user.bot is True:
-            await ctx.send(embed=Embed(
-                title=':x: Bots do not have profiles',
-                color=random_color()
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: Bots do not have profiles'
             ))
         else:
-            msg = await ctx.send(embed=Embed(
-                title=':hourglass_flowing_sand: Please wait...',
-                color=random_color()
-            ))
+            msg = await ctx.send(embed=PleaseWaitEmbed(author=ctx.author))
             result_user = get_single_user(user.id if user else ctx.author.id)
-            await msg.edit(embed=Embed(
+            await msg.edit(embed=SuccessEmbed(
+                author=ctx.author,
                 title=':card_box: User\'s data',
                 description='```py\n'
                             '{0.display_name}#{0.discriminator}\n'
-                            '```'.format(ctx.guild.get_member(result_user.user_id)),
-                color=random_color()
+                            '```'.format(ctx.guild.get_member(result_user.user_id))
             ).add_field(
                 name='XP',
                 value=str(result_user.user_xp)
             ).add_field(
                 name='Cash',
                 value=f_btc(result_user.user_cash)
-            ).set_footer(
-                text=f'Accessed by {ctx.author.display_name}'
             ))
 
     @command(
@@ -81,25 +78,36 @@ class Profiles(Cog):
         else:
             time_travel = True
         if time_travel:
-            await ctx.send(embed=Embed(
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
                 title=':x: Hello time traveler',
-                description='Anyway, there\'s no cash for you.',
-                color=random_color()
+                description='Anyway, there\'s no cash for you.'
             ))
         elif able:
             new_user = user_get_cash(ctx.author.id, base_cash)
-            await ctx.send(embed=Embed(
+            await ctx.send(embed=SuccessEmbed(
+                author=ctx.author,
                 title=':moneybag: Daily bonus gained!',
                 description=f'You\'ve earned **{f_btc(base_cash)}**,'
-                            f' so now you have **{f_btc(new_user.user_cash)}**.',
-                color=random_color()
+                            f' so now you have **{f_btc(new_user.user_cash)}**.'
             ))
         else:
-            await ctx.send(embed=Embed(
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
                 title=':x: You\'ve already collected your daily cash',
-                description='Please come back tomorrow.',
-                color=random_color()
+                description='Please come back tomorrow.'
             ))
+
+    @command(
+        name='reputation',
+        brief='Gives someone reputation',
+        help='Available once a day, resets on 00:00.',
+        usage='<user>',
+        aliases=['rep'],
+        enabled=not in_production()
+    )
+    async def reputation(self, ctx: Context):
+        await ctx.send(embed=DevelopmentEmbed(author=ctx.author))
 
     @command(
         name='manage',
@@ -113,46 +121,27 @@ class Profiles(Cog):
         hidden=True
     )
     async def manage(self, ctx: Context, user: User = None, option: str = None, value: int = None):
+        em = ErrorEmbed
         if ctx.author.id != self.bot.owner_id:
-            await ctx.send(embed=Embed(
-                title=':x: You\'re not authorized',
-                color=random_color()
-            ))
+            st = ':x: You\'re not authorized'
         elif not user:
-            await ctx.send(embed=Embed(
-                title=':x: No user provided',
-                color=random_color()
-            ))
+            st = ':x: No user provided'
         elif user.bot is True:
-            await ctx.send(embed=Embed(
-                title=':x: Bots do not have profiles',
-                color=random_color()
-            ))
+            st = ':x: Bots do not have profiles'
         elif not option:
-            await ctx.send(embed=Embed(
-                title=':x: No option specified',
-                color=random_color()
-            ))
+            st = ':x: No option specified'
         elif option not in ['xp', 'cash']:
-            await ctx.send(embed=Embed(
-                title=':x: Invalid option',
-                color=random_color()
-            ))
+            st = ':x: Invalid option'
         elif value is None:
-            await ctx.send(embed=Embed(
-                title=':x: No amount provided',
-                color=random_color()
-            ))
+            st = ':x: No amount provided'
         else:
-            msg = await ctx.send(embed=Embed(
-                title=':hourglass_flowing_sand: Please wait',
-                color=random_color()
-            ))
+            st = None
+            msg = await ctx.send(embed=PleaseWaitEmbed(author=ctx.author))
             managed_user = get_single_user(user.id)
             if not managed_user:
-                await msg.edit(embed=Embed(
-                    title='User do not exists in database',
-                    color=random_color()
+                await msg.edit(embed=ErrorEmbed(
+                    author=ctx.author,
+                    title=':x: User do not exists in database'
                 ))
             else:
                 if option == 'xp':
@@ -167,11 +156,16 @@ class Profiles(Cog):
                 elif option == 'cash':
                     text += f'Cash:       {f_btc(value)}\n'
                 text += '```'
-                await msg.edit(embed=Embed(
+                await msg.edit(embed=SuccessEmbed(
+                    author=ctx.author,
                     title=':incoming_envelope: Profile has been updated',
-                    description=text,
-                    color=random_color()
+                    description=text
                 ))
+        if st:
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=st
+            ))
 
     @command(
         name='avatar',
@@ -184,20 +178,20 @@ class Profiles(Cog):
     async def avatar(self, ctx: Context, user: User = None):
         if not user:
             user = ctx.author
-        await ctx.send(embed=Embed(
-            title=':bust_in_silhouette: User avatar',
-            description=f'As you wish, {ctx.author.mention}.',
-            color=random_color()
+        await ctx.send(embed=SuccessEmbed(
+            author=ctx.author,
+            title=f':bust_in_silhouette: {user} avatar',
+            description=f'As you wish, {ctx.author.mention}.'
         ).set_image(
             url=user.avatar_url
         ))
 
     @avatar.error
-    async def avatar_error(self, ctx: Context, error):
+    async def avatar_error(self, ctx: Context, error: Exception):
         if isinstance(error, UserNotFound):
-            await ctx.send(embed=Embed(
-                title=':mag: User not found!',
-                color=random_color()
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':mag: User not found!'
             ))
         else:
             await self.bot.debug_log(ctx=ctx, e=error)

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from discord import Embed, User
+from discord import Embed, Member
 from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, MissingPermissions, \
-    BotMissingPermissions, UserNotFound
+    BotMissingPermissions, UserNotFound, Context
 from discord.utils import get
 
 from enigma.settings import in_production
 from enigma.utils.colors import random_color
+from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed
 
 
 class Admin(Cog):
@@ -21,51 +22,51 @@ class Admin(Cog):
     )
     @has_permissions(ban_members=True)
     @bot_has_permissions(ban_members=True)
-    async def ban(self, ctx, user: User = None):
+    async def ban(self, ctx: Context, member: Member = None, reason: str = None):
         # No user provided
-        if not user:
-            await ctx.send(embed=Embed(
+        if not member:
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
                 title=':face_with_raised_eyebrow: Who do I need to ban?',
                 description='You\'ve not provided a victim',
-                color=random_color()
             ))
 
         else:
             # User is trying to ban yourself
-            if user.id == ctx.message.author.id:
-                await ctx.send(embed=Embed(
+            if member.id == ctx.message.author.id:
+                await ctx.send(embed=ErrorEmbed(
+                    author=ctx.author,
                     title=':clown: You can\'t ban yourself',
                     description='Ask someone to help you commit sepuku or something...',
-                    color=random_color()
                 ))
 
             # User is trying to ban guild owner
-            elif user.id == ctx.guild.owner.id:
-                await ctx.send(embed=Embed(
+            elif member.id == ctx.guild.owner.id:
+                await ctx.send(embed=ErrorEmbed(
+                    author=ctx.author,
                     title=':crown: You can\'t ban guild owner',
-                    description='He\'s the almighty one, sorry',
-                    color=random_color()
+                    description='He\'s the almighty one, sorry'
                 ))
 
             # User is trying to ban the bot
-            elif user.id == self.bot.user.id:
-                await ctx.send(embed=Embed(
+            elif member.id == self.bot.user.id:
+                await ctx.send(embed=ErrorEmbed(
+                    author=ctx.author,
                     title=':zany_face: I can\'t ban myself',
-                    description='Even if I would I can\'t, sorry',
-                    color=random_color()
+                    description='Even if I would I can\'t, sorry'
                 ))
 
             # No errors
             else:
-                await ctx.send(embed=Embed(
-                    title=f':hammer: Banning {get(ctx.guild.members, id=user.id)}',
-                    description='(Just kidding, I\'m still in development)',
-                    color=random_color()
+                await ctx.send(embed=SuccessEmbed(
+                    author=ctx.author,
+                    title=f':hammer: Banning {get(ctx.guild.members, id=member.id)}',
+                    description=f'Reason:```\n{str(reason)}\n```'
                 ))
-                # TODO - enable banning
+                await member.ban(reason=reason)
 
     @ban.error
-    async def ban_error(self, ctx, error):
+    async def ban_error(self, ctx: Context, error: Exception):
         if isinstance(error, MissingPermissions):
             status = 'You don\'t have **ban** permissions!'
 
@@ -77,12 +78,12 @@ class Admin(Cog):
 
         else:
             status = 'Unknown error has occurred!'
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.message.author)
+            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
 
-        await ctx.send(embed=Embed(
+        await ctx.send(embed=ErrorEmbed(
+            author=ctx.author,
             title=':rolling_eyes: Whoops!',
-            description=status,
-            color=random_color()
+            description=status
         ))
 
     # TODO - unban command
@@ -96,51 +97,54 @@ class Admin(Cog):
     )
     @has_permissions(kick_members=True)
     @bot_has_permissions(kick_members=True)
-    async def kick(self, ctx, user: User = None):
+    async def kick(self, ctx: Context, member: Member = None, reason: str = None):
+        em = ErrorEmbed
+
         # No user provided
-        if not user:
-            await ctx.send(embed=Embed(
-                title=':cowboy: Who do I need to kick round the clock?',
-                description='You\'ve not provided a victim',
-                color=random_color()
-            ))
+        if not member:
+            st = (
+                ':cowboy: Who do I need to kick round the clock?',
+                'You\'ve not provided a victim'
+            )
 
+        # User is trying to ban yourself
+        elif member.id == ctx.author.id:
+            st = (
+                ':man_facepalming: No... That\'s not how mafia works',
+                'If you want to leave, do this, but don\'t try to kick yourself, that\'s stupid'
+            )
+
+        # User is trying to ban guild owner
+        elif member.id == ctx.guild.owner.id:
+            st = (
+                ':oncoming_police_car: Wait, that\'s illegal',
+                'You can\'t kick the police officer'
+            )
+
+        # User is trying to ban the bot
+        elif member.id == self.bot.user.id:
+            st = (
+                ':face_with_symbols_over_mouth: NO',
+                'I won\'t leave this guild even if you want to'
+            )
+
+        # No errors
         else:
-            # User is trying to ban yourself
-            if user.id == ctx.message.author.id:
-                await ctx.send(embed=Embed(
-                    title=':man_facepalming: No... That\'s not how mafia works',
-                    description='If you want to leave, do this, but don\'t try to kick yourself, that\'s stupid',
-                    color=random_color()
-                ))
+            em = SuccessEmbed
+            st = (
+                f':boot: I\'m kicking {get(ctx.guild.members, id=member.id)} out',
+                f'Reason:\n```{str(reason)}\n```'
+            )
+            await member.kick(reason=reason)
 
-            # User is trying to ban guild owner
-            elif user.id == ctx.guild.owner.id:
-                await ctx.send(embed=Embed(
-                    title=':oncoming_police_car: Wait, that\'s illegal',
-                    description='You can\'t kick the police officer',
-                    color=random_color()
-                ))
-
-            # User is trying to ban the bot
-            elif user.id == self.bot.user.id:
-                await ctx.send(embed=Embed(
-                    title=':face_with_symbols_over_mouth: NO',
-                    description='I won\'t leave this guild even if you want to',
-                    color=random_color()
-                ))
-
-            # No errors
-            else:
-                await ctx.send(embed=Embed(
-                    title=f':boot: I\'m kicking {get(ctx.guild.members, id=user.id)} out',
-                    description='(Just kidding, I\'m still in development)',
-                    color=random_color()
-                ))
-                # TODO - enable kicking
+        await ctx.send(embed=em(
+            author=ctx.author,
+            title=st[0],
+            description=st[1]
+        ))
 
     @kick.error
-    async def kick_error(self, ctx, error):
+    async def kick_error(self, ctx: Context, error: Exception):
         if isinstance(error, MissingPermissions):
             status = 'You don\'t have **kick** permissions!'
 
