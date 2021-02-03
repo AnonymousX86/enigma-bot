@@ -1,5 +1,5 @@
 # 3N1GM4
-Multiple purpose Discord bot, developed by: `Anonymous©#7296`.
+Multiple purpose Discord bot, developed by: `Anonymous_x86#7296`.
 
 ## Assumptions
 I've always wanted to code my own bot. I've never been sure what kind of bot exactly I want to code.
