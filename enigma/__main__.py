@@ -45,7 +45,7 @@ async def on_ready():
     # Output login
     log.info('Logged on as: {0} ({0.id})'.format(bot.user))
     guilds = len(bot.guilds)
-    log.info('Guilds count: ', guilds)
+    log.info(f'Guilds count: {guilds}')
 
     # Change presence
     await update_presence(bot)
