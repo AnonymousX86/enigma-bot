@@ -107,7 +107,7 @@ class Basics(Cog):
         aliases=['err'],
         hidden=True
     )
-    @cooldown(1, 30, BucketType.user)
+    @cooldown(1, 60, BucketType.user)
     @has_permissions(administrator=True)
     async def error_cmd(self, ctx: Context):
         await self.bot.debug_log(ctx=ctx, e=NoError())

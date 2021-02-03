@@ -9,6 +9,7 @@
 - `suggest` command.
 #### Changed
 - Embeds have now fixed colors, based on message type.
+- `error` cooldown increased from 30 seconds to 60.
 
 ## Released
 
