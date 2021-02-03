@@ -179,12 +179,13 @@ class Basics(Cog):
         ).add_field(
             name='Support',
             value='If you\'d like to help to develop this bot please check GitHub. (Link above)\n'
-                  'And if **you** need support',
+                  'And if **you** need support please check'
+                  ' [support server](https://discord.gg/SRdmrPpf2z "3N1GMA Support Server").',
             inline=False
         ).add_field(
             name='More about bot',
-            value='Version: *v{0}*.\n'
-                  'Author: *{1.display_name}#{1.discriminator}*.'.format(
+            value='Version: `{0}`.\n'
+                  'Author: `{1.display_name}#{1.discriminator}`.'.format(
                         self.bot.version,
                         self.bot.get_user(self.bot.owner_id)
                     ),
