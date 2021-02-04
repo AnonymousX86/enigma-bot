@@ -122,7 +122,6 @@ class Profiles(Cog):
         hidden=True
     )
     async def manage(self, ctx: Context, user: User = None, option: str = None, value: int = None):
-        em = ErrorEmbed
         if ctx.author.id != self.bot.owner_id:
             st = ':x: You\'re not authorized'
         elif not user:
@@ -233,8 +232,6 @@ class Profiles(Cog):
     # TODO - Quests
 
     # TODO - Top reputations
-
-    # TODO - Who is
 
 
 def setup(bot):
