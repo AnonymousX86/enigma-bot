@@ -201,6 +201,36 @@ class Basics(Cog):
             await msg.add_reaction(emoji='👍')
             await msg.add_reaction(emoji='👎')
 
+    @cooldown(1, 60, BucketType.guild)
+    @command(
+        name='servers',
+        brief='List of guilds bot is in',
+        aliases=['guilds', 'serverlist', 'guildlist', 'slist'],
+        enabled=not in_production(),
+        hidden=True
+    )
+    async def servers(self, ctx: Context):
+        if ctx.author.id != self.bot.owner_id:
+            raise MissingPermissions(missing_perms=['bot_owner'])
+        em = InfoEmbed(
+            author=ctx.author,
+            title=':passport_control: Bot\'s servers list',
+            description='Last 10 (or less) servers'
+        )
+        for g, num in zip(self.bot.guilds[:10], 'one,two,three,four,five,six,seven,eight,nine,one::zero'.split(',')):
+            em.add_field(
+                name=f':{num}:  -  {g.name}',
+                value=f'```py\n'
+                      f'Created at:    {str(g.created_at)[:10]}\n'
+                      f'Joined at:     {str(g.me.joined_at)[:10]}\n'
+                      f'Member count:  {g.member_count}\n'
+                      f'Owner:         {str(g.owner)}\n'
+                      f'Premium tier:  {g.premium_tier}\n'
+                      f'Features:      {", ".join(g.features) or "-"}\n'
+                      f'```',
+                inline=False
+            )
+        await ctx.send(embed=em)
 
     # TODO - Ticket system
 

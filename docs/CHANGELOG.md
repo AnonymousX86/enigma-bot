@@ -3,6 +3,7 @@
 ## [Unreleased]
 #### Added
 - `unban` command.
+- `servers` command.
 #### Changed
 - Command errors are now handled globally.
 #### Removed
