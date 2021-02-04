@@ -5,6 +5,8 @@
 - `unban` command.
 - `servers` command.
 - `whois` command.
+#### Fixed
+- `randomnumber` command was disabled.
 #### Changed
 - Command errors are now handled globally.
 #### Removed

@@ -533,7 +533,7 @@ class Fun(Cog):
         description='You can provide maximun and minimum number to choose.',
         usage='[max] [min]',
         aliases=['randomnum', 'randnumber', 'randnum'],
-        enabled=not in_production()
+        enabled=in_production()
     )
     async def randomnumber(self, ctx: Context, max_: int = 10, min_: int = 1):
         nums = list(range(min_, max_ + 1))
