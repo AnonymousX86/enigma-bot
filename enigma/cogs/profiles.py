@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime as d
+from typing import Union
 
-from discord import Embed, User
-from discord.ext.commands import Cog, command, UserNotFound, Context
+from discord import User
+from discord.ext.commands import Cog, command, Context
 
 from enigma.settings import in_production
-from enigma.utils.colors import random_color
 from enigma.utils.database import get_single_user, update_profile, user_get_cash
-from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed
+from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed, InfoEmbed
 from enigma.utils.emebds.misc import PleaseWaitEmbed, DevelopmentEmbed
 from enigma.utils.strings import f_btc
 
@@ -100,15 +100,20 @@ class Profiles(Cog):
 
     @command(
         name='reputation',
-        brief='Gives someone reputation',
+        brief='[ WIP ] Gives someone reputation',
         help='Available once a day, resets on 00:00.',
         usage='<user>',
         aliases=['rep'],
         enabled=not in_production()
     )
-    async def reputation(self, ctx: Context):
+    async def reputation(self, ctx: Context, user: User):
         # TODO - Reputation
-        await ctx.send(embed=DevelopmentEmbed(author=ctx.author))
+        await ctx.send(embed=DevelopmentEmbed(
+            author=ctx.author
+        ).add_field(
+            name='USER',
+            value=str(user)
+        ))
 
     @command(
         name='manage',
@@ -122,7 +127,6 @@ class Profiles(Cog):
         hidden=True
     )
     async def manage(self, ctx: Context, user: User = None, option: str = None, value: int = None):
-        em = ErrorEmbed
         if ctx.author.id != self.bot.owner_id:
             st = ':x: You\'re not authorized'
         elif not user:
@@ -187,23 +191,73 @@ class Profiles(Cog):
             url=user.avatar_url
         ))
 
-    @avatar.error
-    async def avatar_error(self, ctx: Context, error: Exception):
-        if isinstance(error, UserNotFound):
+    @command(
+        name='whois',
+        brief='Short info about user',
+        usage='<user>',
+        enabled=in_production()
+    )
+    async def whois(self, ctx: Context, user: User = None):
+        if not user:
             await ctx.send(embed=ErrorEmbed(
                 author=ctx.author,
-                title=':mag: User not found!'
+                title=':x: No user specified'
             ))
         else:
-            await self.bot.debug_log(ctx=ctx, e=error)
+            await ctx.send(embed=InfoEmbed(
+                author=ctx.author,
+                title=f':face_with_monocle: Who is {user.display_name}'
+            ).add_field(
+                name='Original name',
+                value='{0.name}#{0.discriminator}'.format(user),
+                inline=False
+            ).add_field(
+                name='User ID',
+                value=str(user.id),
+                inline=False
+            ).add_field(
+                name='Joined Discord at',
+                value=str(user.created_at)[:19],
+                inline=False
+            ).add_field(
+                name='Bot account',
+                value=str(user.bot),
+                inline=False
+            ).add_field(
+                name='Public flags',
+                value=', '.join(map(lambda z: f'`{z.upper()}`' if z else None, list(filter(
+                    lambda y: y is not None, map(lambda x: x[0] if x[1] else None, user.public_flags)
+                )))) or 'None'
+            ).set_thumbnail(
+                url=user.avatar_url
+            ))
 
-    # TODO - Notes
+    @command(
+        name='notes',
+        brief='Manages your notes',
+        description='Every user can save upto 3 notes.',
+        help='Available options:'
+             '- create <note content>'
+             '- delete <note UID>'
+             '- edit <note UID>',
+        usage='<option [...]>',
+        enabled=not in_production()
+    )
+    async def notes(self, ctx: Context, option: str = None, arg: Union[int, str] = None):
+        # TODO - Notes
+        await ctx.send(embed=DevelopmentEmbed(
+            author=ctx.author
+        ).add_field(
+            name='OPTION',
+            value=option
+        ).add_field(
+            name='ARG',
+            value=f'{str(arg)} ({type(arg).__class__.__name__})'
+        ))
 
     # TODO - Quests
 
     # TODO - Top reputations
-
-    # TODO - Who is
 
 
 def setup(bot):

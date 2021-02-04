@@ -1,6 +1,28 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+#### Added
+- `unban` command.
+- `servers` command.
+- `whois` command.
+- Logging guilds count.
+- Logging amount of cogs loaded.
+- Logging connection to Discord.
+- Checking connection with database.
+#### Fixed
+- `randomnumber` command was disabled.
+- `host` command without na argument no more raises an error.
+#### Changed
+- Command errors are now handled globally.
+- `ping` command sends both ping and latency.
+- `help` command do not sends classic representation if it's same as usage.
+- `prune` command's error description slightly changed to be more precise.
+- Logging is now more clear.
+- SQL-Alchemy logging level set to WARNING.
+- Version in settings is now a function.
+- Normalized get function in `settings.py`.
+#### Removed
+- `error` command.
 
 
 ## Released

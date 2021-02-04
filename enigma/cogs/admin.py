@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
-from asyncio import sleep
-
-from discord import Embed, Member, NotFound, HTTPException
-from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, MissingPermissions, \
-    BotMissingPermissions, UserNotFound, Context, cooldown, BucketType, CommandOnCooldown
+from discord import Member, NotFound, HTTPException, User
+from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, Context, cooldown, BucketType
 from discord.utils import get
 
 from enigma.settings import in_production
-from enigma.utils.colors import random_color
 from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed
-from enigma.utils.emebds.errors import CooldownEmbed
 from enigma.utils.emebds.misc import PleaseWaitEmbed
 
 
@@ -20,13 +15,12 @@ class Admin(Cog):
     @command(
         name='ban',
         brief='Bans user',
-        description='You can provide user ID or mention someone',
-        usage='<user>',
+        usage='<user> [reason]',
         enabled=in_production()
     )
     @has_permissions(ban_members=True)
     @bot_has_permissions(ban_members=True)
-    async def ban(self, ctx: Context, member: Member = None, reason: str = None):
+    async def ban(self, ctx: Context, member: Member = None, *, reason: str = None):
         # No user provided
         if not member:
             await ctx.send(embed=ErrorEmbed(
@@ -34,7 +28,6 @@ class Admin(Cog):
                 title=':face_with_raised_eyebrow: Who do I need to ban?',
                 description='You\'ve not provided a victim',
             ))
-
         else:
             # User is trying to ban yourself
             if member.id == ctx.message.author.id:
@@ -43,7 +36,6 @@ class Admin(Cog):
                     title=':clown: You can\'t ban yourself',
                     description='Ask someone to help you commit sepuku or something...',
                 ))
-
             # User is trying to ban guild owner
             elif member.id == ctx.guild.owner.id:
                 await ctx.send(embed=ErrorEmbed(
@@ -51,7 +43,6 @@ class Admin(Cog):
                     title=':crown: You can\'t ban guild owner',
                     description='He\'s the almighty one, sorry'
                 ))
-
             # User is trying to ban the bot
             elif member.id == self.bot.user.id:
                 await ctx.send(embed=ErrorEmbed(
@@ -59,113 +50,100 @@ class Admin(Cog):
                     title=':zany_face: I can\'t ban myself',
                     description='Even if I would I can\'t, sorry'
                 ))
-
             # No errors
             else:
                 await ctx.send(embed=SuccessEmbed(
                     author=ctx.author,
-                    title=f':hammer: Banning {get(ctx.guild.members, id=member.id)}',
-                    description=f'Reason:```\n{str(reason)}\n```'
+                    title=f':hammer: Banning {get(ctx.guild.members, id=member.id)}'
+                ).add_field(
+                    name='REASON',
+                    value=str(reason)
                 ))
                 await member.ban(reason=reason)
 
-    @ban.error
-    async def ban_error(self, ctx: Context, error: Exception):
-        if isinstance(error, MissingPermissions):
-            status = 'You don\'t have **ban** permissions!'
-
-        elif isinstance(error, BotMissingPermissions):
-            status = 'I don\' have **ban** permissions!'
-
-        elif isinstance(error, UserNotFound):
-            status = 'User not found!'
-
+    @has_permissions(ban_members=True)
+    @bot_has_permissions(ban_members=True)
+    @command(
+        name='unban',
+        brief='Unbans user',
+        help='Because user of course isn\'t in server, provide user\'s name or ID.',
+        uasge='<user> [reason]',
+        enabled=not in_production()
+    )
+    async def unban(self, ctx: Context, user: User = None, *, reason: str = None):
+        if not user:
+            await ctx.send(embed=ErrorEmbed(
+                author=ctx.author,
+                title=':x: User not found'
+            ))
         else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
-            raise error
-
-        await ctx.send(embed=ErrorEmbed(
-            author=ctx.author,
-            title=':rolling_eyes: Whoops!',
-            description=status
-        ))
-
-    # TODO - unban command
+            try:
+                await ctx.guild.unban(user, reason=reason)
+            except HTTPException as e:
+                await ctx.send(embed=ErrorEmbed(
+                    author=ctx.author,
+                    title=':x: Can\'t unban user'
+                ))
+                await self.bot.debug_log(ctx=ctx, e=e, user=user)
+            else:
+                await ctx.send(embed=SuccessEmbed(
+                    author=ctx.author,
+                    title=':white_check_mark: User unbanned',
+                    description=f'**{user.display_name}** now can join back to **{ctx.guild.name}**.'
+                ).add_field(
+                    name='REASON',
+                    value=str(reason)
+                ))
 
     @command(
         name='kick',
         brief='Kicks user',
         description='You can provide user ID or mention someone',
-        usage='<user>',
+        usage='<user> [reason]',
         enabled=in_production()
     )
     @has_permissions(kick_members=True)
     @bot_has_permissions(kick_members=True)
-    async def kick(self, ctx: Context, member: Member = None, reason: str = None):
-        em = ErrorEmbed
-
+    async def kick(self, ctx: Context, member: Member = None, *, reason: str = None):
         # No user provided
         if not member:
             st = (
                 ':cowboy: Who do I need to kick round the clock?',
                 'You\'ve not provided a victim'
             )
-
         # User is trying to ban yourself
         elif member.id == ctx.author.id:
             st = (
                 ':man_facepalming: No... That\'s not how mafia works',
                 'If you want to leave, do this, but don\'t try to kick yourself, that\'s stupid'
             )
-
         # User is trying to ban guild owner
         elif member.id == ctx.guild.owner.id:
             st = (
                 ':oncoming_police_car: Wait, that\'s illegal',
                 'You can\'t kick the police officer'
             )
-
         # User is trying to ban the bot
         elif member.id == self.bot.user.id:
             st = (
                 ':face_with_symbols_over_mouth: NO',
                 'I won\'t leave this guild even if you want to'
             )
-
         # No errors
         else:
-            em = SuccessEmbed
-            st = (
-                f':boot: I\'m kicking {get(ctx.guild.members, id=member.id)} out',
-                f'Reason:\n```{str(reason)}\n```'
-            )
+            await ctx.send(embed=SuccessEmbed(
+                author=ctx.author,
+                title=f':boot: I\'m kicking {get(ctx.guild.members, id=member.id)} out'
+            ).add_field(
+                name='REASON',
+                value=str(reason)
+            ))
             await member.kick(reason=reason)
-
-        await ctx.send(embed=em(
+            return
+        await ctx.send(embed=ErrorEmbed(
             author=ctx.author,
             title=st[0],
             description=st[1]
-        ))
-
-    @kick.error
-    async def kick_error(self, ctx: Context, error: Exception):
-        if isinstance(error, MissingPermissions):
-            status = 'You don\'t have **kick** permissions!'
-
-        elif isinstance(error, BotMissingPermissions):
-            status = 'I don\' have **kick** permissions!'
-
-        elif isinstance(error, UserNotFound):
-            status = 'User not found!'
-
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
-            raise error
-
-        await ctx.send(embed=Embed(
-            title=':rolling_eyes: Whoops!',
-            description=status,
-            color=random_color()
         ))
 
     @has_permissions(manage_messages=True)
@@ -183,8 +161,8 @@ class Admin(Cog):
         if amount < 1:
             return await ctx.send(embed=ErrorEmbed(
                 author=ctx.author,
-                title=':x: Arguments error',
-                description='Please provide amount of messages to prune.'
+                title=':x: Argument error',
+                description='Please provide proper amount of messages to prune.'
             ))
         elif amount > 20:
             return await ctx.send(embed=ErrorEmbed(
@@ -213,25 +191,7 @@ class Admin(Cog):
             author=ctx.author,
             title=f':wastebasket: Successfully deleted {deleted} message{"s" if deleted > 1 else ""}.'
         ))
-        await sleep(3)
-        await msg.delete()
-
-    @prune.error
-    async def prune_error(self, ctx: Context, error: Exception):
-        if isinstance(error, MissingPermissions):
-            st = 'You don\'t have **manage messages** permissions!'
-        elif isinstance(error, BotMissingPermissions):
-            st = 'I don\'t have **manage messages** or **read message history** permissions!'
-        elif isinstance(error, CommandOnCooldown):
-            return await ctx.send(embed=CooldownEmbed(author=ctx.author))
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
-            raise error
-        await ctx.send(embed=ErrorEmbed(
-            author=ctx.author,
-            title=':x: Whoops!',
-            description=st
-        ))
+        await msg.delete(delay=3.0)
 
     # TODO - Logging system
 

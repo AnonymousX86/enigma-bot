@@ -14,6 +14,7 @@ Then I wanted to make something bigger and started to code **3N1GM4** bot.
 ### [Admin](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/admin.py)
 
 - `ban`
+- `unban`
 - `kick`
 - `prune`
 
@@ -26,6 +27,7 @@ Then I wanted to make something bigger and started to code **3N1GM4** bot.
 - `invite`
 - `info`
 - `suggest`
+- `servers`
 
 
 ### [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)
@@ -49,4 +51,5 @@ _Work in progress..._
 - `daily`
 - `manage`
 - `avatar`
+- `whois`
 

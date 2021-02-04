@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta, datetime
+
 from discord import TextChannel
-from discord.ext.commands import command, Cog, has_permissions, MissingPermissions, Context, cooldown, BucketType, \
-    CommandOnCooldown, CommandError, Command
+from discord.ext.commands import command, Cog, MissingPermissions, Context, cooldown, BucketType, \
+    CommandError, Command
 
 from enigma.settings import in_production, general_settings
 from enigma.utils.emebds.core import InfoEmbed, ErrorEmbed, SuccessEmbed
-from enigma.utils.emebds.errors import CooldownEmbed
 from enigma.utils.emebds.misc import SuggestionEmbed
-from enigma.utils.exceptions import NoError
 
 
 class Basics(Cog):
@@ -81,7 +81,7 @@ class Basics(Cog):
                 if cmd.usage:
                     help_em.add_field(
                         name='Usage',
-                        value=f'`>{cmd.name} {cmd.usage}`',
+                        value=f'```\n>{cmd.name} {cmd.usage}\n```',
                         inline=False
                     )
                 if cmd.help:
@@ -93,43 +93,13 @@ class Basics(Cog):
                 if cmd.aliases or cmd.usage:
                     base = cmd.name if not cmd.aliases else f'[{"|".join([cmd.name, *cmd.aliases])}]'
                     tail = cmd.usage or ''
-                    help_em.add_field(
-                        name='Classic representation',
-                        value=f'```\n>{base} {tail}\n```'
-                    )
+                    if f'{cmd.name} {cmd.usage}' != f'{base} {tail}':
+                        help_em.add_field(
+                            name='Classic representation',
+                            value=f'```\n>{base} {tail}\n```'
+                        )
 
         await ctx.send(embed=help_em)
-
-    @command(
-        name='error',
-        brief='Raises an example error',
-        description='Only specific users have access to this command',
-        aliases=['err'],
-        hidden=True
-    )
-    @cooldown(1, 60, BucketType.user)
-    @has_permissions(administrator=True)
-    async def error_cmd(self, ctx: Context):
-        await self.bot.debug_log(ctx=ctx, e=NoError())
-        await ctx.send(embed=ErrorEmbed(
-            author=ctx.author,
-            title=':exclamation: Raised `NoError`',
-            description='Bot\'s owner should be notified.'
-        ))
-
-    @error_cmd.error
-    async def error_error(self, ctx: Context, error: Exception):
-        if isinstance(error, MissingPermissions):
-            await ctx.send(embed=ErrorEmbed(
-                author=ctx.author,
-                title=':man_technologist: You\'re not an IT specialist',
-                description='Only those can use this command'
-            ))
-        elif isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=CooldownEmbed(author=ctx.author))
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.message.author)
-            raise error
 
     @command(
         name='ping',
@@ -138,10 +108,17 @@ class Basics(Cog):
         enabled=in_production()
     )
     async def ping(self, ctx: Context):
+        elapsed_time: timedelta = ctx.message.created_at - datetime.utcnow()
+        m, s = divmod(elapsed_time.total_seconds(), 60)
         await ctx.send(embed=SuccessEmbed(
             author=ctx.author,
-            title=':ping_pong: Pong!',
-            description=f'Current latency is: {round(self.bot.latency * 1000)}ms'
+            title=':ping_pong: Pong!'
+        ).add_field(
+            name='Latency',
+            value=f'{round(self.bot.latency * 1000)}ms'
+        ).add_field(
+            name='Ping',
+            value=f'{round((m * 60 + s) * 1000)}ms'
         ))
 
     @command(
@@ -234,13 +211,36 @@ class Basics(Cog):
             await msg.add_reaction(emoji='👍')
             await msg.add_reaction(emoji='👎')
 
-    @change.error
-    async def change_error(self, ctx: Context, error: Exception):
-        if isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=CooldownEmbed(author=ctx.author))
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.message.author)
-            raise error
+    @cooldown(1, 60, BucketType.guild)
+    @command(
+        name='servers',
+        brief='List of guilds bot is in',
+        aliases=['guilds', 'serverlist', 'guildlist', 'slist'],
+        enabled=not in_production(),
+        hidden=True
+    )
+    async def servers(self, ctx: Context):
+        if ctx.author.id != self.bot.owner_id:
+            raise MissingPermissions(missing_perms=['bot_owner'])
+        em = InfoEmbed(
+            author=ctx.author,
+            title=':passport_control: Bot\'s servers list',
+            description='Last 10 (or less) servers'
+        )
+        for g, num in zip(self.bot.guilds[:10], 'one,two,three,four,five,six,seven,eight,nine,one::zero'.split(',')):
+            em.add_field(
+                name=f':{num}:  -  {g.name}',
+                value=f'```py\n'
+                      f'Created at:    {str(g.created_at)[:10]}\n'
+                      f'Joined at:     {str(g.me.joined_at)[:10]}\n'
+                      f'Member count:  {g.member_count}\n'
+                      f'Owner:         {str(g.owner)}\n'
+                      f'Premium tier:  {g.premium_tier}\n'
+                      f'Features:      {", ".join(g.features) or "-"}\n'
+                      f'```',
+                inline=False
+            )
+        await ctx.send(embed=em)
 
     # TODO - Ticket system
 
