@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from logging import basicConfig, INFO, getLogger
+from logging import basicConfig, getLogger
 
 from discord import Status, Game, Member, Intents, Guild
 from discord.ext.commands import Bot, Context, CommandNotFound, MissingPermissions, BotMissingPermissions, \
