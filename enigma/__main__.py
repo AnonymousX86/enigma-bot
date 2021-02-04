@@ -15,8 +15,8 @@ from enigma.utils.emebds.misc import JoinGuildEmbed
 
 async def update_presence():
     status = Status.online
-    game = Game(name=f'Cracking enigma codes in {len(bot.guilds)} servers')
-    await bot.change_presence(status=status, activity=game)
+    activity = Game(name=f'Cracking enigma codes in {len(bot.guilds)} servers')
+    await bot.change_presence(status=status, activity=activity)
 
 
 # noinspection PyShadowingNames
@@ -59,17 +59,11 @@ if __name__ == '__main__':
 
     @bot.event
     async def on_ready():
-        # Output login
         log.info(f'Logged on as: {bot.user}')
         guilds = len(bot.guilds)
-
-        # Change presence
         log.info(f'Connected guilds: {guilds}')
         await update_presence()
-
         bot.debug_log = debug_log
-
-        # Custom values
         bot.version = version
         loaded = 0
         for cog in (f'enigma.cogs.{name}' for name in (
