@@ -161,8 +161,8 @@ class Admin(Cog):
         if amount < 1:
             return await ctx.send(embed=ErrorEmbed(
                 author=ctx.author,
-                title=':x: Arguments error',
-                description='Please provide amount of messages to prune.'
+                title=':x: Argument error',
+                description='Please provide proper amount of messages to prune.'
             ))
         elif amount > 20:
             return await ctx.send(embed=ErrorEmbed(
