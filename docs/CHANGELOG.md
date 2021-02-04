@@ -5,6 +5,7 @@
 - `unban` command.
 - `servers` command.
 - `whois` command.
+- Checking connection with database.
 #### Fixed
 - `randomnumber` command was disabled.
 #### Changed

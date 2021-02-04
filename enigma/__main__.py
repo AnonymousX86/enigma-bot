@@ -7,6 +7,7 @@ from discord.ext.commands import Bot, Context, CommandNotFound, MissingPermissio
 from rich.logging import RichHandler
 
 from enigma.settings import general_settings, debug_settings, version, in_production
+from enigma.utils.database import check_connection
 from enigma.utils.emebds.core import ErrorEmbed
 from enigma.utils.emebds.errors import DebugEmbed
 from enigma.utils.emebds.misc import JoinGuildEmbed
@@ -86,6 +87,8 @@ if __name__ == '__main__':
                 await debug_log(e=e)
                 log.critical(f'Failed loading "{cog}", details: {e}')
         log.info(f'Loaded cogs: {loaded}')
+
+        log.info('Database connection OK') if check_connection() else log.critical(f'Failed to connect to database')
 
         log.info('On ready - done!')
 
