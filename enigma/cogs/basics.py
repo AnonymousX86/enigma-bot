@@ -99,23 +99,6 @@ class Basics(Cog):
         await ctx.send(embed=help_em)
 
     @command(
-        name='error',
-        brief='Raises an example error',
-        description='Only specific users have access to this command',
-        aliases=['err'],
-        hidden=True
-    )
-    @cooldown(1, 60, BucketType.user)
-    @has_permissions(administrator=True)
-    async def error_cmd(self, ctx: Context):
-        await self.bot.debug_log(ctx=ctx, e=NoError())
-        await ctx.send(embed=ErrorEmbed(
-            author=ctx.author,
-            title=':exclamation: Raised `NoError`',
-            description='Bot\'s owner should be notified.'
-        ))
-
-    @command(
         name='ping',
         brief='Checks bot latency',
         description='Counts time difference between command execution time and bot\'s response',

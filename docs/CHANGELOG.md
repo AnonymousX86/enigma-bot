@@ -5,6 +5,8 @@
 - `unban` command.
 #### Changed
 - Command errors are now handled globally.
+#### Removed
+- `error` command.
 
 
 ## Released
