@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from asyncio import sleep
-
 from discord import Member, NotFound, HTTPException, User
 from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, Context, cooldown, BucketType
 from discord.utils import get
@@ -193,8 +191,7 @@ class Admin(Cog):
             author=ctx.author,
             title=f':wastebasket: Successfully deleted {deleted} message{"s" if deleted > 1 else ""}.'
         ))
-        await sleep(3)
-        await msg.delete()
+        await msg.delete(delay=3.0)
 
     # TODO - Logging system
 
