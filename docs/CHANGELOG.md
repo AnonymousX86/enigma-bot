@@ -19,6 +19,7 @@
 - Logging is now more clear.
 - SQL-Alchemy logging level set to WARNING.
 - Version in settings is now a function.
+- Normalized get function in `settings.py`.
 #### Removed
 - `error` command.
 

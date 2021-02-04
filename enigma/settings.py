@@ -5,12 +5,12 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 
-def get(thing: str):
-    return environ.get(thing)
+def _get(thing: str) -> str:
+    return str(environ.get(thing))
 
 
 def in_dev() -> bool:
-    return str(get('TARGET')) == 'development'
+    return str(_get('TARGET')) == 'development'
 
 
 def in_production() -> bool:
@@ -22,30 +22,30 @@ def version() -> str:
 
 
 general_settings = {
-    'bot_token': str(get('BOT_TOKEN')),
-    'owner_id': int(get('OWNER_ID')),
-    'suggestions_channel': int(get('SUGGESTION_CHANNEL'))
+    'bot_token': _get('BOT_TOKEN'),
+    'owner_id': int(_get('OWNER_ID')),
+    'suggestions_channel': int(_get('SUGGESTION_CHANNEL'))
 }
 
 database_settings = {
-    'url': str(get('DATABASE_URL')),
-    'user': str(get('DB_USER')),
-    'password': str(get('DB_PASSWORD')),
-    'host': str(get('DB_HOST')),
-    'port': str(get('DB_PORT')),
-    'database': str(get('DB_DATABASE'))
+    'url': _get('DATABASE_URL'),
+    'user': _get('DB_USER'),
+    'password': _get('DB_PASSWORD'),
+    'host': _get('DB_HOST'),
+    'port': _get('DB_PORT'),
+    'database': _get('DB_DATABASE')
 }
 
 debug_settings = {
-    'channel': int(get('DEBUG_CHANNEL')),
+    'channel': int(_get('DEBUG_CHANNEL')),
 }
 
 reddit_settings = {
-    'client_id': get('REDDIT_CLIENT_ID'),
-    'client_secret': get('REDDIT_SECRET'),
-    'user_agent': get('REDDIT_USER_AGENT')
+    'client_id': _get('REDDIT_CLIENT_ID'),
+    'client_secret': _get('REDDIT_SECRET'),
+    'user_agent': _get('REDDIT_USER_AGENT')
 }
 
 rapidapi_settings = {
-    'key': get('RAPIDAPI_KEY')
+    'key': _get('RAPIDAPI_KEY')
 }
