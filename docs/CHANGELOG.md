@@ -17,7 +17,8 @@
 - `help` command do not sends classic representation if it's same as usage.
 - `prune` command's error description slightly changed to be more precise.
 - Logging is now more clear.
-- SQL-Alchemy logging level set to WARNING. 
+- SQL-Alchemy logging level set to WARNING.
+- Version in settings is now a function.
 #### Removed
 - `error` command.
 

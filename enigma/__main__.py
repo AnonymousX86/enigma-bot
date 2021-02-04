@@ -64,7 +64,7 @@ if __name__ == '__main__':
         log.info(f'Connected guilds: {guilds}')
         await update_presence()
         bot.debug_log = debug_log
-        bot.version = version
+        bot.version = version()
         loaded = 0
         for cog in (f'enigma.cogs.{name}' for name in (
                 'admin',
