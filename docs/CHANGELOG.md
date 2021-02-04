@@ -5,6 +5,8 @@
 - `unban` command.
 - `servers` command.
 - `whois` command.
+- Logging guilds count.
+- Logging amount of cogs loaded.
 - Logging connection to Discord.
 - Checking connection with database.
 #### Fixed
