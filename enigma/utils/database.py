@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import date, datetime as d
-from typing import List, Optional, Union, Tuple
+from typing import List, Optional
 
-from sqlalchemy import create_engine, Column, Integer, Date, BigInteger, Text, text
+from sqlalchemy import create_engine, Column, Integer, Date, BigInteger, Text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
