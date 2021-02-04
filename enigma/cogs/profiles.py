@@ -232,7 +232,28 @@ class Profiles(Cog):
                 url=user.avatar_url
             ))
 
-    # TODO - Notes
+    @command(
+        name='notes',
+        brief='Manages your notes',
+        description='Every user can save upto 3 notes.',
+        help='Available options:'
+             '- create <note content>'
+             '- delete <note UID>'
+             '- edit <note UID>',
+        usage='<option [...]>',
+        enabled=not in_production()
+    )
+    async def notes(self, ctx: Context, option: str = None, arg: Union[int, str] = None):
+        # TODO - Notes
+        await ctx.send(embed=DevelopmentEmbed(
+            author=ctx.author
+        ).add_field(
+            name='OPTION',
+            value=option
+        ).add_field(
+            name='ARG',
+            value=f'{str(arg)} ({type(arg).__class__.__name__})'
+        ))
 
     # TODO - Quests
 
