@@ -1,6 +1,10 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+
+
+## Released
+### [v0.6] - 04.02.2021
 #### Added
 - `unban` command.
 - `servers` command.
@@ -25,7 +29,6 @@
 - `error` command.
 
 
-## Released
 ### [v0.5] - 03.02.2021
 #### Added
 - `suggest` command.
