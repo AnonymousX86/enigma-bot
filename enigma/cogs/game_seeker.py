@@ -20,9 +20,7 @@ class GameSeeker(Cog):
     )
     async def host(self, ctx: Context, game: str = None, description: str = None):
         await ctx.send(embed=DevelopmentEmbed(
-            author=ctx.author,
-            title=':tools: Command in development',
-            description=''
+            author=ctx.author
         ).add_field(
             name='GAME',
             value=game
