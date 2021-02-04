@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime as d
+from typing import Union
 
-from discord import Embed, User
-from discord.ext.commands import Cog, command, UserNotFound, Context
+from discord import User
+from discord.ext.commands import Cog, command, Context
 
 from enigma.settings import in_production
-from enigma.utils.colors import random_color
 from enigma.utils.database import get_single_user, update_profile, user_get_cash
-from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed
+from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed, InfoEmbed
 from enigma.utils.emebds.misc import PleaseWaitEmbed, DevelopmentEmbed
 from enigma.utils.strings import f_btc
 
