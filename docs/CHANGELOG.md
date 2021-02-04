@@ -4,6 +4,7 @@
 #### Added
 - `unban` command.
 - `servers` command.
+- `whois` command.
 #### Changed
 - Command errors are now handled globally.
 #### Removed

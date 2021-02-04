@@ -187,11 +187,46 @@ class Profiles(Cog):
             url=user.avatar_url
         ))
 
+    @command(
+        name='whois',
+        brief='Short info about user',
+        usage='<user>',
+        enabled=in_production()
+    )
+    async def whois(self, ctx: Context, user: User = None):
+        if not user:
             await ctx.send(embed=ErrorEmbed(
                 author=ctx.author,
-                title=':mag: User not found!'
+                title=':x: No user specified'
             ))
         else:
+            await ctx.send(embed=InfoEmbed(
+                author=ctx.author,
+                title=f':face_with_monocle: Who is {user.display_name}'
+            ).add_field(
+                name='Original name',
+                value='{0.name}#{0.discriminator}'.format(user),
+                inline=False
+            ).add_field(
+                name='User ID',
+                value=str(user.id),
+                inline=False
+            ).add_field(
+                name='Joined Discord at',
+                value=str(user.created_at)[:19],
+                inline=False
+            ).add_field(
+                name='Bot account',
+                value=str(user.bot),
+                inline=False
+            ).add_field(
+                name='Public flags',
+                value=', '.join(map(lambda z: f'`{z.upper()}`' if z else None, list(filter(
+                    lambda y: y is not None, map(lambda x: x[0] if x[1] else None, user.public_flags)
+                )))) or 'None'
+            ).set_thumbnail(
+                url=user.avatar_url
+            ))
 
     # TODO - Notes
 
