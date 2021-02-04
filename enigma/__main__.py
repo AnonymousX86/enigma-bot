@@ -94,6 +94,21 @@ if __name__ == '__main__':
 
 
     @bot.event
+    async def on_connect():
+        log.info('Connected to Discord')
+
+
+    @bot.event
+    async def on_disconnect():
+        log.info('Disconnected from Discord')
+
+
+    @bot.event
+    async def on_resumed():
+        log.info('Resumed to Discord')
+
+
+    @bot.event
     async def on_guild_join(guild: Guild):
         log.info(f'Joined guild: {str(guild)}')
         await update_presence()

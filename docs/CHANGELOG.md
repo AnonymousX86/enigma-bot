@@ -5,6 +5,7 @@
 - `unban` command.
 - `servers` command.
 - `whois` command.
+- Logging connection to Discord.
 - Checking connection with database.
 #### Fixed
 - `randomnumber` command was disabled.
