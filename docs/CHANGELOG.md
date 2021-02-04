@@ -3,6 +3,8 @@
 ## [Unreleased]
 #### Added
 - `unban` command.
+#### Changed
+- Command errors are now handled globally.
 
 
 ## Released

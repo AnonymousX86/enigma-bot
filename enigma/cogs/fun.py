@@ -7,8 +7,8 @@ from random import choice, randint
 from typing import List, Union, Optional
 
 from discord import Forbidden, TextChannel, NotFound, User, Message
-from discord.ext.commands import Cog, command, Context, cooldown, BucketType, CommandOnCooldown, has_permissions, \
-    MissingPermissions, CommandInvokeError
+from discord.ext.commands import Cog, command, Context, cooldown, BucketType, has_permissions, \
+    CommandInvokeError, CommandError
 from praw import Reddit
 from requests import request
 
@@ -16,7 +16,7 @@ from enigma.settings import reddit_settings, in_production, rapidapi_settings
 from enigma.utils.colors import random_color
 from enigma.utils.database import create_giveaway, get_giveaway_from_message, delete_giveaway
 from enigma.utils.emebds.core import ErrorEmbed, InfoEmbed, SuccessEmbed
-from enigma.utils.emebds.errors import TimeoutEmbed, CooldownEmbed
+from enigma.utils.emebds.errors import TimeoutEmbed
 from enigma.utils.emebds.misc import PleaseWaitEmbed
 from enigma.utils.exceptions import DatabaseError
 from enigma.utils.strings import number_suffix
@@ -425,25 +425,14 @@ class Fun(Cog):
 
     @giveaway.error
     async def giveaway_error(self, ctx: Context, error: Exception):
-        if isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=ErrorEmbed(
-                author=ctx.author,
-                title=':x: Command\'s on cooldown'
-            ))
-        elif isinstance(error, MissingPermissions):
-            await ctx.send(embed=ErrorEmbed(
-                author=ctx.author,
-                title=':x: You\'re not allowed to do that',
-                description='You need **manage server** permission.'
-            ))
-        elif isinstance(error, CommandInvokeError):
+        if isinstance(error, CommandInvokeError):
             await ctx.send(embed=ErrorEmbed(
                 author=ctx.author,
                 title=':x: There was a problem with the giveaway',
                 description='Probably, there are too many items in the giveaway.'
             ))
         else:
-            await self.bot.debug_log(ctx=ctx, e=error)
+            raise CommandError(error)
 
     @cooldown(2, 5, BucketType.guild)
     @command(
@@ -502,13 +491,6 @@ class Fun(Cog):
             description=description
         ))
 
-    @iq.error
-    async def iq_error(self, ctx, error):
-        if isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=CooldownEmbed(author=ctx.author))
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error)
-
     @cooldown(1, 6, BucketType.guild)
     @command(
         name='meme',
@@ -543,13 +525,6 @@ class Fun(Cog):
                 title=':x: Meme not found',
                 description='Just try again'
             ))
-
-    @meme.error
-    async def meme_error(self, ctx: Context, error: Exception):
-        if isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=CooldownEmbed(author=ctx.author))
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error)
 
     # noinspection SpellCheckingInspection
     @command(

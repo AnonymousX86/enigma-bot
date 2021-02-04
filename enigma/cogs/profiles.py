@@ -187,15 +187,11 @@ class Profiles(Cog):
             url=user.avatar_url
         ))
 
-    @avatar.error
-    async def avatar_error(self, ctx: Context, error: Exception):
-        if isinstance(error, UserNotFound):
             await ctx.send(embed=ErrorEmbed(
                 author=ctx.author,
                 title=':mag: User not found!'
             ))
         else:
-            await self.bot.debug_log(ctx=ctx, e=error)
 
     # TODO - Notes
 

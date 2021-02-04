@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from discord import TextChannel
-from discord.ext.commands import command, Cog, has_permissions, MissingPermissions, Context, cooldown, BucketType, \
-    CommandOnCooldown, CommandError, Command
+from discord.ext.commands import command, Cog, MissingPermissions, Context, cooldown, BucketType, \
+    CommandError, Command
 
 from enigma.settings import in_production, general_settings
 from enigma.utils.emebds.core import InfoEmbed, ErrorEmbed, SuccessEmbed
-from enigma.utils.emebds.errors import CooldownEmbed
 from enigma.utils.emebds.misc import SuggestionEmbed
-from enigma.utils.exceptions import NoError
 
 
 class Basics(Cog):
@@ -117,20 +115,6 @@ class Basics(Cog):
             description='Bot\'s owner should be notified.'
         ))
 
-    @error_cmd.error
-    async def error_error(self, ctx: Context, error: Exception):
-        if isinstance(error, MissingPermissions):
-            await ctx.send(embed=ErrorEmbed(
-                author=ctx.author,
-                title=':man_technologist: You\'re not an IT specialist',
-                description='Only those can use this command'
-            ))
-        elif isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=CooldownEmbed(author=ctx.author))
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.message.author)
-            raise error
-
     @command(
         name='ping',
         brief='Checks bot latency',
@@ -234,13 +218,6 @@ class Basics(Cog):
             await msg.add_reaction(emoji='👍')
             await msg.add_reaction(emoji='👎')
 
-    @change.error
-    async def change_error(self, ctx: Context, error: Exception):
-        if isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=CooldownEmbed(author=ctx.author))
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.message.author)
-            raise error
 
     # TODO - Ticket system
 

@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 from asyncio import sleep
 
-from discord import Embed, Member, NotFound, HTTPException, User
-from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, MissingPermissions, \
-    BotMissingPermissions, UserNotFound, Context, cooldown, BucketType, CommandOnCooldown
+from discord import Member, NotFound, HTTPException, User
+from discord.ext.commands import command, Cog, has_permissions, bot_has_permissions, Context, cooldown, BucketType
 from discord.utils import get
 
 from enigma.settings import in_production
-from enigma.utils.colors import random_color
 from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed
-from enigma.utils.emebds.errors import CooldownEmbed
 from enigma.utils.emebds.misc import PleaseWaitEmbed
 
 
@@ -66,27 +63,6 @@ class Admin(Cog):
                 ))
                 await member.ban(reason=reason)
 
-    @ban.error
-    async def ban_error(self, ctx: Context, error: Exception):
-        if isinstance(error, MissingPermissions):
-            status = 'You don\'t have **ban** permissions!'
-
-        elif isinstance(error, BotMissingPermissions):
-            status = 'I don\' have **ban** permissions!'
-
-        elif isinstance(error, UserNotFound):
-            status = 'User not found!'
-
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
-            raise error
-
-        await ctx.send(embed=ErrorEmbed(
-            author=ctx.author,
-            title=':rolling_eyes: Whoops!',
-            description=status
-        ))
-
     @has_permissions(ban_members=True)
     @bot_has_permissions(ban_members=True)
     @command(
@@ -120,23 +96,6 @@ class Admin(Cog):
                     name='REASON',
                     value=str(reason)
                 ))
-
-    @unban.error
-    async def unban_error(self, ctx: Context, error: Exception):
-        if isinstance(error, MissingPermissions):
-            status = 'You don\'t have **ban** permissions!'
-        elif isinstance(error, BotMissingPermissions):
-            status = 'I don\'t have **ban** permissions!'
-        elif isinstance(error, UserNotFound):
-            status = 'User not found!'
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
-            raise error
-        await ctx.send(embed=Embed(
-            title=':rolling_eyes: Whoops!',
-            description=status,
-            color=random_color()
-        ))
 
     @command(
         name='kick',
@@ -189,23 +148,6 @@ class Admin(Cog):
             description=st[1]
         ))
 
-    @kick.error
-    async def kick_error(self, ctx: Context, error: Exception):
-        if isinstance(error, MissingPermissions):
-            status = 'You don\'t have **kick** permissions!'
-        elif isinstance(error, BotMissingPermissions):
-            status = 'I don\' have **kick** permissions!'
-        elif isinstance(error, UserNotFound):
-            status = 'User not found!'
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
-            raise error
-        await ctx.send(embed=Embed(
-            title=':rolling_eyes: Whoops!',
-            description=status,
-            color=random_color()
-        ))
-
     @has_permissions(manage_messages=True)
     @bot_has_permissions(manage_messages=True, read_message_history=True)
     @cooldown(1, 30, BucketType.guild)
@@ -253,23 +195,6 @@ class Admin(Cog):
         ))
         await sleep(3)
         await msg.delete()
-
-    @prune.error
-    async def prune_error(self, ctx: Context, error: Exception):
-        if isinstance(error, MissingPermissions):
-            st = 'You don\'t have **manage messages** permissions!'
-        elif isinstance(error, BotMissingPermissions):
-            st = 'I don\'t have **manage messages** or **read message history** permissions!'
-        elif isinstance(error, CommandOnCooldown):
-            return await ctx.send(embed=CooldownEmbed(author=ctx.author))
-        else:
-            await self.bot.debug_log(ctx=ctx, e=error, member=ctx.author)
-            raise error
-        await ctx.send(embed=ErrorEmbed(
-            author=ctx.author,
-            title=':x: Whoops!',
-            description=st
-        ))
 
     # TODO - Logging system
 
