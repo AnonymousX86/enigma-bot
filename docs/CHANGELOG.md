@@ -10,6 +10,7 @@
 #### Changed
 - Command errors are now handled globally.
 - `ping` command sends both ping and latency.
+- `help` command do not sends classic representation if it's same as usage.
 #### Removed
 - `error` command.
 

@@ -81,7 +81,7 @@ class Basics(Cog):
                 if cmd.usage:
                     help_em.add_field(
                         name='Usage',
-                        value=f'`>{cmd.name} {cmd.usage}`',
+                        value=f'```\n>{cmd.name} {cmd.usage}\n```',
                         inline=False
                     )
                 if cmd.help:
@@ -93,10 +93,11 @@ class Basics(Cog):
                 if cmd.aliases or cmd.usage:
                     base = cmd.name if not cmd.aliases else f'[{"|".join([cmd.name, *cmd.aliases])}]'
                     tail = cmd.usage or ''
-                    help_em.add_field(
-                        name='Classic representation',
-                        value=f'```\n>{base} {tail}\n```'
-                    )
+                    if f'{cmd.name} {cmd.usage}' != f'{base} {tail}':
+                        help_em.add_field(
+                            name='Classic representation',
+                            value=f'```\n>{base} {tail}\n```'
+                        )
 
         await ctx.send(embed=help_em)
 
