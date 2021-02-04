@@ -9,6 +9,7 @@
 - `randomnumber` command was disabled.
 #### Changed
 - Command errors are now handled globally.
+- `ping` command sends both ping and latency.
 #### Removed
 - `error` command.
 

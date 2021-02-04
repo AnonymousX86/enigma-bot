@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta, datetime
+
 from discord import TextChannel
 from discord.ext.commands import command, Cog, MissingPermissions, Context, cooldown, BucketType, \
     CommandError, Command
@@ -105,10 +107,17 @@ class Basics(Cog):
         enabled=in_production()
     )
     async def ping(self, ctx: Context):
+        elapsed_time: timedelta = ctx.message.created_at - datetime.utcnow()
+        m, s = divmod(elapsed_time.total_seconds(), 60)
         await ctx.send(embed=SuccessEmbed(
             author=ctx.author,
-            title=':ping_pong: Pong!',
-            description=f'Current latency is: {round(self.bot.latency * 1000)}ms'
+            title=':ping_pong: Pong!'
+        ).add_field(
+            name='Latency',
+            value=f'{round(self.bot.latency * 1000)}ms'
+        ).add_field(
+            name='Ping',
+            value=f'{round((m * 60 + s) * 1000)}ms'
         ))
 
     @command(
