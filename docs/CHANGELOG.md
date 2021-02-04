@@ -11,6 +11,7 @@
 - Checking connection with database.
 #### Fixed
 - `randomnumber` command was disabled.
+- `host` command without na argument no more raises an error.
 #### Changed
 - Command errors are now handled globally.
 - `ping` command sends both ping and latency.
