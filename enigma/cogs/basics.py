@@ -108,8 +108,9 @@ class Basics(Cog):
         enabled=in_production()
     )
     async def ping(self, ctx: Context):
-        elapsed_time: timedelta = ctx.message.created_at - datetime.utcnow()
+        elapsed_time: timedelta = datetime.utcnow() - ctx.message.created_at
         m, s = divmod(elapsed_time.total_seconds(), 60)
+        ping = int(round((m * 60 + s) * 1000))
         await ctx.send(embed=SuccessEmbed(
             author=ctx.author,
             title=':ping_pong: Pong!'
@@ -118,7 +119,7 @@ class Basics(Cog):
             value=f'{round(self.bot.latency * 1000)}ms'
         ).add_field(
             name='Ping',
-            value=f'{round((m * 60 + s) * 1000)}ms'
+            value=f'{ping}ms'
         ))
 
     @command(

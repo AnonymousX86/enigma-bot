@@ -1,6 +1,8 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+#### Fixed
+- `ping` commands was showing negative values.
 
 
 ## Released
