@@ -100,15 +100,20 @@ class Profiles(Cog):
 
     @command(
         name='reputation',
-        brief='Gives someone reputation',
+        brief='[ WIP ] Gives someone reputation',
         help='Available once a day, resets on 00:00.',
         usage='<user>',
         aliases=['rep'],
         enabled=not in_production()
     )
-    async def reputation(self, ctx: Context):
+    async def reputation(self, ctx: Context, user: User):
         # TODO - Reputation
-        await ctx.send(embed=DevelopmentEmbed(author=ctx.author))
+        await ctx.send(embed=DevelopmentEmbed(
+            author=ctx.author
+        ).add_field(
+            name='USER',
+            value=str(user)
+        ))
 
     @command(
         name='manage',
