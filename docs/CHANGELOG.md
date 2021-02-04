@@ -12,6 +12,7 @@
 - `ping` command sends both ping and latency.
 - `help` command do not sends classic representation if it's same as usage.
 - `prune` command's error description slightly changed to be more precise.
+- Logging is now more clear.
 #### Removed
 - `error` command.
 

@@ -59,33 +59,33 @@ if __name__ == '__main__':
     @bot.event
     async def on_ready():
         # Output login
-        log.info('Logged on as: {0} ({0.id})'.format(bot.user))
+        log.info(f'Logged on as: {bot.user}')
         guilds = len(bot.guilds)
-        log.info(f'Guilds count: {guilds}')
 
         # Change presence
+        log.info(f'Connected guilds: {guilds}')
         await update_presence()
 
         bot.debug_log = debug_log
 
         # Custom values
         bot.version = version
-
-        # Load cogs
-        cogs = (f'enigma.cogs.{name}' for name in (
-            'admin',
-            'basics',
-            'fun',
-            'game_seeker',
-            'profiles',
-        ))
-        for cog in cogs:
+        loaded = 0
+        for cog in (f'enigma.cogs.{name}' for name in (
+                'admin',
+                'basics',
+                'fun',
+                'game_seeker',
+                'profiles',
+        )):
             try:
                 bot.load_extension(cog)
                 log.debug(f'Loaded: {cog}')
+                loaded += 1
             except Exception as e:
                 await debug_log(e=e)
-                log.critical(f'Can\'t load: {cog}')
+                log.critical(f'Failed loading "{cog}", details: {e}')
+        log.info(f'Loaded cogs: {loaded}')
 
         log.info('On ready - done!')
 
