@@ -39,7 +39,7 @@ if __name__ == '__main__':
         datefmt='[%x]',
         handlers=[RichHandler()]
     )
-    getLogger('sqlalchemy.engine').setLevel(INFO)
+    getLogger('sqlalchemy.engine').setLevel('WARNING')
     log = getLogger('rich')
     bot = Bot(
         command_prefix='>',
