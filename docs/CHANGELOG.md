@@ -3,6 +3,7 @@
 ## [Unreleased]
 #### Fixed
 - `ping` commands was showing negative values.
+- `giveaway` command embed.
 
 
 ## Released
