@@ -4,6 +4,8 @@
 #### Fixed
 - `ping` commands was showing negative values.
 - `giveaway` command embed.
+#### Changed
+- `suggest` command aliases and description.
 
 
 ## Released

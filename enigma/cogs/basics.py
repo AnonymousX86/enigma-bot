@@ -172,10 +172,10 @@ class Basics(Cog):
     @command(
         name='suggest',
         brief='Suggest a change',
-        description='Ask dev(s) for a functionality.',
+        description='Ask dev(s) for a functionality or give a feedback.',
         help='Keep your message between 25 and 120 characters.',
         usage='<message>',
-        aliases=['change'],
+        aliases=['change', 'feedback'],
         enabled=in_production()
     )
     async def change(self, ctx: Context, *, message: str = None):
