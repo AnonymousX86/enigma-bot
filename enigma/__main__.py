@@ -153,7 +153,7 @@ if __name__ == '__main__':
         elif isinstance(error, CommandOnCooldown):
             await ctx.send(embed=ErrorEmbed(
                 author=ctx.author,
-                title=':x: Command is not cooldown',
+                title=':x: Command is on cooldown',
                 description='Please try again in a minute.'
             ))
         elif isinstance(error, DisabledCommand):
