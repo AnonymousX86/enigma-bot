@@ -108,6 +108,7 @@
 
 
 [Unreleased]: https://github.com/AnonymousX86/Enigma-Bot/compare/deploy...master
+[v0.6]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.6
 [v0.5]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.5
 [v0.4]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.4
 [v0.3]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.3
