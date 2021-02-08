@@ -1,6 +1,12 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+#### Updated
+- [`setup.py`] now has all packages
+#### Changed
+- Python version in [`setup.py`] is now read from [`runtime.txt`]
+- There's author's full name in [`setup.py`].
+- Name in [`setup.py`] now looks better.
 
 ## Released
 ### [v0.7] - 08.02.2021
@@ -108,6 +114,8 @@
 - Communication with the database using SQLAlchemy.
 
 
+[`setup.py`]: https://github.com/AnonymousX86/Enigma-Bot/blob/master/setup.py
+[`runtime.txt`]: https://github.com/AnonymousX86/Enigma-Bot/blob/master/runtime.txt
 [Unreleased]: https://github.com/AnonymousX86/Enigma-Bot/compare/deploy...master
 [v0.7]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.7
 [v0.6]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.6
