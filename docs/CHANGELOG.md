@@ -7,6 +7,7 @@
 - Python version in [`setup.py`] is now read from [`runtime.txt`]
 - There's author's full name in [`setup.py`].
 - Name in [`setup.py`] now looks better.
+- `info` command embed.
 
 ## Released
 ### [v0.7] - 08.02.2021
