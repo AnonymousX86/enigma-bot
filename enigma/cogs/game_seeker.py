@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from discord.ext.commands import Cog, command, Context
 
+from enigma.emebds.misc import DevelopmentEmbed
 from enigma.settings import in_production
-from enigma.utils.emebds.misc import DevelopmentEmbed
 
 
 class GameSeeker(Cog):

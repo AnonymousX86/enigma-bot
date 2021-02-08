@@ -7,9 +7,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from enigma.settings import database_settings
+from enigma.settings import database_url
 
-_engine = create_engine(database_settings['url'])
+_engine = create_engine(database_url())
 _Session = sessionmaker()
 _Session.configure(bind=_engine)
 
@@ -25,7 +25,6 @@ def check_connection() -> bool:
 
 
 class User(Base):
-    """Single user, map object."""
     __tablename__ = 'users'
     user_id = Column(BigInteger, primary_key=True)
     user_xp = Column(Integer)
@@ -34,10 +33,6 @@ class User(Base):
 
 
 def get_all_users() -> List[User]:
-    """Queries all users from database.
-
-    :return: List of users from database.
-    """
     session = _Session()
     try:
         return [row for row in session.query(User).all()]
@@ -46,11 +41,6 @@ def get_all_users() -> List[User]:
 
 
 def get_single_user(user_id: int) -> User:
-    """Queries single user from database.
-
-    :param user_id: User ID which profile should be queried.
-    :return: Existing or new user object.
-    """
     session = _Session()
     try:
         q = session.query(User).filter_by(user_id=user_id).one_or_none()
@@ -64,11 +54,6 @@ def get_single_user(user_id: int) -> User:
 
 
 def create_profile(user_id: int) -> Optional[User]:
-    """Creates user profile in database.
-
-    :param user_id: User ID to put in.
-    :return: New user object.
-    """
     session = _Session()
     new_user = User(
         user_id=user_id,
@@ -88,12 +73,6 @@ def create_profile(user_id: int) -> Optional[User]:
 
 
 def update_profile(user_id: int, xp: int = None, cash: int = None) -> User:
-    """Updates user profile in database - sets XP or cash.
-
-    :param user_id: User ID which profile should be updated.
-    :param xp: XP amount.
-    :param cash: Cash amount
-    """
     if xp and cash:
         stmt = {'user_xp': xp, 'user_cash': cash}
     elif xp:
@@ -113,12 +92,6 @@ def update_profile(user_id: int, xp: int = None, cash: int = None) -> User:
 
 
 def user_get_cash(user_id: int, cash: int) -> User:
-    """Database handler when user uses `daily` command. Or just if you want to add cash instead of setting it.
-
-    :param user_id: User ID.
-    :param cash: Amount of cash to be added.
-    :return: Updated user object.
-    """
     session = _Session()
     try:
         user = get_single_user(user_id)
@@ -132,7 +105,6 @@ def user_get_cash(user_id: int, cash: int) -> User:
 
 
 class Giveaway(Base):
-    """Single giveaway, map object."""
     __tablename__ = 'giveaways'
     giveaway_id = Column(Integer, primary_key=True)
     message_id = Column(BigInteger)
@@ -149,13 +121,6 @@ def get_giveaway_from_message(message_id: int) -> Optional[Giveaway]:
 
 
 def create_giveaway(message_id: int, guild_id: int, data: str) -> Optional[Giveaway]:
-    """Creates giveaway in database.
-
-    :param message_id: Giveaway's message ID.
-    :param guild_id: Giveaway's guild ID.
-    :param data: String representation of data.
-    :return: New Giveaway object.
-    """
     create_guild(guild_id)
     session = _Session()
     new_giveaway = Giveaway(

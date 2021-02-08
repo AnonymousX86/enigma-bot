@@ -5,9 +5,9 @@ from discord import TextChannel
 from discord.ext.commands import command, Cog, MissingPermissions, Context, cooldown, BucketType, \
     CommandError, Command
 
-from enigma.settings import in_production, general_settings
-from enigma.utils.emebds.core import InfoEmbed, ErrorEmbed, SuccessEmbed
-from enigma.utils.emebds.misc import SuggestionEmbed
+from enigma.emebds.core import InfoEmbed, SuccessEmbed, ErrorEmbed
+from enigma.emebds.misc import SuggestionEmbed
+from enigma.settings import in_production, suggestions_channel_id
 
 
 class Basics(Cog):
@@ -108,8 +108,9 @@ class Basics(Cog):
         enabled=in_production()
     )
     async def ping(self, ctx: Context):
-        elapsed_time: timedelta = ctx.message.created_at - datetime.utcnow()
+        elapsed_time: timedelta = datetime.utcnow() - ctx.message.created_at
         m, s = divmod(elapsed_time.total_seconds(), 60)
+        ping = int(round((m * 60 + s) * 1000))
         await ctx.send(embed=SuccessEmbed(
             author=ctx.author,
             title=':ping_pong: Pong!'
@@ -118,7 +119,7 @@ class Basics(Cog):
             value=f'{round(self.bot.latency * 1000)}ms'
         ).add_field(
             name='Ping',
-            value=f'{round((m * 60 + s) * 1000)}ms'
+            value=f'{ping}ms'
         ))
 
     @command(
@@ -171,10 +172,10 @@ class Basics(Cog):
     @command(
         name='suggest',
         brief='Suggest a change',
-        description='Ask dev(s) for a functionality.',
+        description='Ask dev(s) for a functionality or give a feedback.',
         help='Keep your message between 25 and 120 characters.',
         usage='<message>',
-        aliases=['change'],
+        aliases=['change', 'feedback'],
         enabled=in_production()
     )
     async def change(self, ctx: Context, *, message: str = None):
@@ -197,7 +198,7 @@ class Basics(Cog):
                 description='Suggestion is too long. Write less, please.'
             ))
         else:
-            channel: TextChannel = self.bot.get_channel(general_settings['suggestions_channel'])
+            channel: TextChannel = self.bot.get_channel(suggestions_channel_id())
             msg = await channel.send(embed=SuggestionEmbed(
                 author=ctx.author,
                 message=message

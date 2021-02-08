@@ -6,11 +6,11 @@ from discord.ext.commands import Bot, Context, CommandNotFound, MissingPermissio
     CommandOnCooldown, UserNotFound, DisabledCommand
 from rich.logging import RichHandler
 
-from enigma.settings import general_settings, debug_settings, version, in_production
+from enigma.emebds.core import ErrorEmbed
+from enigma.emebds.errors import DebugEmbed
+from enigma.emebds.misc import JoinGuildEmbed
+from enigma.settings import debug_channel_id, bot_version, system_channel_id, in_production, bot_token
 from enigma.utils.database import check_connection
-from enigma.utils.emebds.core import ErrorEmbed
-from enigma.utils.emebds.errors import DebugEmbed
-from enigma.utils.emebds.misc import JoinGuildEmbed
 
 
 async def update_presence():
@@ -21,7 +21,7 @@ async def update_presence():
 
 # noinspection PyShadowingNames
 async def debug_log(ctx: Context = None, e: Exception = None, member: Member = None):
-    debug_channel = bot.get_channel(debug_settings['channel'])
+    debug_channel = bot.get_channel(debug_channel_id())
     await debug_channel.send(
         embed=DebugEmbed(
             author=bot.get_user(bot.owner_id),
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     bot = Bot(
         command_prefix='>',
         case_insensitive=False,
-        owner_id=general_settings['owner_id'],
+        owner_id=309270832683679745,
         description='General purpose bot',
         help_command=None,
         intents=Intents(
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         log.info(f'Connected guilds: {guilds}')
         await update_presence()
         bot.debug_log = debug_log
-        bot.version = version()
+        bot.version = bot_version()
         loaded = 0
         for cog in (f'enigma.cogs.{name}' for name in (
                 'admin',
@@ -72,6 +72,7 @@ if __name__ == '__main__':
                 'fun',
                 'game_seeker',
                 'profiles',
+                'utilities'
         )):
             try:
                 bot.load_extension(cog)
@@ -106,7 +107,7 @@ if __name__ == '__main__':
     async def on_guild_join(guild: Guild):
         log.info(f'Joined guild: {str(guild)}')
         await update_presence()
-        await bot.get_channel(debug_settings['channel']).send(embed=JoinGuildEmbed(
+        await bot.get_channel(system_channel_id()).send(embed=JoinGuildEmbed(
             author=bot.get_user(bot.owner_id),
             guild=guild
         ))
@@ -153,7 +154,7 @@ if __name__ == '__main__':
         elif isinstance(error, CommandOnCooldown):
             await ctx.send(embed=ErrorEmbed(
                 author=ctx.author,
-                title=':x: Command is not cooldown',
+                title=':x: Command is on cooldown',
                 description='Please try again in a minute.'
             ))
         elif isinstance(error, DisabledCommand):
@@ -167,4 +168,4 @@ if __name__ == '__main__':
             raise error
 
 
-    bot.run(general_settings['bot_token'])
+    bot.run(bot_token())
