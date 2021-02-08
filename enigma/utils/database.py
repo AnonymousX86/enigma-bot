@@ -7,9 +7,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from enigma.settings import database_settings
+from enigma.settings import database_url
 
-_engine = create_engine(database_settings['url'])
+_engine = create_engine(database_url())
 _Session = sessionmaker()
 _Session.configure(bind=_engine)
 

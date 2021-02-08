@@ -12,11 +12,11 @@ from discord.ext.commands import Cog, command, Context, cooldown, BucketType, ha
 from praw import Reddit
 from requests import request
 
-from enigma.settings import reddit_settings, in_production, rapidapi_settings
-from enigma.utils.database import create_giveaway, get_giveaway_from_message, delete_giveaway
 from enigma.emebds.core import ErrorEmbed, InfoEmbed, SuccessEmbed
 from enigma.emebds.errors import TimeoutEmbed
 from enigma.emebds.misc import PleaseWaitEmbed
+from enigma.settings import in_production, reddit_client_id, reddit_client_secret, reddit_user_agent, rapid_api_key
+from enigma.utils.database import create_giveaway, get_giveaway_from_message, delete_giveaway
 from enigma.utils.exceptions import DatabaseError
 from enigma.utils.strings import number_suffix
 
@@ -497,9 +497,9 @@ class Fun(Cog):
     )
     async def meme(self, ctx: Context):
         reddit = Reddit(
-            client_id=reddit_settings['client_id'],
-            client_secret=reddit_settings['client_secret'],
-            user_agent=reddit_settings['user_agent']
+            client_id=reddit_client_id(),
+            client_secret=reddit_client_secret(),
+            user_agent=reddit_user_agent()
         )
         posts = []
         # noinspection SpellCheckingInspection
@@ -545,7 +545,7 @@ class Fun(Cog):
             url = f'https://numbersapi.p.rapidapi.com/{num}/math'
             headers = {
                 'x-rapidapi-host': 'numbersapi.p.rapidapi.com',
-                'x-rapidapi-key': rapidapi_settings['key']
+                'x-rapidapi-key': rapid_api_key()
             }
             querystring = {"fragment": "false", "json": "false"}
             response = request("GET", url, headers=headers, params=querystring)

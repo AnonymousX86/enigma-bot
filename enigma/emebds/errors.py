@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime as d
-
 from discord import User, Member
 from discord.ext.commands import Context
 

@@ -5,9 +5,9 @@ from discord import TextChannel
 from discord.ext.commands import command, Cog, MissingPermissions, Context, cooldown, BucketType, \
     CommandError, Command
 
-from enigma.settings import in_production, general_settings
 from enigma.emebds.core import InfoEmbed, ErrorEmbed, SuccessEmbed
 from enigma.emebds.misc import SuggestionEmbed
+from enigma.settings import in_production, suggestions_channel_id
 
 
 class Basics(Cog):
@@ -198,7 +198,7 @@ class Basics(Cog):
                 description='Suggestion is too long. Write less, please.'
             ))
         else:
-            channel: TextChannel = self.bot.get_channel(general_settings['suggestions_channel'])
+            channel: TextChannel = self.bot.get_channel(suggestions_channel_id())
             msg = await channel.send(embed=SuggestionEmbed(
                 author=ctx.author,
                 message=message

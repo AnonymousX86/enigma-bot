@@ -5,7 +5,7 @@ from spotipy import Spotify, SpotifyClientCredentials, SpotifyOauthError, Spotif
 from youtubesearchpython import SearchVideos
 
 from enigma.emebds.core import ErrorEmbed, SuccessEmbed
-from enigma.settings import spotify_settings, in_production
+from enigma.settings import in_production, spotify_client_id, spotify_client_secret
 
 
 class Utilities(Cog):
@@ -61,8 +61,8 @@ class Utilities(Cog):
 
         try:
             sp = Spotify(auth_manager=SpotifyClientCredentials(
-                client_id=spotify_settings['client_id'],
-                client_secret=spotify_settings['client_secret']
+                client_id=spotify_client_id(),
+                client_secret=spotify_client_secret()
             ))
         except SpotifyOauthError:
             sp = None

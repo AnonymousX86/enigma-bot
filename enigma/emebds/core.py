@@ -3,7 +3,7 @@ from datetime import datetime
 
 from discord import Embed, User, Color
 
-from enigma.settings import in_dev
+from enigma.settings import in_production
 
 
 class CustomEmbed(Embed):
@@ -11,7 +11,7 @@ class CustomEmbed(Embed):
         super().__init__(**kwargs)
         self.timestamp = datetime.utcnow()
         self.set_footer(
-            text=str(author) + (' \u2615' if in_dev() else ''),
+            text=str(author) + (' \u2615' if not in_production() else ''),
             icon_url=author.avatar_url
         )
 

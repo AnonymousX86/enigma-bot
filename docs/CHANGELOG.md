@@ -8,6 +8,7 @@
 - `giveaway` command embed.
 #### Changed
 - `suggest` command aliases and description.
+- Settings are now more Python-friendly.
 
 
 ## Released
