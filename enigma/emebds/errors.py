@@ -23,28 +23,35 @@ class CooldownEmbed(ErrorEmbed):
 class DebugEmbed(ErrorEmbed):
     def __init__(self, author: User, ctx: Context = None, e: Exception = None, member: Member = None, **kwargs):
         super().__init__(author, **kwargs)
-        data = ''
         if ctx:
-            data += f'{ctx.author.mention} raised an error in {ctx.channel.mention}.\n\n' \
-                    f'**[Message Link]({ctx.message.jump_url})**\n\n' \
-                    f'**MESSAGE INFO:**' \
-                    f'```xl\n' \
-                    f'Channel ID  - {ctx.channel.id}\n' \
-                    f'User ID     - {ctx.author.id}\n' \
-                    f'Datetime    - {str(d.utcnow())[:19]}\n' \
-                    f'```\n' \
-                    f'**MESSAGE CONTENT:**\n' \
-                    f'```\n' \
-                    f'{ctx.message.content}\n' \
-                    f'```\n'
-
-        if e is not None:
-            data += f'**ERROR:**\n' \
-                    f'```diff\n' \
-                    f'- {e.__class__.__name__}: {e}\n' \
-                    f'```'
-
+            self.title = ':octagonal_sign: Error'
+            self.description = f'***[Message link]({ctx.message.jump_url} "Click me!")***\n\n'
+            self.add_field(
+                name='Context',
+                value=f'Channel \u2015 {ctx.channel.mention}\n'
+                      f'User \u2015 {ctx.author.mention}\n'
+                      f'Datetime \u2015 {str(ctx.message.created_at)[:19]}',
+                inline=False
+            ).add_field(
+                name='Message',
+                value=f'```\n'
+                      f'{ctx.message.content}\n'
+                      f'```\n',
+                inline=False
+            )
+        if e:
+            self.add_field(
+                name='Error traceback',
+                value='```diff\n'
+                      '- {0}: {1}\n'
+                      '```'.format(e.__class__.__name__, str(e).replace('\n', '\n- ')),
+                inline=False
+            )
         if member:
-            data += f'Member {member.mention} raised an error.'
-
-        self.description = data
+            self.add_field(
+                name='Member',
+                value=f'{str(member)} - {member.mention}'
+            ).add_field(
+                name='Guild',
+                value=str(member.guild)
+            )
