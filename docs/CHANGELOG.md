@@ -1,6 +1,9 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+
+## Released
+### [v0.7] - 08.02.2021
 #### Added
 - `spotify` command.
 #### Fixed
@@ -10,8 +13,6 @@
 - `suggest` command aliases and description.
 - Settings are now more Python-friendly.
 
-
-## Released
 ### [v0.6] - 04.02.2021
 #### Added
 - `unban` command.
@@ -108,6 +109,7 @@
 
 
 [Unreleased]: https://github.com/AnonymousX86/Enigma-Bot/compare/deploy...master
+[v0.7]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.7
 [v0.6]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.6
 [v0.5]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.5
 [v0.4]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.4
