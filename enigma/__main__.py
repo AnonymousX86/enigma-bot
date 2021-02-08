@@ -55,6 +55,7 @@ if __name__ == '__main__':
             guild_messages=True
         )
     )
+    system_channel = bot.get_channel(system_channel_id())
 
 
     @bot.event
@@ -109,7 +110,7 @@ if __name__ == '__main__':
     async def on_guild_join(guild: Guild):
         log.info(f'Joined guild: {str(guild)}')
         await update_presence()
-        await bot.get_channel(system_channel_id()).send(embed=JoinGuildEmbed(
+        await system_channel.send(embed=JoinGuildEmbed(
             author=bot.get_user(bot.owner_id),
             guild=guild
         ))
@@ -119,7 +120,7 @@ if __name__ == '__main__':
     async def on_guild_remove(guild: Guild):
         log.info(f'Removed from guild: {str(guild)}')
         await update_presence()
-        await bot.get_channel(system_channel_id()).send(embed=RemoveGuildEmbed(
+        await system_channel.send(embed=RemoveGuildEmbed(
             author=bot.get_user(bot.owner_id),
             guild=guild
         ))
