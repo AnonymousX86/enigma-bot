@@ -60,3 +60,9 @@ class OnlineEmbed(MiscEmbed):
         super().__init__(author, **kwargs)
         self.title = ':signal_strength: Bot is online'
         self.description = f'Environment: {environment()}'
+
+
+class ConnectionChangedEmbed(MiscEmbed):
+    def __init__(self, author: User, **kwargs):
+        super().__init__(author, **kwargs)
+        self.title = kwargs['title']

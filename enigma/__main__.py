@@ -8,7 +8,7 @@ from rich.logging import RichHandler
 
 from enigma.emebds.core import ErrorEmbed
 from enigma.emebds.errors import DebugEmbed
-from enigma.emebds.misc import JoinGuildEmbed, OnlineEmbed, RemoveGuildEmbed
+from enigma.emebds.misc import JoinGuildEmbed, OnlineEmbed, RemoveGuildEmbed, ConnectionChangedEmbed
 from enigma.settings import debug_channel_id, bot_version, system_channel_id, in_production, bot_token
 from enigma.utils.database import check_connection
 
@@ -89,22 +89,37 @@ if __name__ == '__main__':
 
         log.info('On ready - done!')
 
-        await bot.get_channel(system_channel_id()).send(embed=OnlineEmbed(author=bot.get_user(bot.owner_id)))
+        await bot.get_channel(system_channel_id()).send(embed=OnlineEmbed(author=bot_owner))
 
 
     @bot.event
     async def on_connect():
-        log.info('Connected to Discord')
+        st = ':large_blue_diamond: Connected to Discord'
+        log.info(st)
+        await system_channel.send(embed=ConnectionChangedEmbed(
+            author=bot_owner,
+            title=f' {st}'
+        ))
 
 
     @bot.event
     async def on_disconnect():
-        log.info('Disconnected from Discord')
+        st = ':large_orange_diamond: Disconnected from Discord'
+        log.info(st)
+        await system_channel.send(embed=ConnectionChangedEmbed(
+            author=bot_owner,
+            title=f' {st}'
+        ))
 
 
     @bot.event
     async def on_resumed():
-        log.info('Resumed to Discord')
+        st = ':arrows_counterclockwise: Resumed to Discord'
+        log.info(st)
+        await system_channel.send(embed=ConnectionChangedEmbed(
+            author=bot_owner,
+            title=f' {st}'
+        ))
 
 
     @bot.event

@@ -3,6 +3,7 @@
 ## [Unreleased]
 #### Added
 - Logging when bot is online and ready.
+- Logging Discord connection states.
 #### Fixed
 - Logging after leaving a server.
 #### Updated
