@@ -8,7 +8,7 @@ from rich.logging import RichHandler
 
 from enigma.emebds.core import ErrorEmbed
 from enigma.emebds.errors import DebugEmbed
-from enigma.emebds.misc import JoinGuildEmbed
+from enigma.emebds.misc import JoinGuildEmbed, OnlineEmbed
 from enigma.settings import debug_channel_id, bot_version, system_channel_id, in_production, bot_token
 from enigma.utils.database import check_connection
 
@@ -86,6 +86,8 @@ if __name__ == '__main__':
         log.info('Database connection OK') if check_connection() else log.critical(f'Failed to connect to database')
 
         log.info('On ready - done!')
+
+        await bot.get_channel(system_channel_id()).send(embed=OnlineEmbed(author=bot.get_user(bot.owner_id)))
 
 
     @bot.event

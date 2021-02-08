@@ -1,6 +1,8 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+#### Added
+- Logging when bot is online and ready.
 #### Updated
 - [`setup.py`] now has all packages
 #### Changed

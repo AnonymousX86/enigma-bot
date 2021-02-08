@@ -2,6 +2,7 @@
 from discord import User, Guild
 
 from enigma.emebds.core import MiscEmbed
+from enigma.settings import environment
 
 
 class PleaseWaitEmbed(MiscEmbed):
@@ -52,3 +53,10 @@ class SuggestionEmbed(MiscEmbed):
         super().__init__(author, **kwargs)
         self.title = ':raised_hand: New suggestion'
         self.description = f'```\n{message}\n```'
+
+
+class OnlineEmbed(MiscEmbed):
+    def __init__(self, author: User, **kwargs):
+        super().__init__(author, **kwargs)
+        self.title = ':signal_strength: Bot is online'
+        self.description = f'Environment: {environment()}'
