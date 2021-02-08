@@ -3,6 +3,8 @@
 ## [Unreleased]
 #### Added
 - Logging when bot is online and ready.
+#### Fixed
+- Logging after leaving a server.
 #### Updated
 - [`setup.py`] now has all packages
 #### Changed

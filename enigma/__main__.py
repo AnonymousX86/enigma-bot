@@ -8,7 +8,7 @@ from rich.logging import RichHandler
 
 from enigma.emebds.core import ErrorEmbed
 from enigma.emebds.errors import DebugEmbed
-from enigma.emebds.misc import JoinGuildEmbed, OnlineEmbed
+from enigma.emebds.misc import JoinGuildEmbed, OnlineEmbed, RemoveGuildEmbed
 from enigma.settings import debug_channel_id, bot_version, system_channel_id, in_production, bot_token
 from enigma.utils.database import check_connection
 
@@ -119,6 +119,10 @@ if __name__ == '__main__':
     async def on_guild_remove(guild: Guild):
         log.info(f'Removed from guild: {str(guild)}')
         await update_presence()
+        await bot.get_channel(system_channel_id()).send(embed=RemoveGuildEmbed(
+            author=bot.get_user(bot.owner_id),
+            guild=guild
+        ))
 
 
     @bot.event
