@@ -8,6 +8,7 @@
 - There's author's full name in [`setup.py`].
 - Name in [`setup.py`] now looks better.
 - `info` command embed.
+- `spotify` command help.
 
 ## Released
 ### [v0.7] - 08.02.2021

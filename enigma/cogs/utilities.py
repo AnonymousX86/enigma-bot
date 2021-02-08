@@ -19,13 +19,13 @@ class Utilities(Cog):
         brief='Spotify lurker',
         description='Searching Spotify for a specified object and sends YouTube version.',
         help='Available Spotify types:\n'
-             '- track,\n'
-             '- album,\n'
-             '- artist,\n'
-             '- playlist\n'
-             'For example:\n  >spotify 4uLU6hMCjMI75M1A2tKUQC track.\n'
-             'If you pass a valid link, bot is able to recognize type. Like:\n'
-             '  >spotify https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC',
+             '- `track`,\n'
+             '- `album`,\n'
+             '- `artist`,\n'
+             '- `playlist`\n'
+             'For example:```\n>spotify 4uLU6hMCjMI75M1A2tKUQC track.\n```'
+             'If you pass a valid link, bot is able to recognize type. Like:```\n'
+             '>spotify https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC\n```',
         usage='<Spotify link|ID> [type]',
         enabled=not in_production()
     )
