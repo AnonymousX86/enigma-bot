@@ -72,6 +72,7 @@ if __name__ == '__main__':
                 'fun',
                 'game_seeker',
                 'profiles',
+                'utilities'
         )):
             try:
                 bot.load_extension(cog)

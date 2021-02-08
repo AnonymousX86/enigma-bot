@@ -6,3 +6,5 @@ praw~=7.1.2
 setuptools~=53.0.0
 requests~=2.25.1
 rich~=9.10.0
+spotipy~=2.16.1
+youtube-search-python

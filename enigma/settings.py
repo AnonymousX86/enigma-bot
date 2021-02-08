@@ -49,3 +49,9 @@ reddit_settings = {
 rapidapi_settings = {
     'key': _get('RAPIDAPI_KEY')
 }
+
+
+spotify_settings = {
+    'client_id': _get('SPOTIFY_CLIENT_ID'),
+    'client_secret': _get('SPOTIFY_CLIENT_SECRET')
+}
