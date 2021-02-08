@@ -14,9 +14,9 @@ from requests import request
 
 from enigma.settings import reddit_settings, in_production, rapidapi_settings
 from enigma.utils.database import create_giveaway, get_giveaway_from_message, delete_giveaway
-from enigma.utils.emebds.core import ErrorEmbed, InfoEmbed, SuccessEmbed
-from enigma.utils.emebds.errors import TimeoutEmbed
-from enigma.utils.emebds.misc import PleaseWaitEmbed
+from enigma.emebds.core import ErrorEmbed, InfoEmbed, SuccessEmbed
+from enigma.emebds.errors import TimeoutEmbed
+from enigma.emebds.misc import PleaseWaitEmbed
 from enigma.utils.exceptions import DatabaseError
 from enigma.utils.strings import number_suffix
 

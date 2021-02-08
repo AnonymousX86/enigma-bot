@@ -8,9 +8,9 @@ from rich.logging import RichHandler
 
 from enigma.settings import general_settings, debug_settings, version, in_production
 from enigma.utils.database import check_connection
-from enigma.utils.emebds.core import ErrorEmbed
-from enigma.utils.emebds.errors import DebugEmbed
-from enigma.utils.emebds.misc import JoinGuildEmbed
+from enigma.emebds.core import ErrorEmbed
+from enigma.emebds.errors import DebugEmbed
+from enigma.emebds.misc import JoinGuildEmbed
 
 
 async def update_presence():

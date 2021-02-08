@@ -6,8 +6,8 @@ from discord.ext.commands import command, Cog, MissingPermissions, Context, cool
     CommandError, Command
 
 from enigma.settings import in_production, general_settings
-from enigma.utils.emebds.core import InfoEmbed, ErrorEmbed, SuccessEmbed
-from enigma.utils.emebds.misc import SuggestionEmbed
+from enigma.emebds.core import InfoEmbed, ErrorEmbed, SuccessEmbed
+from enigma.emebds.misc import SuggestionEmbed
 
 
 class Basics(Cog):

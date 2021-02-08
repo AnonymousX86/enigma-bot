@@ -4,7 +4,7 @@ from datetime import datetime as d
 from discord import User, Member
 from discord.ext.commands import Context
 
-from enigma.utils.emebds.core import ErrorEmbed
+from enigma.emebds.core import ErrorEmbed
 
 
 class TimeoutEmbed(ErrorEmbed):

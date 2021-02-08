@@ -7,8 +7,8 @@ from discord.ext.commands import Cog, command, Context
 
 from enigma.settings import in_production
 from enigma.utils.database import get_single_user, update_profile, user_get_cash
-from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed, InfoEmbed
-from enigma.utils.emebds.misc import PleaseWaitEmbed, DevelopmentEmbed
+from enigma.emebds.core import ErrorEmbed, SuccessEmbed, InfoEmbed
+from enigma.emebds.misc import PleaseWaitEmbed, DevelopmentEmbed
 from enigma.utils.strings import f_btc
 
 

@@ -4,8 +4,8 @@ from discord.ext.commands import command, Cog, has_permissions, bot_has_permissi
 from discord.utils import get
 
 from enigma.settings import in_production
-from enigma.utils.emebds.core import ErrorEmbed, SuccessEmbed
-from enigma.utils.emebds.misc import PleaseWaitEmbed
+from enigma.emebds.core import ErrorEmbed, SuccessEmbed
+from enigma.emebds.misc import PleaseWaitEmbed
 
 
 class Admin(Cog):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from discord import User, Guild
 
-from enigma.utils.emebds.core import MiscEmbed
+from enigma.emebds.core import MiscEmbed
 
 
 class PleaseWaitEmbed(MiscEmbed):
