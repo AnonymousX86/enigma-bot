@@ -1,6 +1,8 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+#### Added
+- `spotify` command.
 #### Fixed
 - `ping` commands was showing negative values.
 - `giveaway` command embed.
