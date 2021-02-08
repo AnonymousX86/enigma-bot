@@ -75,4 +75,4 @@ def number_suffix(num: int):
 
 
 def f_btc(num: int) -> str:
-    return f'{round(num*0.0001, 4)} {chars["bitcoin"]}'
+    return f'{round(num * 0.0001, 4)} {chars["bitcoin"]}'
