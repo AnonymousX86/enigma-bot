@@ -8,7 +8,7 @@ from rich.logging import RichHandler
 
 from enigma.emebds.core import ErrorEmbed
 from enigma.emebds.errors import DebugEmbed
-from enigma.emebds.misc import JoinGuildEmbed
+from enigma.emebds.misc import JoinGuildEmbed, OnlineEmbed, RemoveGuildEmbed, ConnectionChangedEmbed
 from enigma.settings import debug_channel_id, bot_version, system_channel_id, in_production, bot_token
 from enigma.utils.database import check_connection
 
@@ -55,6 +55,8 @@ if __name__ == '__main__':
             guild_messages=True
         )
     )
+    system_channel = bot.get_channel(system_channel_id())
+    bot_owner = bot.get_user(bot.owner_id)
 
 
     @bot.event
@@ -87,28 +89,45 @@ if __name__ == '__main__':
 
         log.info('On ready - done!')
 
+        await bot.get_channel(system_channel_id()).send(embed=OnlineEmbed(author=bot_owner))
+
 
     @bot.event
     async def on_connect():
-        log.info('Connected to Discord')
+        st = ':large_blue_diamond: Connected to Discord'
+        log.info(st)
+        await system_channel.send(embed=ConnectionChangedEmbed(
+            author=bot_owner,
+            title=f' {st}'
+        ))
 
 
     @bot.event
     async def on_disconnect():
-        log.info('Disconnected from Discord')
+        st = ':large_orange_diamond: Disconnected from Discord'
+        log.info(st)
+        await system_channel.send(embed=ConnectionChangedEmbed(
+            author=bot_owner,
+            title=f' {st}'
+        ))
 
 
     @bot.event
     async def on_resumed():
-        log.info('Resumed to Discord')
+        st = ':arrows_counterclockwise: Resumed to Discord'
+        log.info(st)
+        await system_channel.send(embed=ConnectionChangedEmbed(
+            author=bot_owner,
+            title=f' {st}'
+        ))
 
 
     @bot.event
     async def on_guild_join(guild: Guild):
         log.info(f'Joined guild: {str(guild)}')
         await update_presence()
-        await bot.get_channel(system_channel_id()).send(embed=JoinGuildEmbed(
-            author=bot.get_user(bot.owner_id),
+        await system_channel.send(embed=JoinGuildEmbed(
+            author=bot_owner,
             guild=guild
         ))
 
@@ -117,6 +136,10 @@ if __name__ == '__main__':
     async def on_guild_remove(guild: Guild):
         log.info(f'Removed from guild: {str(guild)}')
         await update_presence()
+        await system_channel.send(embed=RemoveGuildEmbed(
+            author=bot_owner,
+            guild=guild
+        ))
 
 
     @bot.event

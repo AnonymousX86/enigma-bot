@@ -2,8 +2,12 @@
 from os import environ as env
 
 
+def environment() -> str:
+    return env.get('TARGET')
+
+
 def in_production() -> bool:
-    return env.get('TARGET') == 'production'
+    return environment() == 'production'
 
 
 def bot_token() -> str:
