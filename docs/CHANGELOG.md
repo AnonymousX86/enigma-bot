@@ -16,6 +16,10 @@
 - `spotify` command help.
 
 ## Released
+### v0.7-hotfix - 09.02.2021
+#### Fixed
+- `spotify` command was disabled in production.
+
 ### [v0.7] - 08.02.2021
 #### Added
 - `spotify` command.

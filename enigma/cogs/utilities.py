@@ -27,7 +27,7 @@ class Utilities(Cog):
              'If you pass a valid link, bot is able to recognize type. Like:```\n'
              '>spotify https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC\n```',
         usage='<Spotify link|ID> [type]',
-        enabled=not in_production()
+        enabled=in_production()
     )
     async def spotify(self, ctx: Context, url: str = None, type_: str = None):
         if not url:
