@@ -15,6 +15,7 @@
 - Name in [`setup.py`] now looks better.
 - `info` command embed.
 - `spotify` command help.
+- `spotify` command cooldown, from 1 per 30s to 3 per 60s.
 
 ## Released
 ### v0.7-hotfix - 09.02.2021

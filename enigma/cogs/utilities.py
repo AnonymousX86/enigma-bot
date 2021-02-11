@@ -13,7 +13,7 @@ class Utilities(Cog):
         self.bot = bot
 
     # noinspection SpellCheckingInspection
-    @cooldown(1, 30, BucketType.user)
+    @cooldown(3, 60, BucketType.user)
     @command(
         name='spotify',
         brief='Spotify lurker',
