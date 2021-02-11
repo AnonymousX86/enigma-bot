@@ -37,7 +37,7 @@ class Utilities(Cog):
             ))
         elif not type_:
             try:
-                type_ = url.split('/')[3]
+                type_ = url.split('&')[0].split('?')[0].split('/')[3]
             except IndexError:
                 pass
 

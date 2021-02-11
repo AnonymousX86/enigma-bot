@@ -6,6 +6,7 @@
 - Logging Discord connection states.
 #### Fixed
 - Logging after leaving a server.
+- `spotify` command now works with links which include `&` or `?`.
 #### Updated
 - [`setup.py`] now has all packages
 #### Changed
