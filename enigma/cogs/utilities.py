@@ -17,13 +17,13 @@ class Utilities(Cog):
     @command(
         name='spotify',
         brief='Spotify lurker',
-        description='Searching Spotify for a specified object and sends YouTube version.',
+        description='Searching Spotify for a specified object and sends YouTube version (single track only).',
         help='Available Spotify types:\n'
-             '- `track`,\n'
-             '- `album`,\n'
-             '- `artist`,\n'
-             '- `playlist`\n'
-             'For example:```\n>spotify 4uLU6hMCjMI75M1A2tKUQC track.\n```'
+             '\u2003- `track`,\n'
+             '\u2003- `album`,\n'
+             '\u2003- `artist`,\n'
+             '\u2003- `playlist`.\n'
+             'For example:```\n>spotify 3cfOd4CMv2snFaKAnMdnvK track\n```\n'
              'If you pass a valid link, bot is able to recognize type. Like:```\n'
              '>spotify https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC\n```',
         usage='<Spotify link|ID> [type]',
