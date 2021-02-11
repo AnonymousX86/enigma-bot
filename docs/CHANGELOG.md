@@ -1,6 +1,10 @@
 # Enigma Bot changelog
 
 ## [Unreleased]
+
+## Released
+
+### [v0.8] - 11.02.2021
 #### Added
 - Logging when bot is online and ready.
 - Logging Discord connection states.
@@ -17,7 +21,6 @@
 - `spotify` command help.
 - `spotify` command cooldown, from 1 per 30s to 3 per 60s.
 
-## Released
 ### v0.7-hotfix - 09.02.2021
 #### Fixed
 - `spotify` command was disabled in production.
@@ -129,6 +132,7 @@
 [`setup.py`]: https://github.com/AnonymousX86/Enigma-Bot/blob/master/setup.py
 [`runtime.txt`]: https://github.com/AnonymousX86/Enigma-Bot/blob/master/runtime.txt
 [Unreleased]: https://github.com/AnonymousX86/Enigma-Bot/compare/deploy...master
+[v0.8]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.8
 [v0.7]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.7
 [v0.6]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.6
 [v0.5]: https://github.com/AnonymousX86/Enigma-Bot/releases/tag/v0.5

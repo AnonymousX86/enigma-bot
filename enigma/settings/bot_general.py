@@ -15,7 +15,7 @@ def bot_token() -> str:
 
 
 def bot_version() -> str:
-    return '0.7'
+    return '0.8'
 
 
 def bot_owner_id() -> int:
