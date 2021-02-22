@@ -5,6 +5,6 @@ psycopg2~=2.8.6
 praw~=7.1.4
 setuptools~=53.0.0
 requests~=2.25.1
-rich~=9.10.0
+rich~=9.11.1
 spotipy~=2.16.1
 youtube-search-python
