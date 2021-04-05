@@ -1,4 +1,4 @@
-discord.py~=1.6.0
+discord.py~=1.7.0
 python-dotenv~=0.16.0
 SQLAlchemy~=1.4.3
 psycopg2~=2.8.6
