@@ -1,6 +1,6 @@
 discord.py~=1.7.0
 python-dotenv~=0.17.0
-SQLAlchemy~=1.4.5
+SQLAlchemy~=1.4.7
 psycopg2~=2.8.6
 praw~=7.2.0
 setuptools~=54.2.0
