@@ -7,4 +7,4 @@ setuptools~=56.0.0
 requests~=2.25.1
 rich~=10.1.0
 spotipy~=2.18.0
-youtube-search-python~=1.4.3
+youtube-search-python~=1.4.5
