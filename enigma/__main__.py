@@ -4,6 +4,7 @@ from logging import basicConfig, getLogger
 from discord import Status, Game, Member, Intents, Guild
 from discord.ext.commands import Bot, Context, CommandNotFound, MissingPermissions, BotMissingPermissions, \
     CommandOnCooldown, UserNotFound, DisabledCommand
+from dotenv import load_dotenv
 from rich.logging import RichHandler
 
 from enigma.emebds.core import ErrorEmbed
@@ -33,6 +34,7 @@ async def debug_log(ctx: Context = None, e: Exception = None, member: Member = N
 
 
 if __name__ == '__main__':
+    load_dotenv()
     # noinspection PyArgumentList
     basicConfig(
         level='INFO',
