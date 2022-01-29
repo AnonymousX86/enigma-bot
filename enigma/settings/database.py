@@ -3,4 +3,9 @@ from os import environ as env
 
 
 def database_url() -> str:
-    return env.get('DATABASE_URL')
+    url = env.get('DATABASE_URL')
+    if not url:
+        raise RuntimeError("No database url found")
+    if url.startswith("postgres://"):
+        url = url.replace("postgres://", "postgresql://")
+    return url
