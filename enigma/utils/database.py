@@ -2,12 +2,15 @@
 from datetime import date, datetime as d
 from typing import List, Optional, Union, Tuple
 
+from dotenv import find_dotenv, load_dotenv
 from sqlalchemy import create_engine, Column, Integer, Date, BigInteger, Text, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from enigma.settings import database_url
+
+load_dotenv(find_dotenv())
 
 _engine = create_engine(database_url())
 _Session = sessionmaker()
