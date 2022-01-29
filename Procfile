@@ -1,1 +1,1 @@
-worker: python -O -m enigma
+worker: python -OO -m enigma
