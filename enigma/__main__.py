@@ -22,15 +22,15 @@ async def update_presence():
 
 # noinspection PyShadowingNames
 async def debug_log(ctx: Context = None, e: Exception = None, member: Member = None):
-    debug_channel = bot.get_channel(debug_channel_id())
-    await debug_channel.send(
-        embed=DebugEmbed(
-            author=bot.get_user(bot.owner_id),
-            ctx=ctx,
-            e=e,
-            member=member
+    if ch := bot.debug_channel:
+        await ch.send(
+            embed=DebugEmbed(
+                author=bot.get_user(bot.owner_id),
+                ctx=ctx,
+                e=e,
+                member=member
+            )
         )
-    )
 
 
 if __name__ == '__main__':
@@ -57,12 +57,32 @@ if __name__ == '__main__':
             guild_messages=True
         )
     )
-    system_channel = bot.get_channel(system_channel_id())
-    bot_owner = bot.get_user(bot.owner_id)
+    bot.system_channel = None
+    bot.debug_channel = None
+    bot.owner = None
 
 
     @bot.event
     async def on_ready():
+        # Find system channel
+        system_channel = await bot.fetch_channel(system_channel_id())
+        if not system_channel:
+            log.error('No system channel found!')
+        else:
+            bot.system_channel = system_channel
+        bot_owner = await bot.fetch_user(bot.owner_id)
+        # Find debug channel
+        debug_channel = await bot.fetch_channel(debug_channel_id())
+        if not debug_channel:
+            log.error('No debug channel found!')
+        else:
+            bot.debug_channel = debug_channel
+        # Find bot owner
+        if not bot_owner:
+            log.error('No bot owner found!')
+        else:
+            bot.owner = bot_owner
+        # Post login things
         log.info(f'Logged on as: {bot.user}')
         guilds = len(bot.guilds)
         log.info(f'Connected guilds: {guilds}')
@@ -91,57 +111,63 @@ if __name__ == '__main__':
 
         log.info('On ready - done!')
 
-        await bot.get_channel(system_channel_id()).send(embed=OnlineEmbed(author=bot_owner))
+        if ch := system_channel:
+            await ch.send(embed=OnlineEmbed(author=bot_owner))
 
 
     @bot.event
     async def on_connect():
         st = ':large_blue_diamond: Connected to Discord'
         log.info(st)
-        await system_channel.send(embed=ConnectionChangedEmbed(
-            author=bot_owner,
-            title=f' {st}'
-        ))
+        if ch := bot.system_channel:
+            await ch.send(embed=ConnectionChangedEmbed(
+                author=bot.owner,
+                title=f' {st}'
+            ))
 
 
     @bot.event
     async def on_disconnect():
         st = ':large_orange_diamond: Disconnected from Discord'
         log.info(st)
-        await system_channel.send(embed=ConnectionChangedEmbed(
-            author=bot_owner,
-            title=f' {st}'
-        ))
+        if ch := bot.system_channel:
+            await ch.send(embed=ConnectionChangedEmbed(
+                author=bot.owner,
+                title=f' {st}'
+            ))
 
 
     @bot.event
     async def on_resumed():
         st = ':arrows_counterclockwise: Resumed to Discord'
         log.info(st)
-        await system_channel.send(embed=ConnectionChangedEmbed(
-            author=bot_owner,
-            title=f' {st}'
-        ))
+        if ch := bot.system_channel:
+            await ch.send(embed=ConnectionChangedEmbed(
+                author=bot.owner,
+                title=f' {st}'
+            ))
 
 
     @bot.event
     async def on_guild_join(guild: Guild):
         log.info(f'Joined guild: {str(guild)}')
         await update_presence()
-        await system_channel.send(embed=JoinGuildEmbed(
-            author=bot_owner,
-            guild=guild
-        ))
+        if ch := bot.system_channel:
+            await ch.send(embed=JoinGuildEmbed(
+                author=bot.owner,
+                guild=guild
+            ))
 
 
     @bot.event
     async def on_guild_remove(guild: Guild):
         log.info(f'Removed from guild: {str(guild)}')
         await update_presence()
-        await system_channel.send(embed=RemoveGuildEmbed(
-            author=bot_owner,
-            guild=guild
-        ))
+        if ch := bot.system_channel:
+            await ch.send(embed=RemoveGuildEmbed(
+                author=bot.owner,
+                guild=guild
+            ))
 
 
     @bot.event
