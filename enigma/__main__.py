@@ -16,7 +16,7 @@ from enigma.utils.database import check_connection
 
 async def update_presence():
     status = Status.online
-    activity = Game(name=f'Cracking enigma codes in {len(bot.guilds)} servers')
+    activity = Game(name='Enigma codes')
     await bot.change_presence(status=status, activity=activity)
 
 
