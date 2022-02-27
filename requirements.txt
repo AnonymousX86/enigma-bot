@@ -1,7 +1,7 @@
 discord.py
 python-dotenv
 SQLAlchemy
-psycopg2
+psycopg2-binary
 praw
 setuptools
 requests
