@@ -1,4 +1,4 @@
-# 3N1GM4
+# Enigma
 Multiple purpose Discord bot, developed by: **Anonymous_x86#7296**.
 
 **Check official support server [here](https://discord.gg/SRdmrPpf2z "3N1GMA Support Server").**
