@@ -1,17 +1,17 @@
 # Enigma
-Multiple purpose Discord bot, developed by: **Anonymous_x86#7296**.
+Multiple purpose Discord bot, developed by: **AnonymousX86#0420**.
 
-**Check official support server [here](https://discord.gg/SRdmrPpf2z "3N1GMA Support Server").**
+**Check official support server [here](https://discord.gg/SRdmrPpf2z "Anonymous Canteen").**
 
 ## About
 I've always wanted to code my own bot. I've never been sure what kind of bot exactly I want to code.
 In February 2020 I've started reading about Discord.py library and I've coded my first Discord bot.
 It was very simple bot, it was presenting some useful data for economic browser game.
-Then I wanted to make something bigger and started to code **3N1GM4** bot.
+Then I wanted to make something bigger and started to code **Enigma** bot.
 
 ## Commands list
 
-### [Admin](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/admin.py)
+### [Admin](/enigma/cogs/admin.py)
 
 - `ban`
 - `unban`
@@ -19,7 +19,7 @@ Then I wanted to make something bigger and started to code **3N1GM4** bot.
 - `prune`
 
 
-### [Basics](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/basics.py)
+### [Basics](/enigma/cogs/basics.py)
 
 - `help`
 - `error`
@@ -30,7 +30,7 @@ Then I wanted to make something bigger and started to code **3N1GM4** bot.
 - `servers`
 
 
-### [Fun](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/fun.py)
+### [Fun](/enigma/cogs/fun.py)
 
 - `giveaway`
 - `iq`
@@ -40,12 +40,12 @@ Then I wanted to make something bigger and started to code **3N1GM4** bot.
 - `coin`
 
 
-### [GameSeeker](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/game_seeker.py)
+### [GameSeeker](/enigma/cogs/game_seeker.py)
 
 _Work in progress..._
 
 
-### [Profiles](https://github.com/AnonymousX86/Enigma-Bot/blob/master/enigma/cogs/profiles.py)
+### [Profiles](/enigma/cogs/profiles.py)
 
 - `profile`
 - `daily`
