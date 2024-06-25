@@ -10,3 +10,4 @@ spotipy
 youtube-search-python
 certifi>=2022.12.7 # not directly required, pinned by Snyk to avoid a vulnerability
 aiohttp>=3.8.0 # not directly required, pinned by Snyk to avoid a vulnerability
+anyio>=4.4.0 # not directly required, pinned by Snyk to avoid a vulnerability
